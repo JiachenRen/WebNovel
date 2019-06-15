@@ -11,6 +11,8 @@ import Foundation
 enum WNError: Error {
     case unknownResponseError
     case parsingError(_ supplementalMsg: String)
+    case urlNotFound
+    case unsupportedListingService
     
     var localizedDescription: String {
         switch self {
@@ -18,6 +20,10 @@ enum WNError: Error {
             return "An unknown response error has occurred"
         case .parsingError(let msg):
             return "Failed to parse response html - \(msg)"
+        case .urlNotFound:
+            return "Unable to find URL for this WN"
+        case .unsupportedListingService:
+            return "The requested listing service is not supported"
         }
     }
 }

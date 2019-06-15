@@ -9,6 +9,6 @@
 import Foundation
 
 protocol WNServiceProviderDelegate: NSObject {
-    func wnEntriesFetched(_ entries: [WNItem])
+    func wnListingFetched(_ entries: [WNItem])
     func searchCompleted(_ results: [WNItem])
 }

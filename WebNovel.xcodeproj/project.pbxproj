@@ -24,6 +24,10 @@
 		1FED6E8922B57493002F9317 /* SwiftSoup.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FED6E8722B57493002F9317 /* SwiftSoup.framework */; };
 		1FED6E8A22B574B4002F9317 /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1FED6E8622B57493002F9317 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1FED6E8B22B574B4002F9317 /* SwiftSoup.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1FED6E8722B57493002F9317 /* SwiftSoup.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		1FED6E8D22B582A3002F9317 /* ListingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FED6E8C22B582A3002F9317 /* ListingService.swift */; };
+		1FED6E8F22B58869002F9317 /* NovelUpdatesProvider+search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FED6E8E22B58869002F9317 /* NovelUpdatesProvider+search.swift */; };
+		1FED6E9122B58A75002F9317 /* NovelUpdatesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FED6E9022B58A75002F9317 /* NovelUpdatesProvider.swift */; };
+		1FED6E9322B58C7A002F9317 /* NetworkUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FED6E9222B58C7A002F9317 /* NetworkUtils.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +75,10 @@
 		1FED6E7B22B56EA6002F9317 /* WNItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WNItem.swift; sourceTree = "<group>"; };
 		1FED6E8622B57493002F9317 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
 		1FED6E8722B57493002F9317 /* SwiftSoup.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftSoup.framework; path = Carthage/Build/iOS/SwiftSoup.framework; sourceTree = "<group>"; };
+		1FED6E8C22B582A3002F9317 /* ListingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingService.swift; sourceTree = "<group>"; };
+		1FED6E8E22B58869002F9317 /* NovelUpdatesProvider+search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NovelUpdatesProvider+search.swift"; sourceTree = "<group>"; };
+		1FED6E9022B58A75002F9317 /* NovelUpdatesProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelUpdatesProvider.swift; sourceTree = "<group>"; };
+		1FED6E9222B58C7A002F9317 /* NetworkUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkUtils.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -166,12 +174,24 @@
 		1FED6E7D22B5700A002F9317 /* WNService */ = {
 			isa = PBXGroup;
 			children = (
+				1FED6E9422B58ED6002F9317 /* Service Providers */,
 				1FED6E7B22B56EA6002F9317 /* WNItem.swift */,
 				1FED6E6C22B403F6002F9317 /* WNServiceProvider.swift */,
 				1FED6E7722B42C86002F9317 /* WNServiceProviderDelegate.swift */,
+				1FED6E8C22B582A3002F9317 /* ListingService.swift */,
 				1FED6E7522B42C69002F9317 /* WNError.swift */,
+				1FED6E9222B58C7A002F9317 /* NetworkUtils.swift */,
 			);
 			path = WNService;
+			sourceTree = "<group>";
+		};
+		1FED6E9422B58ED6002F9317 /* Service Providers */ = {
+			isa = PBXGroup;
+			children = (
+				1FED6E8E22B58869002F9317 /* NovelUpdatesProvider+search.swift */,
+				1FED6E9022B58A75002F9317 /* NovelUpdatesProvider.swift */,
+			);
+			path = "Service Providers";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -278,10 +298,14 @@
 			files = (
 				1FED6E3622B34C92002F9317 /* ViewController.swift in Sources */,
 				1FED6E7622B42C69002F9317 /* WNError.swift in Sources */,
+				1FED6E9322B58C7A002F9317 /* NetworkUtils.swift in Sources */,
+				1FED6E8D22B582A3002F9317 /* ListingService.swift in Sources */,
+				1FED6E8F22B58869002F9317 /* NovelUpdatesProvider+search.swift in Sources */,
 				1FED6E3C22B34C92002F9317 /* WebNovel.xcdatamodeld in Sources */,
 				1FED6E7C22B56EA6002F9317 /* WNItem.swift in Sources */,
 				1FED6E7822B42C86002F9317 /* WNServiceProviderDelegate.swift in Sources */,
 				1FED6E3422B34C92002F9317 /* AppDelegate.swift in Sources */,
+				1FED6E9122B58A75002F9317 /* NovelUpdatesProvider.swift in Sources */,
 				1FED6E6D22B403F6002F9317 /* WNServiceProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

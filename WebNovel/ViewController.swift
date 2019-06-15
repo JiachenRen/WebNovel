@@ -11,18 +11,19 @@ import PromiseKit
 import Alamofire
 
 class ViewController: UIViewController {
-    let serviceProvider = WNServiceProvider()
+    var serviceProvider: WNServiceProvider = NovelUpdatesProvider()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         serviceProvider.delegate = self
-        serviceProvider.fetchEntries(for: .ranking, page: 1)
+        serviceProvider.fetchListing(for: .ranking, page: 201)
+//        serviceProvider.search(byName: "The King")
     }
     
 }
 
 extension ViewController: WNServiceProviderDelegate {
-    func wnEntriesFetched(_ entries: [WNItem]) {
+    func wnListingFetched(_ entries: [WNItem]) {
         entries.forEach {
             print($0, terminator: "\n\n")
         }

@@ -7,6 +7,9 @@
 //
 
 import Foundation
+import PromiseKit
+import CoreGraphics
+import Alamofire
 
 /// Represents a web novel object.
 /// The variables are self explanatory
@@ -20,6 +23,16 @@ class WNItem {
     var rank: Int?
     var rating: Double?
     var releases: Int?
+    
+    private func getUrl() -> Promise<String> {
+        return Promise { seal in
+            guard let url = self.url else {
+                seal.reject(WNError.urlNotFound)
+                return
+            }
+            seal.fulfill(url)
+        }
+    }
 }
 
 extension WNItem: CustomStringConvertible {
