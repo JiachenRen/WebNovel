@@ -13,7 +13,44 @@
 		1FED6E3C22B34C92002F9317 /* WebNovel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1FED6E3A22B34C92002F9317 /* WebNovel.xcdatamodeld */; };
 		1FED6E3E22B34C93002F9317 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1FED6E3D22B34C93002F9317 /* Assets.xcassets */; };
 		1FED6E4122B34C93002F9317 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1FED6E3F22B34C93002F9317 /* LaunchScreen.storyboard */; };
+		1FED6E4F22B34E0F002F9317 /* WebNovelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FED6E4E22B34E0F002F9317 /* WebNovelTests.swift */; };
+		1FED6E6D22B403F6002F9317 /* WNServiceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FED6E6C22B403F6002F9317 /* WNServiceProvider.swift */; };
+		1FED6E7122B40EF8002F9317 /* PromiseKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FED6E7022B40EF8002F9317 /* PromiseKit.framework */; };
+		1FED6E7322B40F04002F9317 /* PromiseKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1FED6E7022B40EF8002F9317 /* PromiseKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		1FED6E7622B42C69002F9317 /* WNError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FED6E7522B42C69002F9317 /* WNError.swift */; };
+		1FED6E7822B42C86002F9317 /* WNServiceProviderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FED6E7722B42C86002F9317 /* WNServiceProviderDelegate.swift */; };
+		1FED6E7C22B56EA6002F9317 /* WNItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FED6E7B22B56EA6002F9317 /* WNItem.swift */; };
+		1FED6E8822B57493002F9317 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FED6E8622B57493002F9317 /* Alamofire.framework */; };
+		1FED6E8922B57493002F9317 /* SwiftSoup.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FED6E8722B57493002F9317 /* SwiftSoup.framework */; };
+		1FED6E8A22B574B4002F9317 /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1FED6E8622B57493002F9317 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		1FED6E8B22B574B4002F9317 /* SwiftSoup.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1FED6E8722B57493002F9317 /* SwiftSoup.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		1FED6E5122B34E0F002F9317 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1FED6E2822B34C92002F9317 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1FED6E2F22B34C92002F9317;
+			remoteInfo = WebNovel;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		1FED6E5A22B34E6E002F9317 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				1FED6E8A22B574B4002F9317 /* Alamofire.framework in Embed Frameworks */,
+				1FED6E8B22B574B4002F9317 /* SwiftSoup.framework in Embed Frameworks */,
+				1FED6E7322B40F04002F9317 /* PromiseKit.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		1FED6E3022B34C92002F9317 /* WebNovel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WebNovel.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -24,10 +61,30 @@
 		1FED6E3D22B34C93002F9317 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1FED6E4022B34C93002F9317 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1FED6E4222B34C93002F9317 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1FED6E4C22B34E0F002F9317 /* WebNovelTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WebNovelTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		1FED6E4E22B34E0F002F9317 /* WebNovelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebNovelTests.swift; sourceTree = "<group>"; };
+		1FED6E5022B34E0F002F9317 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1FED6E6C22B403F6002F9317 /* WNServiceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WNServiceProvider.swift; sourceTree = "<group>"; };
+		1FED6E7022B40EF8002F9317 /* PromiseKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PromiseKit.framework; path = Carthage/Build/iOS/PromiseKit.framework; sourceTree = "<group>"; };
+		1FED6E7522B42C69002F9317 /* WNError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WNError.swift; sourceTree = "<group>"; };
+		1FED6E7722B42C86002F9317 /* WNServiceProviderDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WNServiceProviderDelegate.swift; sourceTree = "<group>"; };
+		1FED6E7B22B56EA6002F9317 /* WNItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WNItem.swift; sourceTree = "<group>"; };
+		1FED6E8622B57493002F9317 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
+		1FED6E8722B57493002F9317 /* SwiftSoup.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftSoup.framework; path = Carthage/Build/iOS/SwiftSoup.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		1FED6E2D22B34C92002F9317 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1FED6E8822B57493002F9317 /* Alamofire.framework in Frameworks */,
+				1FED6E8922B57493002F9317 /* SwiftSoup.framework in Frameworks */,
+				1FED6E7122B40EF8002F9317 /* PromiseKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1FED6E4922B34E0F002F9317 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -41,7 +98,9 @@
 			isa = PBXGroup;
 			children = (
 				1FED6E3222B34C92002F9317 /* WebNovel */,
+				1FED6E4D22B34E0F002F9317 /* WebNovelTests */,
 				1FED6E3122B34C92002F9317 /* Products */,
+				1FED6E5C22B34EB1002F9317 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -49,6 +108,7 @@
 			isa = PBXGroup;
 			children = (
 				1FED6E3022B34C92002F9317 /* WebNovel.app */,
+				1FED6E4C22B34E0F002F9317 /* WebNovelTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -56,15 +116,62 @@
 		1FED6E3222B34C92002F9317 /* WebNovel */ = {
 			isa = PBXGroup;
 			children = (
+				1FED6E7D22B5700A002F9317 /* WNService */,
+				1FED6E6822B402CD002F9317 /* Storyboards */,
 				1FED6E3322B34C92002F9317 /* AppDelegate.swift */,
 				1FED6E3522B34C92002F9317 /* ViewController.swift */,
-				1FED6E3722B34C92002F9317 /* Main.storyboard */,
-				1FED6E3D22B34C93002F9317 /* Assets.xcassets */,
-				1FED6E3F22B34C93002F9317 /* LaunchScreen.storyboard */,
+				1FED6E6922B4031B002F9317 /* Resources */,
 				1FED6E4222B34C93002F9317 /* Info.plist */,
-				1FED6E3A22B34C92002F9317 /* WebNovel.xcdatamodeld */,
 			);
 			path = WebNovel;
+			sourceTree = "<group>";
+		};
+		1FED6E4D22B34E0F002F9317 /* WebNovelTests */ = {
+			isa = PBXGroup;
+			children = (
+				1FED6E4E22B34E0F002F9317 /* WebNovelTests.swift */,
+				1FED6E5022B34E0F002F9317 /* Info.plist */,
+			);
+			path = WebNovelTests;
+			sourceTree = "<group>";
+		};
+		1FED6E5C22B34EB1002F9317 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1FED6E8622B57493002F9317 /* Alamofire.framework */,
+				1FED6E8722B57493002F9317 /* SwiftSoup.framework */,
+				1FED6E7022B40EF8002F9317 /* PromiseKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		1FED6E6822B402CD002F9317 /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				1FED6E3722B34C92002F9317 /* Main.storyboard */,
+				1FED6E3F22B34C93002F9317 /* LaunchScreen.storyboard */,
+			);
+			path = Storyboards;
+			sourceTree = "<group>";
+		};
+		1FED6E6922B4031B002F9317 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				1FED6E3D22B34C93002F9317 /* Assets.xcassets */,
+				1FED6E3A22B34C92002F9317 /* WebNovel.xcdatamodeld */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		1FED6E7D22B5700A002F9317 /* WNService */ = {
+			isa = PBXGroup;
+			children = (
+				1FED6E7B22B56EA6002F9317 /* WNItem.swift */,
+				1FED6E6C22B403F6002F9317 /* WNServiceProvider.swift */,
+				1FED6E7722B42C86002F9317 /* WNServiceProviderDelegate.swift */,
+				1FED6E7522B42C69002F9317 /* WNError.swift */,
+			);
+			path = WNService;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -77,6 +184,7 @@
 				1FED6E2C22B34C92002F9317 /* Sources */,
 				1FED6E2D22B34C92002F9317 /* Frameworks */,
 				1FED6E2E22B34C92002F9317 /* Resources */,
+				1FED6E5A22B34E6E002F9317 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -86,6 +194,24 @@
 			productName = WebNovel;
 			productReference = 1FED6E3022B34C92002F9317 /* WebNovel.app */;
 			productType = "com.apple.product-type.application";
+		};
+		1FED6E4B22B34E0F002F9317 /* WebNovelTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1FED6E5322B34E0F002F9317 /* Build configuration list for PBXNativeTarget "WebNovelTests" */;
+			buildPhases = (
+				1FED6E4822B34E0F002F9317 /* Sources */,
+				1FED6E4922B34E0F002F9317 /* Frameworks */,
+				1FED6E4A22B34E0F002F9317 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1FED6E5222B34E0F002F9317 /* PBXTargetDependency */,
+			);
+			name = WebNovelTests;
+			productName = WebNovelTests;
+			productReference = 1FED6E4C22B34E0F002F9317 /* WebNovelTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -99,6 +225,10 @@
 				TargetAttributes = {
 					1FED6E2F22B34C92002F9317 = {
 						CreatedOnToolsVersion = 10.2.1;
+					};
+					1FED6E4B22B34E0F002F9317 = {
+						CreatedOnToolsVersion = 10.2.1;
+						TestTargetID = 1FED6E2F22B34C92002F9317;
 					};
 				};
 			};
@@ -116,6 +246,7 @@
 			projectRoot = "";
 			targets = (
 				1FED6E2F22B34C92002F9317 /* WebNovel */,
+				1FED6E4B22B34E0F002F9317 /* WebNovelTests */,
 			);
 		};
 /* End PBXProject section */
@@ -131,6 +262,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		1FED6E4A22B34E0F002F9317 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -139,12 +277,32 @@
 			buildActionMask = 2147483647;
 			files = (
 				1FED6E3622B34C92002F9317 /* ViewController.swift in Sources */,
+				1FED6E7622B42C69002F9317 /* WNError.swift in Sources */,
 				1FED6E3C22B34C92002F9317 /* WebNovel.xcdatamodeld in Sources */,
+				1FED6E7C22B56EA6002F9317 /* WNItem.swift in Sources */,
+				1FED6E7822B42C86002F9317 /* WNServiceProviderDelegate.swift in Sources */,
 				1FED6E3422B34C92002F9317 /* AppDelegate.swift in Sources */,
+				1FED6E6D22B403F6002F9317 /* WNServiceProvider.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1FED6E4822B34E0F002F9317 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1FED6E4F22B34E0F002F9317 /* WebNovelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		1FED6E5222B34E0F002F9317 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1FED6E2F22B34C92002F9317 /* WebNovel */;
+			targetProxy = 1FED6E5122B34E0F002F9317 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		1FED6E3722B34C92002F9317 /* Main.storyboard */ = {
@@ -288,6 +446,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = AM89ND2ZY7;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = WebNovel/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -306,6 +469,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = AM89ND2ZY7;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = WebNovel/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -315,6 +483,56 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		1FED6E5422B34E0F002F9317 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = AM89ND2ZY7;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)",
+				);
+				INFOPLIST_FILE = WebNovelTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.jiachenren.WebNovelTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WebNovel.app/WebNovel";
+			};
+			name = Debug;
+		};
+		1FED6E5522B34E0F002F9317 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = AM89ND2ZY7;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)",
+				);
+				INFOPLIST_FILE = WebNovelTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.jiachenren.WebNovelTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WebNovel.app/WebNovel";
 			};
 			name = Release;
 		};
@@ -335,6 +553,15 @@
 			buildConfigurations = (
 				1FED6E4622B34C93002F9317 /* Debug */,
 				1FED6E4722B34C93002F9317 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1FED6E5322B34E0F002F9317 /* Build configuration list for PBXNativeTarget "WebNovelTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1FED6E5422B34E0F002F9317 /* Debug */,
+				1FED6E5522B34E0F002F9317 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

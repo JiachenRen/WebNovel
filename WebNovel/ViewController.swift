@@ -7,14 +7,31 @@
 //
 
 import UIKit
+import PromiseKit
+import Alamofire
 
 class ViewController: UIViewController {
-
+    let serviceProvider = WNServiceProvider()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        serviceProvider.delegate = self
+        serviceProvider.fetchEntries(for: .ranking, page: 1)
     }
+    
+}
 
-
+extension ViewController: WNServiceProviderDelegate {
+    func wnEntriesFetched(_ entries: [WNItem]) {
+        entries.forEach {
+            print($0, terminator: "\n\n")
+        }
+    }
+    
+    func searchCompleted(_ results: [WNItem]) {
+        results.forEach {
+            print($0, terminator: "\n\n")
+        }
+    }
 }
 
