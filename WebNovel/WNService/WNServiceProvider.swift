@@ -11,8 +11,10 @@ import PromiseKit
 import Alamofire
 
 protocol WNServiceProvider {
-    var delegate: WNServiceProviderDelegate? {get set}
     var availableListingServices: [ListingService] {get}
-    func search(byName query: String)
-    func fetchListing(for: ListingService, page: Int)
+    func search(byName query: String) -> Promise<[WNItem]>
+    func fetchListing(for: ListingService, page: Int) -> Promise<[WNItem]>
+    func fetchChapters(for wn: WNItem) -> Promise<[WNChapter]>
+    func loadChapter(_ chapter: WNChapter) -> Promise<WNChapter>
+    func fetchDetails(_ wn: WNItem) -> Promise<WNItem>
 }

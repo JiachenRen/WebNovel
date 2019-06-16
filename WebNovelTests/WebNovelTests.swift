@@ -7,6 +7,8 @@
 //
 
 import XCTest
+import PromiseKit
+@testable import WebNovel
 
 class WebNovelTests: XCTestCase {
 
@@ -16,6 +18,11 @@ class WebNovelTests: XCTestCase {
 
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
+    }
+    
+    func testFetchDetails() throws {
+        
+        Thread.sleep(forTimeInterval: 5)
     }
     
     func testPerformanceExample() {

@@ -15,15 +15,9 @@ extension NovelUpdatesProvider {
     
     /// Searches matching WN by the given query.
     /// Notifies delegate upon completion of data task.
-    func search(byName query: String) {
-        firstly {
-            htmlSearchRequestResponse(query: query)
-            }.map {html in
-                try self.parseSearchResults(html)
-            }.done {
-                self.delegate?.searchCompleted($0)
-            }.catch {err in
-                print(err)
+    func search(byName query: String) -> Promise<[WNItem]> {
+        return htmlSearchRequestResponse(query: query).map {
+            try self.parseSearchResults($0)
         }
     }
     
@@ -36,7 +30,7 @@ extension NovelUpdatesProvider {
             "strType": "desktop",
             "strOne": query
         ]
-        return htmlRequestResponse(searchEndpoint, method: .post, parameters: parameters)
+        return htmlRequestResponse(serviceEndpoint, method: .post, parameters: parameters)
     }
     
     /// Parses the html response string from the search request.

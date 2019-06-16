@@ -9,30 +9,24 @@
 import UIKit
 import PromiseKit
 import Alamofire
+import SwiftSoup
 
 class ViewController: UIViewController {
-    var serviceProvider: WNServiceProvider = NovelUpdatesProvider()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        serviceProvider.delegate = self
-        serviceProvider.fetchListing(for: .ranking, page: 201)
-//        serviceProvider.search(byName: "The King")
-    }
-    
-}
-
-extension ViewController: WNServiceProviderDelegate {
-    func wnListingFetched(_ entries: [WNItem]) {
-        entries.forEach {
-            print($0, terminator: "\n\n")
+        
+        let sp: WNServiceProvider = NovelUpdatesProvider()
+        sp.search(byName: "Kumo desu ga").then {
+            sp.fetchChapters(for: $0.first!)
+        }.then {
+            sp.loadChapter($0.first!)
+        }.done {
+            print($0)
+        }.catch { err in
+            print(err)
         }
     }
     
-    func searchCompleted(_ results: [WNItem]) {
-        results.forEach {
-            print($0, terminator: "\n\n")
-        }
-    }
 }
 

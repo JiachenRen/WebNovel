@@ -8,7 +8,7 @@
 
 import Foundation
 import PromiseKit
-import CoreGraphics
+import UIKit
 import Alamofire
 
 /// Represents a web novel object.
@@ -18,11 +18,18 @@ class WNItem {
     var fullDescription: String?
     var organization: String?
     var title: String?
+    var author: String?
     var url: String?
-    var genres: [String] = []
+    var genres: [String]?
+    var tags: [String]?
+    var language: String?
+    var type: String?
     var rank: Int?
     var rating: Double?
+    var votes: Int?
+    var aliases: [String]?
     var releases: Int?
+    var coverImageUrl: String?
     
     private func getUrl() -> Promise<String> {
         return Promise { seal in
@@ -33,18 +40,32 @@ class WNItem {
             seal.fulfill(url)
         }
     }
+    
+    /// Get the html response string that the URL points to.
+    func html() -> Promise<String> {
+        return getUrl().then {
+            htmlRequestResponse($0)
+        }
+    }
 }
 
 extension WNItem: CustomStringConvertible {
     var description: String {
         return """
         Title: \(title ?? "N/A")
-        Genres: \(genres.joined(separator: ", "))
+        Author: \(author ?? "N/A")
+        Aliases: \(aliases?.joined(separator: ", ") ?? "N/A")
+        Genres: \(genres?.joined(separator: ", ") ?? "N/A")
+        Tags: \(tags?.joined(separator: ", ") ?? "N/A")
         Organization: \(organization ?? "N/A")
         Link: \(url ?? "N/A")
+        Cover Image URL: \(coverImageUrl ?? "N/A")
         Rank: \(rank == nil ? "N/A" : String(rank!))
         Rating: \(rating == nil ? "N/A" : String(rating!))
+        Votes: \(votes == nil ? "N/A" : String(votes!))
         Releases: \(releases == nil ? "N/A" : String(releases!))
+        Language: \(language ?? "N/A")
+        Type: \(type ?? "N/A")
         Short Description: \(shortDescription ?? "N/A")
         Full Description: \(fullDescription ?? "N/A")
         """
