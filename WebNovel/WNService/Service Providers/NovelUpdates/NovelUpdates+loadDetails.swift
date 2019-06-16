@@ -13,16 +13,25 @@ import SwiftSoup
 extension NovelUpdates {
     
     /// Get the details of the web novel from its summary page.
-    func loadDetails(_ wn: WNItem) -> Promise<WNItem> {
+    func loadDetails(_ wn: WebNovel, cachePolicy: WNCache.Policy) -> Promise<WebNovel> {
+        if cachePolicy == .usesCache, let url = wn.url {
+            if let wn = try! WNCache.fetchWebNovel(by: url) {
+                return Promise { seal in
+                    seal.fulfill(wn)
+                }
+            }
+        }
         return wn.html().map { html in
             let doc = try SwiftSoup.parse(html)
             try self.parseDetails(doc, wn)
             return wn
+        }.get { wn in
+            try WNCache.save(wn)
         }
     }
     
     /// Parse detailed information from response html document
-    private func parseDetails(_ doc: Document, _ wn: WNItem) throws {
+    private func parseDetails(_ doc: Document, _ wn: WebNovel) throws {
         wn.title = try doc.getElementsByClass("seriestitlenu").first()?.text()
         wn.fullDescription = try doc.getElementById("editdescription")?.children().reduce("") {
             try $0 + "\n" + $1.html()

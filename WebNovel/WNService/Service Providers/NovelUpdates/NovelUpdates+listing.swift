@@ -26,13 +26,13 @@ extension NovelUpdates {
     
     /// Fetches web novel listing for the specified listing service type
     /// Notifies delegate upon completion of data task
-    func fetchListing(for: ListingService, page: Int) -> Promise<[WNItem]>{
+    func fetchListing(for: ListingService, page: Int) -> Promise<[WebNovel]>{
         let parameters: Parameters = [
             "pg": page
         ]
         return htmlListingRequestResponse(for: .ranking, parameters: parameters)
             .then { htmlStr in
-                try self.parseListingItems(htmlStr)
+                try self.parseListing(htmlStr)
         }
     }
     
@@ -46,7 +46,7 @@ extension NovelUpdates {
     }
     
     /// Extracts WN entries from raw html response string.
-    private func parseListingItems(_ htmlStr: String) throws -> Promise<[WNItem]> {
+    private func parseListing(_ htmlStr: String) throws -> Promise<[WebNovel]> {
         return Promise {seal in
             let doc = try SwiftSoup.parse(htmlStr)
             // #myTable is a table containing the listing of novels
@@ -56,9 +56,9 @@ extension NovelUpdates {
             }
             // Each entry contains metadata for the web novel
             let entries = try tbl.getElementsByClass("bdrank")
-            var webNovels = [WNItem]()
+            var webNovels = [WebNovel]()
             for entry in entries {
-                let wn = try parseWNItem(entry)
+                let wn = try parseWebNovel(entry)
                 webNovels.append(wn)
             }
             seal.fulfill(webNovels)
@@ -75,8 +75,8 @@ extension NovelUpdates {
     ///      class = rankgenre (contains child nodes, each has genre name)
     ///      class = noveldesc (short desc, last child node contains long desc. in <p>)
     ///      class = sfstext (html contains number of releases
-    private func parseWNItem(_ element: Element) throws -> WNItem {
-        let wn = WNItem()
+    private func parseWebNovel(_ element: Element) throws -> WebNovel {
+        let wn = WebNovel()
         // In some cases rank does not exist, in which case the index should shift by 1
         var index = 0
         if let rank = try element.child(index).getElementsByClass("ranknum").first() {

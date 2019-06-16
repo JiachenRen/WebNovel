@@ -47,6 +47,7 @@ class WNParser {
             }
             let doc = try SwiftSoup.parse(html)
             try extractor.extract(from: doc, into: chapter)
+            print(chapter.chapter)
             seal.fulfill(chapter)
         }
     }
@@ -66,6 +67,38 @@ class WNParser {
                         .reduce("") {
                             try $0 + "\n" + decode($1.text())
                     }
+                }
+            ]
+        ]),
+        "blastron01.tumblr.com": .init([
+            \.title: [
+                .id("blog"),
+                .tag("div", idx: 0),
+                .tag("h1", idx: 1),
+                .parse {try? decode($0.text())}
+            ],
+            \.content: [
+                .id("blog"),
+                .tag("div", idx: 0),
+                .parse {
+                    try? $0.getElementsByTag("p")
+                        .reduce("") {
+                            try $0 + "\n" + decode($1.text())
+                    }
+                }
+            ]
+        ]),
+        "turb0translation.blogspot.com": .init([
+            \.title: [
+                .class("post-body entry-content", idx: 0),
+                .tag("b", idx: 0),
+                .tag("span", idx: 0),
+                .parse {try? decode($0.text())}
+            ],
+            \.content: [
+                .class("post-body entry-content", idx: 0),
+                .parse {
+                    try? decode($0.html().replacingOccurrences(of: "<br>", with: "\n"))
                 }
             ]
         ])
@@ -97,9 +130,17 @@ class WNParser {
             case .id(let id):
                 return try element.getElementById(id)
             case .class(let c, idx: let i):
-                return try element.getElementsByClass(c).get(i)
+                let elements = try element.getElementsByClass(c)
+                if i < elements.count {
+                    return elements[i]
+                }
+                return nil
             case .tag(let tag, idx: let i):
-                return try element.getElementsByTag(tag).get(i)
+                let elements = try element.getElementsByTag(tag)
+                if i < elements.count {
+                    return elements[i]
+                }
+                return nil
             case .selector(let query, idx: let i):
                 return try element.select(query).get(i)
             case .parse:
@@ -116,7 +157,8 @@ class WNParser {
                 let parser = steps.removeLast()
                 for step in steps {
                     guard let e = try apply(step, to: element) else {
-                        throw WNError.invalidParsingInstruction
+                        // Failed to fetch property, move on.
+                        return
                     }
                     element = e
                 }

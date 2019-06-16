@@ -24,13 +24,13 @@ class WNCache {
     
     /// Saves loaded chapters for the given url to core data
     static func save(_ wnChaptersCatalogue: WNChaptersCatalogue) throws {
-        try save(object: wnChaptersCatalogue, managedObject: ChaptersListing.self)
+        try save(object: wnChaptersCatalogue, managedObject: ChaptersCatalogue.self)
     }
     
     /// Saves the WN to core data
     /// If an existing WN entry with the same url exists, it is overwritten.
-    static func save(_ wnItem: WNItem) throws {
-        try save(object: wnItem, managedObject: WebNovel.self)
+    static func save(_ webNovel: WebNovel) throws {
+        try save(object: webNovel, managedObject: Novel.self)
     }
     
     /// Saves the WN chapter to core data
@@ -60,8 +60,8 @@ class WNCache {
         try ctx.save()
     }
     
-    static func fetchWNItem(by url: String) throws -> WNItem? {
-        return try fetch(by: url, managedObject: WebNovel.self, object: WNItem.self)
+    static func fetchWebNovel(by url: String) throws -> WebNovel? {
+        return try fetch(by: url, managedObject: Novel.self, object: WebNovel.self)
     }
     
     static func fetchChapter(by url: String) throws -> WNChapter? {
@@ -69,7 +69,7 @@ class WNCache {
     }
     
     static func fetchChaptersCatalogue(by url: String) throws -> WNChaptersCatalogue? {
-        return try fetch(by: url, managedObject: ChaptersListing.self, object: WNChaptersCatalogue.self)
+        return try fetch(by: url, managedObject: ChaptersCatalogue.self, object: WNChaptersCatalogue.self)
     }
     
     private static func fetch<T: Codable, K: WNManagedObject>(by url: String, managedObject: K.Type, object: T.Type) throws -> T? {

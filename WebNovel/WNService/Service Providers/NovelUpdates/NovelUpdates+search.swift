@@ -15,7 +15,7 @@ extension NovelUpdates {
     
     /// Searches matching WN by the given query.
     /// Notifies delegate upon completion of data task.
-    func search(byName query: String) -> Promise<[WNItem]> {
+    func search(byName query: String) -> Promise<[WebNovel]> {
         return htmlSearchRequestResponse(query: query).map {
             try self.parseSearchResults($0)
         }
@@ -38,15 +38,15 @@ extension NovelUpdates {
     /// HTML string with the following form:
     /// ul > li, where each li contains a <a> and a <span>
     /// <a> contains the link to the WN, whereas <span> contains the name of the WN.
-    /// - Returns: An array of WNItem objects, with only `title` and `url`.
-    private func parseSearchResults(_ htmlResponse: String) throws -> [WNItem] {
+    /// - Returns: An array of WebNovel objects, with only `title` and `url`.
+    private func parseSearchResults(_ htmlResponse: String) throws -> [WebNovel] {
         let doc = try SwiftSoup.parse(htmlResponse)
         guard let ul = try doc.getElementsByTag("ul").first() else {
             throw WNError.parsingError("unable to find <ul> element in search response html")
         }
         let entries = try ul.getElementsByTag("li").map {
-            entry -> WNItem in
-            let wn = WNItem()
+            entry -> WebNovel in
+            let wn = WebNovel()
             if let url = try entry.getElementsByTag("a").first()?.attr("href") {
                 wn.url = url
             }

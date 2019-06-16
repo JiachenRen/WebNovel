@@ -19,6 +19,7 @@ enum WNError: Error {
     case unsupportedHost(_ host: String)
     case invalidParsingInstruction
     case decodingFailed
+    case managedContextNotFound
     
     var localizedDescription: String {
         switch self {
@@ -42,6 +43,8 @@ enum WNError: Error {
             return "Invalid parsing instruction"
         case .decodingFailed:
             return "Failed to decode html string"
+        case .managedContextNotFound:
+            return "Unable to find managed object context"
         }
     }
 }

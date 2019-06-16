@@ -18,10 +18,10 @@ extension Chapter: WNManagedObject {
     
 }
 
-extension WebNovel: WNManagedObject {
+extension Novel: WNManagedObject {
     
 }
 
-extension ChaptersListing: WNManagedObject {
+extension ChaptersCatalogue: WNManagedObject {
     
 }

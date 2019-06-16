@@ -12,9 +12,10 @@ import Alamofire
 
 protocol WNServiceProvider {
     var availableListingServices: [ListingService] {get}
-    func search(byName query: String) -> Promise<[WNItem]>
-    func fetchListing(for: ListingService, page: Int) -> Promise<[WNItem]>
-    func fetchChapters(for wn: WNItem) -> Promise<[WNChapter]>
-    func loadChapter(_ chapter: WNChapter) -> Promise<WNChapter>
-    func fetchDetails(_ wn: WNItem) -> Promise<WNItem>
+    func search(byName query: String) -> Promise<[WebNovel]>
+    func fetchListing(for: ListingService, page: Int) -> Promise<[WebNovel]>
+    func fetchChapters(for wn: WebNovel, cachePolicy: WNCache.Policy) -> Promise<[WNChapter]>
+    func loadChapters(_ chapters: [WNChapter], cachePolicy: WNCache.Policy) -> Guarantee<(loaded: [WNChapter], failed: [WNChapter])>
+    func loadChapter(_ chapter: WNChapter, cachePolicy: WNCache.Policy) -> Promise<WNChapter>
+    func loadDetails(_ wn: WebNovel, cachePolicy: WNCache.Policy) -> Promise<WebNovel>
 }
