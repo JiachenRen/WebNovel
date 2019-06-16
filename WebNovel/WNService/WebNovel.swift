@@ -1,5 +1,5 @@
 //
-//  WNItem.swift
+//  WebNovel.swift
 //  WebNovel
 //
 //  Created by Jiachen Ren on 6/14/19.
@@ -13,7 +13,7 @@ import Alamofire
 
 /// Represents a web novel object.
 /// The variables are self explanatory
-class WNItem {
+class WebNovel: Serializable {
     var shortDescription: String?
     var fullDescription: String?
     var organization: String?
@@ -30,6 +30,8 @@ class WNItem {
     var aliases: [String]?
     var releases: Int?
     var coverImageUrl: String?
+    
+    static var entityName: String = "Novel"
     
     private func getUrl() -> Promise<String> {
         return Promise { seal in
@@ -49,7 +51,7 @@ class WNItem {
     }
 }
 
-extension WNItem: CustomStringConvertible {
+extension WebNovel: CustomStringConvertible {
     var description: String {
         return """
         Title: \(title ?? "N/A")

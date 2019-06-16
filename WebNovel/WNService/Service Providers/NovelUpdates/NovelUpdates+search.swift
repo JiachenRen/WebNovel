@@ -11,7 +11,7 @@ import PromiseKit
 import Alamofire
 import SwiftSoup
 
-extension NovelUpdatesProvider {
+extension NovelUpdates {
     
     /// Searches matching WN by the given query.
     /// Notifies delegate upon completion of data task.

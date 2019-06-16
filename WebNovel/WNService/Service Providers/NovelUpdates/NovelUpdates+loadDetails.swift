@@ -1,5 +1,5 @@
 //
-//  NovelUpdatesProvider+fetchDetails.swift
+//  NovelUpdates+loadDetails.swift
 //  WebNovel
 //
 //  Created by Jiachen Ren on 6/15/19.
@@ -10,10 +10,10 @@ import Foundation
 import PromiseKit
 import SwiftSoup
 
-extension NovelUpdatesProvider {
+extension NovelUpdates {
     
     /// Get the details of the web novel from its summary page.
-    func fetchDetails(_ wn: WNItem) -> Promise<WNItem> {
+    func loadDetails(_ wn: WNItem) -> Promise<WNItem> {
         return wn.html().map { html in
             let doc = try SwiftSoup.parse(html)
             try self.parseDetails(doc, wn)
