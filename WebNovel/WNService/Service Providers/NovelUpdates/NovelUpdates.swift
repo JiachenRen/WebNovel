@@ -14,18 +14,8 @@ import SwiftSoup
 class NovelUpdates: WNServiceProvider {
     
     let nonDigitRegex = "[^0-9]+"
-    var baseUrl = URL(string: "https://www.novelupdates.com")!
+    static var baseUrl = URL(string: "https://www.novelupdates.com")!
     var serviceEndpoint = URL(string: "https://www.novelupdates.com/wp-admin/admin-ajax.php")!
-    var availableListingServices: [ListingService] = [
-        .ranking,
-        .latest,
-        .all
-    ]
-    var listingServicePaths: [ListingService: String] = [
-        .ranking: "series-ranking",
-        .all: "novelslisting",
-        .latest: "latest-series",
-    ]
     
     /// Parses raw html response for chapters catalogue into an array of WNChapter
     private func parseChaptersCatalogue(_ doc: Document) throws -> [WNChapter] {

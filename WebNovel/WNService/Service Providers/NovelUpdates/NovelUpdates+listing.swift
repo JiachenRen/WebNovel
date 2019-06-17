@@ -13,35 +13,53 @@ import Alamofire
 
 extension NovelUpdates {
     
-    func listingRequestUrl(for listingService: ListingService) -> Promise<URL> {
-        return Promise { seal in
-            guard let path = listingServicePaths[listingService] else {
-                seal.reject(WNError.unsupportedListingService)
-                return
-            }
-            let url = baseUrl.appendingPathComponent(path, isDirectory: true)
-            seal.fulfill(url)
+    /// List of available listing service types
+    var listingServices: [WNListingService] {
+        return listingServiceProviders.map {
+            $0.service
         }
+    }
+    
+    private var listingServiceProviders: [ListingServiceProvider] {
+        return [
+            .init(service: .popularMonthlyRanking, path: "series-ranking", parameters: ["rank": "popmonth"]),
+            .init(service: .all, path: "novelslisting"),
+            .init(service: .latest, path: "latest-series")
+        ]
+    }
+    
+    class ListingServiceProvider {
+        var service: WNListingService
+        var path: String
+        var parameters: Parameters
+        
+        init(service: WNListingService, path: String, parameters: Parameters = [:]) {
+            self.service = service
+            self.path = path
+            self.parameters = parameters
+        }
+        
+        func htmlResponse(for page: Int) -> Promise<String> {
+            let url = NovelUpdates.baseUrl.appendingPathComponent(path, isDirectory: true)
+            var p = parameters
+            p["pg"] = page
+            return htmlRequestResponse(url, parameters: parameters)
+        }
+        
     }
     
     /// Fetches web novel listing for the specified listing service type
     /// Notifies delegate upon completion of data task
-    func fetchListing(for: ListingService, page: Int) -> Promise<[WebNovel]>{
-        let parameters: Parameters = [
-            "pg": page
-        ]
-        return htmlListingRequestResponse(for: .ranking, parameters: parameters)
-            .then { htmlStr in
-                try self.parseListing(htmlStr)
+    func fetchListing(for listingService: WNListingService, page: Int) -> Promise<[WebNovel]> {
+        guard let provider = listingServiceProviders.filter({$0.service == listingService}).first else {
+            return Promise { seal in
+                seal.reject(WNError.unsupportedListingService)
+            }
         }
-    }
-    
-    /// Constructs a promise wrapping the html response string for the specified listing service fetch request
-    /// - Parameter listingService: Listing service to use. Either `ranking`, `latest`, or `all`.
-    /// - Returns: A promise wrapping the html response string.
-    private func htmlListingRequestResponse(for listingService: ListingService, parameters: Parameters = [:]) -> Promise<String> {
-        return listingRequestUrl(for: listingService).then { url in
-            htmlRequestResponse(url, parameters: parameters)
+        return firstly {
+            provider.htmlResponse(for: page)
+        }.then { htmlStr in
+            try self.parseListing(htmlStr)
         }
     }
     
