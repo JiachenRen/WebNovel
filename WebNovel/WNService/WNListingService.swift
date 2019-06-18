@@ -10,12 +10,10 @@ import Foundation
 import PromiseKit
 
 enum WNListingService: String {
-    case latest
-    case all
-    case popularMonthlyRanking
-    case popularWeeklyRanking
-    case popularAllTimeRanking
-    case activityMonthlyRanking
-    case activityWeeklyRanking
-    case activityAllTimeRanking
+    typealias Option = String
+    
+    case latest = "Latest"
+    case all = "All"
+    case ranking = "Ranking"
+    case genre = "Genre"
 }

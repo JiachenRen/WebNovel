@@ -13,51 +13,144 @@ import Alamofire
 
 extension NovelUpdates {
     
-    /// List of available listing service types
-    var listingServices: [WNListingService] {
-        return listingServiceProviders.map {
-            $0.service
-        }
-    }
-    
     private var listingServiceProviders: [ListingServiceProvider] {
         return [
-            .init(service: .popularMonthlyRanking, path: "series-ranking", parameters: ["rank": "popmonth"]),
+            .init(
+                service: .ranking,
+                path: "series-ranking",
+                options: .init(
+                    name: "rank",
+                    type: .parameter,
+                    values: [
+                        "Popular (Monthly)": "popmonth",
+                        "Popular (All)": "popular",
+                        "Activity (Week)": "week",
+                        "Activity (Monthly)": "month",
+                        "Activity (All)": "sixmonths"
+                    ]
+                )
+            ),
+            .init(
+                service: .genre,
+                path: "genre",
+                options: .init(
+                    name: "genre",
+                    type: .pathComponent,
+                    values: WNGenre.allCases.reduce(into: [:]) {
+                        $0[$1.camelCased] = $1.dashSeparated
+                    }
+                )
+            ),
             .init(service: .all, path: "novelslisting"),
             .init(service: .latest, path: "latest-series")
         ]
     }
     
-    class ListingServiceProvider {
+    private class ListingServiceProvider {
         var service: WNListingService
         var path: String
-        var parameters: Parameters
+        var options: Options?
         
-        init(service: WNListingService, path: String, parameters: Parameters = [:]) {
+        init(service: WNListingService, path: String, options: Options? = nil) {
             self.service = service
             self.path = path
-            self.parameters = parameters
+            self.options = options
         }
         
-        func htmlResponse(for page: Int) -> Promise<String> {
+        /// - Parameter page: Page of the listing (usually 25 items per page)
+        /// - Parameter option: Common name for the value of option
+        func htmlResponse(for page: Int, with option: WNListingService.Option? = nil) -> Promise<String> {
             let url = NovelUpdates.baseUrl.appendingPathComponent(path, isDirectory: true)
-            var parameters = self.parameters
-            parameters["pg"] = page
-            return htmlRequestResponse(url, parameters: parameters)
+            var parameters: Parameters = ["pg": page]
+            guard let option = option else {
+                return htmlRequestResponse(url, parameters: parameters)
+            }
+            guard let options = self.options else {
+                return Promise { seal in
+                    seal.reject(WNError.unsupportedListingServiceOption)
+                }
+            }
+            if options.type == .parameter {
+                return Promise { seal in
+                    guard let (key, value) = options.toParameter(option) else {
+                        seal.reject(WNError.unsupportedListingServiceOption)
+                        return
+                    }
+                    parameters[key] = value
+                    seal.fulfill(parameters)
+                }.then { parameters in
+                    htmlRequestResponse(url, parameters: parameters)
+                }
+            } else {
+                return Promise { seal in
+                    guard let pathComponent = options.toPathComponent(option) else {
+                        seal.reject(WNError.unsupportedListingServiceOption)
+                        return
+                    }
+                    seal.fulfill(pathComponent)
+                }.then { pathComponent in
+                    return htmlRequestResponse(
+                        url.appendingPathComponent(pathComponent, isDirectory: true),
+                        parameters: parameters
+                    )
+                }
+            }
         }
         
+        enum OptionsType {
+            case pathComponent
+            case parameter
+        }
+        
+        struct Options {
+            var name: String
+            
+            var type: OptionsType
+            
+            /// Key: common name; value: value for parameter
+            var values: [WNListingService.Option: String]
+            
+            /// Finds the value of the parameter for the common name,
+            /// then returns the properly formated parameter.
+            func toParameter(_ commonName: String) -> (key: String, value: String)? {
+                if let value = values[commonName] {
+                    return (name, value)
+                }
+                return nil
+            }
+            
+            func toPathComponent(_ commonName: String) -> String? {
+                if let value = values[commonName] {
+                    return "/\(value)"
+                }
+                return nil
+            }
+        }
+    }
+    
+    /// List of available listing service types
+    func availableListingServices() -> [WNListingService] {
+        return listingServiceProviders.map {
+            $0.service
+        }
+    }
+    
+    /// Enumerates options for the given listing service
+    func listingServiceOptions(for listingService: WNListingService) -> [WNListingService.Option]? {
+        return listingServiceProviders.filter {$0.service == listingService}.first?
+            .options?.values.keys.map {$0}
     }
     
     /// Fetches web novel listing for the specified listing service type
     /// Notifies delegate upon completion of data task
-    func fetchListing(for listingService: WNListingService, page: Int) -> Promise<[WebNovel]> {
+    func fetchListing(for listingService: WNListingService, page: Int, option: WNListingService.Option?) -> Promise<[WebNovel]> {
         guard let provider = listingServiceProviders.filter({$0.service == listingService}).first else {
             return Promise { seal in
                 seal.reject(WNError.unsupportedListingService)
             }
         }
         return firstly {
-            provider.htmlResponse(for: page)
+            provider.htmlResponse(for: page, with: option)
         }.then { htmlStr in
             try self.parseListing(htmlStr)
         }

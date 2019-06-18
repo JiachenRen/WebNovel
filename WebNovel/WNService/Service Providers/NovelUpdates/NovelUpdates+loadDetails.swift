@@ -60,5 +60,6 @@ extension NovelUpdates {
         wn.coverImageUrl = try doc.getElementsByClass("seriesimg")
             .first()?.getElementsByTag("img")
             .first()?.attr("src")
+            .addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed)
     }
 }

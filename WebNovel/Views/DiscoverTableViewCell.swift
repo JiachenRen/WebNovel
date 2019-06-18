@@ -22,6 +22,18 @@ class DiscoverTableViewCell: UITableViewCell {
     
     @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
     
+    var loadingCoverImage = false {
+        didSet {
+            if loadingCoverImage {
+                activityIndicatorView.startAnimating()
+                coverImageView.alpha = 0.2
+            } else {
+                activityIndicatorView.stopAnimating()
+                coverImageView.alpha = 1
+            }
+        }
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

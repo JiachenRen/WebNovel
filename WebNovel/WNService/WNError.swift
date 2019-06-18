@@ -14,6 +14,7 @@ enum WNError: Error {
     case missingParameter(_ parameter: String)
     case urlNotFound
     case unsupportedListingService
+    case unsupportedListingServiceOption
     case incorrectEncoding
     case hostNotFound
     case unsupportedHost(_ host: String)
@@ -31,6 +32,8 @@ enum WNError: Error {
             return "Unable to find URL for this WN"
         case .unsupportedListingService:
             return "The requested listing service is not supported"
+        case .unsupportedListingServiceOption:
+            return "The requested listing service option is not supported"
         case .missingParameter(let p):
             return "Missing parameter \(p)"
         case .incorrectEncoding:

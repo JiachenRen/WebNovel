@@ -10,6 +10,11 @@
 		1F0E2EB122B73E5500CD77A9 /* DiscoverTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F0E2EB022B73E5500CD77A9 /* DiscoverTableViewController.swift */; };
 		1F0E2EB322B73F7500CD77A9 /* DiscoverTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F0E2EB222B73F7500CD77A9 /* DiscoverTableViewCell.swift */; };
 		1F3B25B522B87EEB00F1B2CA /* WNCoverImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F3B25B422B87EEB00F1B2CA /* WNCoverImage.swift */; };
+		1F52AAE522B8D3F500D4FB6C /* WNServiceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F52AAE422B8D3F500D4FB6C /* WNServiceManager.swift */; };
+		1F52AAE722B8DC7100D4FB6C /* ListingServiceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F52AAE622B8DC7100D4FB6C /* ListingServiceViewController.swift */; };
+		1F52AAE922B8E88800D4FB6C /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F52AAE822B8E88800D4FB6C /* Notification.swift */; };
+		1F52AAEC22B8EAFA00D4FB6C /* NSObject+observe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F52AAEB22B8EAFA00D4FB6C /* NSObject+observe.swift */; };
+		1F52AAEE22B901A300D4FB6C /* WNGenre.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F52AAED22B901A300D4FB6C /* WNGenre.swift */; };
 		1FED6E3422B34C92002F9317 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FED6E3322B34C92002F9317 /* AppDelegate.swift */; };
 		1FED6E3622B34C92002F9317 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FED6E3522B34C92002F9317 /* ViewController.swift */; };
 		1FED6E3922B34C92002F9317 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1FED6E3722B34C92002F9317 /* Main.storyboard */; };
@@ -70,6 +75,11 @@
 		1F0E2EB022B73E5500CD77A9 /* DiscoverTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverTableViewController.swift; sourceTree = "<group>"; };
 		1F0E2EB222B73F7500CD77A9 /* DiscoverTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverTableViewCell.swift; sourceTree = "<group>"; };
 		1F3B25B422B87EEB00F1B2CA /* WNCoverImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WNCoverImage.swift; sourceTree = "<group>"; };
+		1F52AAE422B8D3F500D4FB6C /* WNServiceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WNServiceManager.swift; sourceTree = "<group>"; };
+		1F52AAE622B8DC7100D4FB6C /* ListingServiceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingServiceViewController.swift; sourceTree = "<group>"; };
+		1F52AAE822B8E88800D4FB6C /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
+		1F52AAEB22B8EAFA00D4FB6C /* NSObject+observe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSObject+observe.swift"; sourceTree = "<group>"; };
+		1F52AAED22B901A300D4FB6C /* WNGenre.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WNGenre.swift; sourceTree = "<group>"; };
 		1FED6E3022B34C92002F9317 /* WebNovel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WebNovel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FED6E3322B34C92002F9317 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1FED6E3522B34C92002F9317 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -122,6 +132,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1F52AAEA22B8E9EA00D4FB6C /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				1F52AAE822B8E88800D4FB6C /* Notification.swift */,
+				1F52AAEB22B8EAFA00D4FB6C /* NSObject+observe.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		1FED6E2722B34C92002F9317 = {
 			isa = PBXGroup;
 			children = (
@@ -196,14 +215,17 @@
 		1FED6E7D22B5700A002F9317 /* WNService */ = {
 			isa = PBXGroup;
 			children = (
+				1F52AAEA22B8E9EA00D4FB6C /* Extensions */,
 				1FED6EAF22B6FD34002F9317 /* Caching */,
 				1FED6E9422B58ED6002F9317 /* Service Providers */,
 				1FED6E7B22B56EA6002F9317 /* WebNovel.swift */,
 				1F3B25B422B87EEB00F1B2CA /* WNCoverImage.swift */,
 				1FED6E9A22B5F61F002F9317 /* WNParser.swift */,
 				1FED6E9722B5E16B002F9317 /* WNChapter.swift */,
+				1F52AAED22B901A300D4FB6C /* WNGenre.swift */,
 				1FED6EAD22B6FB57002F9317 /* WNChaptersCatalogue.swift */,
 				1FED6E6C22B403F6002F9317 /* WNServiceProvider.swift */,
+				1F52AAE422B8D3F500D4FB6C /* WNServiceManager.swift */,
 				1FED6EB822B72557002F9317 /* WNListingService.swift */,
 				1FED6E7522B42C69002F9317 /* WNError.swift */,
 				1FED6E9222B58C7A002F9317 /* NetworkUtils.swift */,
@@ -244,6 +266,7 @@
 			isa = PBXGroup;
 			children = (
 				1F0E2EB022B73E5500CD77A9 /* DiscoverTableViewController.swift */,
+				1F52AAE622B8DC7100D4FB6C /* ListingServiceViewController.swift */,
 			);
 			path = "VIew Controllers";
 			sourceTree = "<group>";
@@ -361,6 +384,7 @@
 				1FED6EA422B627A1002F9317 /* NovelUpdates+listing.swift in Sources */,
 				1FED6EB322B6FDB7002F9317 /* WNCache.swift in Sources */,
 				1FED6E3622B34C92002F9317 /* ViewController.swift in Sources */,
+				1F52AAE722B8DC7100D4FB6C /* ListingServiceViewController.swift in Sources */,
 				1F3B25B522B87EEB00F1B2CA /* WNCoverImage.swift in Sources */,
 				1FED6EB422B6FDB7002F9317 /* WNManagedObject.swift in Sources */,
 				1FED6E9822B5E16B002F9317 /* WNChapter.swift in Sources */,
@@ -374,10 +398,14 @@
 				1FED6E7C22B56EA6002F9317 /* WebNovel.swift in Sources */,
 				1FED6EB522B6FDB7002F9317 /* Serializable.swift in Sources */,
 				1FED6E3422B34C92002F9317 /* AppDelegate.swift in Sources */,
+				1F52AAE522B8D3F500D4FB6C /* WNServiceManager.swift in Sources */,
 				1FED6EA622B627A1002F9317 /* NovelUpdates.swift in Sources */,
+				1F52AAE922B8E88800D4FB6C /* Notification.swift in Sources */,
 				1F0E2EB322B73F7500CD77A9 /* DiscoverTableViewCell.swift in Sources */,
 				1FED6E6D22B403F6002F9317 /* WNServiceProvider.swift in Sources */,
+				1F52AAEC22B8EAFA00D4FB6C /* NSObject+observe.swift in Sources */,
 				1FED6EAE22B6FB57002F9317 /* WNChaptersCatalogue.swift in Sources */,
+				1F52AAEE22B901A300D4FB6C /* WNGenre.swift in Sources */,
 				1FED6EA522B627A1002F9317 /* NovelUpdates+search.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

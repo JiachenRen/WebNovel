@@ -14,25 +14,76 @@ fileprivate let entryReuseIdentifier = "discover.entry"
 class DiscoverTableViewController: UITableViewController {
     
     @IBOutlet weak var loadingView: UIView!
-
+    
+    @IBOutlet weak var listingServiceLabel: UILabel!
+    
+    var serviceManager: WNServiceManager {
+        return WNServiceManager.shared
+    }
+    
+    var listingService: WNListingService {
+        return serviceManager.listingService
+    }
+    
+    var listingServiceOption: WNListingService.Option? {
+        return serviceManager.listingServiceOption
+    }
+    
+    var serviceProvider: WNServiceProvider {
+        return serviceManager.serviceProvider
+    }
+    
     var novelListing = [WebNovel]() {
         didSet {
-            tableView.reloadData()
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
         }
     }
     var cachedCoverImages = [IndexPath: UIImage]()
-    let serviceProvider: WNServiceProvider = NovelUpdates()
     var currentPage = 1
     var fetchingInProgress = false {
         didSet {
-            loadingView.isHidden = !fetchingInProgress
+            DispatchQueue.main.async {
+                self.loadingView.isHidden = !self.fetchingInProgress
+            }
         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        updateListingServiceLabel()
         fetchListing()
+        observe(.listingServiceUpdated, #selector(listingServiceUpdated))
+    }
+    
+    @objc func listingServiceUpdated() {
+        updateListingServiceLabel()
+        // Wait for current fetches to complete
+        let queue = DispatchQueue(label: "com.wn.fetch-listing.wait")
+        queue.async {
+            while self.fetchingInProgress {
+                Thread.sleep(forTimeInterval: 0.1)
+            }
+            // Reset current page
+            self.currentPage = 1
+            // Clear listing data & cover image cache from previous listing
+            self.novelListing = []
+            self.cachedCoverImages = [:]
+            // Fetch listing data using the new listing service
+            self.fetchListing()
+        }
+    }
+    
+    /// Updates the listing service label
+    func updateListingServiceLabel() {
+        let listingService = serviceManager.listingService.rawValue
+        var listingServiceOptionStr = ""
+        if let listingServiceOption = serviceManager.listingServiceOption {
+            listingServiceOptionStr = " / \(listingServiceOption)"
+        }
+        listingServiceLabel.text = "Listing: \(listingService)\(listingServiceOptionStr)"
     }
     
     func fakeListing() -> Promise<[WebNovel]> {
@@ -61,11 +112,10 @@ class DiscoverTableViewController: UITableViewController {
             return
         }
         fetchingInProgress = true
-        print(currentPage)
-        serviceProvider.fetchListing(for: .popularMonthlyRanking, page: currentPage)
-//            fakeListing()
-            .done { webNovels in
+        serviceProvider.fetchListing(for: listingService, page: currentPage, option: listingServiceOption)
+            .done(on: DispatchQueue.main) { webNovels in
                 self.novelListing.append(contentsOf: webNovels)
+                self.tableView.reloadData()
                 self.currentPage += 1
             }.ensure {
                 self.fetchingInProgress = false
@@ -93,11 +143,10 @@ class DiscoverTableViewController: UITableViewController {
         
         // Load cover image
         if let coverImage = cachedCoverImages[indexPath] {
-            discoverCell.coverImageView.alpha = 1
             discoverCell.coverImageView.image = coverImage
-        } else {
-            discoverCell.activityIndicatorView.startAnimating()
-            discoverCell.coverImageView.alpha = 0.5
+            discoverCell.coverImageView.alpha = 1
+        } else if !discoverCell.loadingCoverImage {
+            discoverCell.loadingCoverImage = true
             serviceProvider.loadDetails(wn, cachePolicy: .usesCache)
                 .map { wn -> String in
                     guard let coverImgUrl = wn.coverImageUrl else {
@@ -110,8 +159,7 @@ class DiscoverTableViewController: UITableViewController {
                     discoverCell.coverImageView.image = image
                     self.cachedCoverImages[indexPath] = image
                 }.ensure {
-                    discoverCell.coverImageView.alpha = 1
-                    discoverCell.activityIndicatorView.stopAnimating()
+                    discoverCell.loadingCoverImage = false
                 }.catch { err in
                     discoverCell.coverImageView.image = UIImage(named: "cover-placeholder")
                     print(err)
