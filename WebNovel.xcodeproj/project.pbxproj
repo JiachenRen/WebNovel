@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1F0E2EB122B73E5500CD77A9 /* DiscoverTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F0E2EB022B73E5500CD77A9 /* DiscoverTableViewController.swift */; };
+		1F0E2EB322B73F7500CD77A9 /* DiscoverTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F0E2EB222B73F7500CD77A9 /* DiscoverTableViewCell.swift */; };
+		1F3B25B522B87EEB00F1B2CA /* WNCoverImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F3B25B422B87EEB00F1B2CA /* WNCoverImage.swift */; };
 		1FED6E3422B34C92002F9317 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FED6E3322B34C92002F9317 /* AppDelegate.swift */; };
 		1FED6E3622B34C92002F9317 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FED6E3522B34C92002F9317 /* ViewController.swift */; };
 		1FED6E3922B34C92002F9317 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1FED6E3722B34C92002F9317 /* Main.storyboard */; };
@@ -64,6 +67,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1F0E2EB022B73E5500CD77A9 /* DiscoverTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverTableViewController.swift; sourceTree = "<group>"; };
+		1F0E2EB222B73F7500CD77A9 /* DiscoverTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverTableViewCell.swift; sourceTree = "<group>"; };
+		1F3B25B422B87EEB00F1B2CA /* WNCoverImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WNCoverImage.swift; sourceTree = "<group>"; };
 		1FED6E3022B34C92002F9317 /* WebNovel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WebNovel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FED6E3322B34C92002F9317 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1FED6E3522B34C92002F9317 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -138,6 +144,8 @@
 		1FED6E3222B34C92002F9317 /* WebNovel */ = {
 			isa = PBXGroup;
 			children = (
+				1FED6EBB22B73A40002F9317 /* Views */,
+				1FED6EBA22B73928002F9317 /* VIew Controllers */,
 				1FED6E7D22B5700A002F9317 /* WNService */,
 				1FED6E6822B402CD002F9317 /* Storyboards */,
 				1FED6E3322B34C92002F9317 /* AppDelegate.swift */,
@@ -191,6 +199,7 @@
 				1FED6EAF22B6FD34002F9317 /* Caching */,
 				1FED6E9422B58ED6002F9317 /* Service Providers */,
 				1FED6E7B22B56EA6002F9317 /* WebNovel.swift */,
+				1F3B25B422B87EEB00F1B2CA /* WNCoverImage.swift */,
 				1FED6E9A22B5F61F002F9317 /* WNParser.swift */,
 				1FED6E9722B5E16B002F9317 /* WNChapter.swift */,
 				1FED6EAD22B6FB57002F9317 /* WNChaptersCatalogue.swift */,
@@ -229,6 +238,22 @@
 				1FED6EB122B6FDB7002F9317 /* WNManagedObject.swift */,
 			);
 			path = Caching;
+			sourceTree = "<group>";
+		};
+		1FED6EBA22B73928002F9317 /* VIew Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				1F0E2EB022B73E5500CD77A9 /* DiscoverTableViewController.swift */,
+			);
+			path = "VIew Controllers";
+			sourceTree = "<group>";
+		};
+		1FED6EBB22B73A40002F9317 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				1F0E2EB222B73F7500CD77A9 /* DiscoverTableViewCell.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -336,6 +361,7 @@
 				1FED6EA422B627A1002F9317 /* NovelUpdates+listing.swift in Sources */,
 				1FED6EB322B6FDB7002F9317 /* WNCache.swift in Sources */,
 				1FED6E3622B34C92002F9317 /* ViewController.swift in Sources */,
+				1F3B25B522B87EEB00F1B2CA /* WNCoverImage.swift in Sources */,
 				1FED6EB422B6FDB7002F9317 /* WNManagedObject.swift in Sources */,
 				1FED6E9822B5E16B002F9317 /* WNChapter.swift in Sources */,
 				1FED6E7622B42C69002F9317 /* WNError.swift in Sources */,
@@ -343,11 +369,13 @@
 				1FED6E9322B58C7A002F9317 /* NetworkUtils.swift in Sources */,
 				1FED6EA322B627A1002F9317 /* NovelUpdates+loadDetails.swift in Sources */,
 				1FED6EB922B72557002F9317 /* WNListingService.swift in Sources */,
+				1F0E2EB122B73E5500CD77A9 /* DiscoverTableViewController.swift in Sources */,
 				1FED6E3C22B34C92002F9317 /* WebNovel.xcdatamodeld in Sources */,
 				1FED6E7C22B56EA6002F9317 /* WebNovel.swift in Sources */,
 				1FED6EB522B6FDB7002F9317 /* Serializable.swift in Sources */,
 				1FED6E3422B34C92002F9317 /* AppDelegate.swift in Sources */,
 				1FED6EA622B627A1002F9317 /* NovelUpdates.swift in Sources */,
+				1F0E2EB322B73F7500CD77A9 /* DiscoverTableViewCell.swift in Sources */,
 				1FED6E6D22B403F6002F9317 /* WNServiceProvider.swift in Sources */,
 				1FED6EAE22B6FB57002F9317 /* WNChaptersCatalogue.swift in Sources */,
 				1FED6EA522B627A1002F9317 /* NovelUpdates+search.swift in Sources */,

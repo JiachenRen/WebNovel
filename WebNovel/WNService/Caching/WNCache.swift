@@ -39,6 +39,11 @@ class WNCache {
         try save(object: wnChapter, managedObject: Chapter.self)
     }
     
+    /// Saves the cover image for the WN to core data
+    static func save(_ wnCoverImage: WNCoverImage) throws {
+        try save(object: wnCoverImage, managedObject: CoverImage.self)
+    }
+    
     /// Saves the WN chapter to core data
     /// If an existing WN chapter with the same url exists, it is overwritten.
     private static func save<T: Serializable, K: WNManagedObject>(object: T, managedObject: K.Type) throws {
@@ -60,16 +65,20 @@ class WNCache {
         try ctx.save()
     }
     
-    static func fetchWebNovel(by url: String) throws -> WebNovel? {
+    static func fetchWebNovel(_ url: String) throws -> WebNovel? {
         return try fetch(by: url, managedObject: Novel.self, object: WebNovel.self)
     }
     
-    static func fetchChapter(by url: String) throws -> WNChapter? {
+    static func fetchChapter(_ url: String) throws -> WNChapter? {
         return try fetch(by: url, managedObject: Chapter.self, object: WNChapter.self)
     }
     
-    static func fetchChaptersCatalogue(by url: String) throws -> WNChaptersCatalogue? {
+    static func fetchChaptersCatalogue(_ url: String) throws -> WNChaptersCatalogue? {
         return try fetch(by: url, managedObject: ChaptersCatalogue.self, object: WNChaptersCatalogue.self)
+    }
+    
+    static func fetchCoverImage(_ url: String) throws -> WNCoverImage? {
+        return try fetch(by: url, managedObject: CoverImage.self, object: WNCoverImage.self)
     }
     
     private static func fetch<T: Codable, K: WNManagedObject>(by url: String, managedObject: K.Type, object: T.Type) throws -> T? {

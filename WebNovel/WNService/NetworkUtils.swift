@@ -37,8 +37,21 @@ func htmlRequestResponse(
 }
 
 /// Initiates a data request to the given image URL
-/// - Returns: A promise wrapping CGImage object
-func downloadImage(from url: URLConvertible) -> Promise<UIImage> {
+/// If the requested image exists in cache, load it from cache.
+/// - Returns: A promise wrapping a UIImage object
+func downloadImage(from url: URLConvertible, cachePolicy: WNCache.Policy = .usesCache) -> Promise<UIImage> {
+    if cachePolicy == .usesCache, let url = try? url.asURL().absoluteString {
+        if let coverImage = try? WNCache.fetchCoverImage(url) {
+            print("Loaded image at url \(url) from core data")
+            return Promise { seal in
+                guard let uiImage = UIImage(data: coverImage.imageData) else {
+                    seal.reject(WNError.decodingFailed)
+                    return
+                }
+                seal.fulfill(uiImage)
+            }
+        }
+    }
     return Promise {seal in
         Alamofire.request(url)
             .validate()
@@ -50,6 +63,13 @@ func downloadImage(from url: URLConvertible) -> Promise<UIImage> {
                 }
                 seal.fulfill(image)
         }
+    }.get { uiImage in
+        guard let url = try? url.asURL().absoluteString,
+            let wnCoverImage = WNCoverImage(uiImage: uiImage, url) else {
+            throw WNError.decodingFailed
+        }
+        try WNCache.save(wnCoverImage)
+        print("Saved cover image for url \(url) to core data")
     }
 }
 

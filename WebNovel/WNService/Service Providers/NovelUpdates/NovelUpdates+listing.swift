@@ -41,8 +41,8 @@ extension NovelUpdates {
         
         func htmlResponse(for page: Int) -> Promise<String> {
             let url = NovelUpdates.baseUrl.appendingPathComponent(path, isDirectory: true)
-            var p = parameters
-            p["pg"] = page
+            var parameters = self.parameters
+            parameters["pg"] = page
             return htmlRequestResponse(url, parameters: parameters)
         }
         

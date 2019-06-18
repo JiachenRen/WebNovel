@@ -25,3 +25,7 @@ extension Novel: WNManagedObject {
 extension ChaptersCatalogue: WNManagedObject {
     
 }
+
+extension CoverImage: WNManagedObject {
+    
+}

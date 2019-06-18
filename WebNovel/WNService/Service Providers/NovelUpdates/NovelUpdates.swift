@@ -31,7 +31,7 @@ class NovelUpdates: WNServiceProvider {
     /// Fetch links of all chapters for the given WN.
     func fetchChapters(for wn: WebNovel, cachePolicy: WNCache.Policy) -> Promise<[WNChapter]> {
         if cachePolicy == .usesCache, let url = wn.url {
-            if let catalogue = try! WNCache.fetchChaptersCatalogue(by: url) {
+            if let catalogue = try! WNCache.fetchChaptersCatalogue(url) {
                 return Promise { seal in
                     print("Loaded chapters for \(url) from core data")
                     seal.fulfill(catalogue.chapters)
@@ -66,7 +66,7 @@ class NovelUpdates: WNServiceProvider {
     /// Loads chapter content including title, story, etc.
     func loadChapter(_ chapter: WNChapter, cachePolicy: WNCache.Policy) -> Promise<WNChapter> {
         if cachePolicy == .usesCache, let url = chapter.url {
-            if let chapter = try! WNCache.fetchChapter(by: url) {
+            if let chapter = try! WNCache.fetchChapter(url) {
                 return Promise { seal in
                     seal.fulfill(chapter)
                 }

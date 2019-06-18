@@ -29,21 +29,21 @@ class WebNovelTests: XCTestCase {
         ]
         let chaptersCatalogue = WNChaptersCatalogue(wnUrl, chapters)
         try WNCache.save(chaptersCatalogue)
-        var f: WNChaptersCatalogue = try WNCache.fetchChaptersCatalogue(by: wnUrl)!
+        var f: WNChaptersCatalogue = try WNCache.fetchChaptersCatalogue(wnUrl)!
         print(f)
         XCTAssert(f.chapters.first!.url! == "www.example.com")
         chaptersCatalogue.chapters[1] = WNChapter(url: "www.changed.com", chapter: "Chapter 5", id: 4)
         try WNCache.save(chaptersCatalogue)
-        f = try WNCache.fetchChaptersCatalogue(by: wnUrl)!
+        f = try WNCache.fetchChaptersCatalogue(wnUrl)!
         print(f)
         XCTAssert(f.chapters[1].url == "www.changed.com")
-        XCTAssert(try WNCache.fetchChaptersCatalogue(by: "www.dne.com") == nil)
+        XCTAssert(try WNCache.fetchChaptersCatalogue("www.dne.com") == nil)
     }
     
     func testWNChapterCache() throws {
         let chapter = WNChapter(url: "www.novelupdates.com/id/39243042", chapter: "CC 3", id: 2)
         try WNCache.save(chapter)
-        XCTAssert(try WNCache.fetchChapter(by: "www.novelupdates.com/id/39243042")!.chapter == "CC 3")
+        XCTAssert(try WNCache.fetchChapter("www.novelupdates.com/id/39243042")!.chapter == "CC 3")
     }
     
     
