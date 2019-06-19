@@ -23,25 +23,32 @@ class ListingServiceViewController: UIViewController {
     }
     
     var listingServices: [WNListingService] {
-        return serviceProvider.availableListingServices()
-            .sorted {$0.rawValue < $1.rawValue}
+        return serviceProvider
+            .availableListingServices()
+            .sorted {
+                $0.serviceType.rawValue < $1.serviceType.rawValue
+        }
     }
     
-    var currentOptions: [WNListingService.Option] {
+    var currentOptions: [String] {
         let selectedIdx = listingPickerView.selectedRow(inComponent: 0)
-        return serviceProvider.listingServiceOptions(for: listingServices[selectedIdx])?
-            .sorted {$0 < $1} ?? []
+        return listingServices[selectedIdx]
+            .availableParameters
+            .sorted {$0 < $1}
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let row = listingServices.enumerated().reduce(into: [:]) {
-            $0[$1.1] = $1.0
-        }[manager.listingService]!
-        listingPickerView.selectRow(row, inComponent: 0, animated: true)
-        if let option = manager.listingServiceOption {
-            let idx = currentOptions.enumerated().filter {$0.element == option}[0].offset
+        if let currentListingService = manager.serviceProvider.listingService {
+            let row = listingServices.enumerated().reduce(into: [:]) {
+                $0[$1.1.serviceType] = $1.0
+            }[currentListingService.serviceType]!
+            listingPickerView.selectRow(row, inComponent: 0, animated: true)
+        }
+        
+        if let parameter = manager.listingServiceParameter {
+            let idx = currentOptions.enumerated().filter {$0.element == parameter}[0].offset
             optionsPickerView.selectRow(idx, inComponent: 0, animated: true)
         }
     }
@@ -51,12 +58,12 @@ class ListingServiceViewController: UIViewController {
     }
     
     @IBAction func done(_ sender: Any) {
-        manager.listingService = listingServices[listingPickerView.selectedRow(inComponent: 0)]
+        manager.serviceProvider.listingService = listingServices[listingPickerView.selectedRow(inComponent: 0)]
         let options = currentOptions
         if options.count > 0 {
-            manager.listingServiceOption = options[optionsPickerView.selectedRow(inComponent: 0)]
+            manager.listingServiceParameter = options[optionsPickerView.selectedRow(inComponent: 0)]
         } else {
-            manager.listingServiceOption = nil
+            manager.listingServiceParameter = nil
         }
         self.dismiss(animated: true)
         postNotification(.listingServiceUpdated)
@@ -76,7 +83,7 @@ extension ListingServiceViewController: UIPickerViewDataSource, UIPickerViewDele
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if pickerView === listingPickerView {
-            return listingServices[row].rawValue
+            return listingServices[row].serviceType.rawValue
         } else {
             return currentOptions[row]
         }

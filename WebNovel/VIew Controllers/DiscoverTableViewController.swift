@@ -21,12 +21,12 @@ class DiscoverTableViewController: UITableViewController {
         return WNServiceManager.shared
     }
     
-    var listingService: WNListingService {
-        return serviceManager.listingService
+    var listingService: WNListingService? {
+        return serviceProvider.listingService
     }
     
-    var listingServiceOption: WNListingService.Option? {
-        return serviceManager.listingServiceOption
+    var listingServiceParameter: String? {
+        return serviceManager.listingServiceParameter
     }
     
     var serviceProvider: WNServiceProvider {
@@ -78,33 +78,15 @@ class DiscoverTableViewController: UITableViewController {
     
     /// Updates the listing service label
     func updateListingServiceLabel() {
-        let listingService = serviceManager.listingService.rawValue
-        var listingServiceOptionStr = ""
-        if let listingServiceOption = serviceManager.listingServiceOption {
-            listingServiceOptionStr = " / \(listingServiceOption)"
+        guard let listingService = serviceProvider.listingService?.serviceType.rawValue else {
+            listingServiceLabel.text = "Listing service unavailable"
+            return
         }
-        listingServiceLabel.text = "Listing: \(listingService)\(listingServiceOptionStr)"
-    }
-    
-    func fakeListing() -> Promise<[WebNovel]> {
-        return Promise { seal in
-            DispatchQueue.global().async {
-                Thread.sleep(forTimeInterval: 2)
-                let entries: [(title: String, rating: Double, description: String)] = [
-                    ("Kumo desu ga, nani ka?", 4.8, "The story about a spider that crawled out of no where blah blah blah... I'm not supposed to write for this long"),
-                    ("Tensei Slime Dentai Kun", 2.4, "A reincarnation who turns out to be a slime"),
-                    ("Black Butler", 3.5, "Ehh... I haven't read this novel at all, so I can't comment about it"),
-                    ("The Rise of the Shield Hero", 2.5, "The shield here, the spear hero, the bow hero, ")
-                ]
-                seal.fulfill(entries.map {(title, rating, desc) in
-                    let wn = WebNovel()
-                    wn.title = title
-                    wn.rating = rating
-                    wn.shortDescription = desc
-                    return wn
-                })
-            }
+        var parameterStr = ""
+        if let parameter = serviceManager.listingServiceParameter {
+            parameterStr = " / \(parameter)"
         }
+        listingServiceLabel.text = "Listing: \(listingService)\(parameterStr)"
     }
     
     func fetchListing() {
@@ -112,7 +94,8 @@ class DiscoverTableViewController: UITableViewController {
             return
         }
         fetchingInProgress = true
-        serviceProvider.fetchListing(for: listingService, page: currentPage, option: listingServiceOption)
+        serviceProvider.listingService?
+            .fetchListing(page: currentPage, parameter: serviceManager.listingServiceParameter, sortBy: nil)
             .done(on: DispatchQueue.main) { webNovels in
                 self.novelListing.append(contentsOf: webNovels)
                 self.tableView.reloadData()
@@ -142,9 +125,10 @@ class DiscoverTableViewController: UITableViewController {
         let wn = novelListing[indexPath.row]
         
         // Load cover image
-        if let coverImage = cachedCoverImages[indexPath] {
-            discoverCell.coverImageView.image = coverImage
-            discoverCell.coverImageView.alpha = 1
+        discoverCell.activityIndicatorView.startAnimating()
+        discoverCell.coverImageView.alpha = 0.1
+        if let image = cachedCoverImages[indexPath] {
+            discoverCell.setCoverImage(image)
         } else if !discoverCell.loadingCoverImage {
             discoverCell.loadingCoverImage = true
             serviceProvider.loadDetails(wn, cachePolicy: .usesCache)
@@ -156,12 +140,12 @@ class DiscoverTableViewController: UITableViewController {
                 }.then { url in
                     downloadImage(from: url)
                 }.done { image in
-                    discoverCell.coverImageView.image = image
+                    discoverCell.setCoverImage(image)
                     self.cachedCoverImages[indexPath] = image
                 }.ensure {
                     discoverCell.loadingCoverImage = false
                 }.catch { err in
-                    discoverCell.coverImageView.image = UIImage(named: "cover-placeholder")
+                    discoverCell.setCoverImage(UIImage(named: "cover-placeholder")!)
                     print(err)
             }
         }

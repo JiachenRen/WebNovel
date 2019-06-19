@@ -18,10 +18,6 @@ class WNChapter: Serializable, CustomStringConvertible {
     
     static var entityName: String = "Chapter"
     
-    enum Keys: String {
-        case chapter, url, id, date, title, content
-    }
-    
     init(url: String, chapter: String, id: Int) {
         self.url = url
         self.chapter = chapter

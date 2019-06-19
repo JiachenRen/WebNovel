@@ -22,17 +22,7 @@ class DiscoverTableViewCell: UITableViewCell {
     
     @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
     
-    var loadingCoverImage = false {
-        didSet {
-            if loadingCoverImage {
-                activityIndicatorView.startAnimating()
-                coverImageView.alpha = 0.2
-            } else {
-                activityIndicatorView.stopAnimating()
-                coverImageView.alpha = 1
-            }
-        }
-    }
+    var loadingCoverImage = false
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -42,7 +32,11 @@ class DiscoverTableViewCell: UITableViewCell {
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         
-        // Configure the view for the selected state
     }
 
+    func setCoverImage(_ image: UIImage) {
+        coverImageView.image = image
+        coverImageView.alpha = 1
+        activityIndicatorView.stopAnimating()
+    }
 }

@@ -14,6 +14,6 @@ class WNServiceManager {
     }()
     
     var serviceProvider: WNServiceProvider = NovelUpdates()
-    var listingService: WNListingService = .ranking
-    var listingServiceOption: WNListingService.Option? = "Popular (All)"
+    var listingServiceSortingCriterion: WNSortingCriterion?
+    var listingServiceParameter: String?
 }

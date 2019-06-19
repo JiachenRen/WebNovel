@@ -54,7 +54,7 @@ extension NovelUpdates {
                 .replacingOccurrences(of: "(", with: "")
                 .trimmingCharacters(in: .whitespaces)
             wn.rating = Double(ratingStr)
-            let votesStr = components[1].replacingOccurrences(of: nonDigitRegex, with: "", options: .regularExpression)
+            let votesStr = components[1].replacingOccurrences(of: "[^0-9]+", with: "", options: .regularExpression)
             wn.votes = Int(votesStr)
         }
         wn.coverImageUrl = try doc.getElementsByClass("seriesimg")

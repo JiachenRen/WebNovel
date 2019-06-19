@@ -12,10 +12,14 @@ import PromiseKit
 import SwiftSoup
 
 class NovelUpdates: WNServiceProvider {
-    
-    let nonDigitRegex = "[^0-9]+"
     static var baseUrl = URL(string: "https://www.novelupdates.com")!
     var serviceEndpoint = URL(string: "https://www.novelupdates.com/wp-admin/admin-ajax.php")!
+    var listingService: WNListingService?
+    
+    init() {
+        // Default the listing service to the first available
+        listingService = availableListingServices().first
+    }
     
     /// Parses raw html response for chapters catalogue into an array of WNChapter
     private func parseChaptersCatalogue(_ doc: Document) throws -> [WNChapter] {
@@ -116,5 +120,54 @@ class NovelUpdates: WNServiceProvider {
             }
             return (fulfilled, rejected)
         }
+    }
+    
+    /// List of available listing services
+    func availableListingServices() -> [WNListingService] {
+        return [
+            NUListingService(
+                serviceType: .ranking,
+                servicePathComponent: "series-ranking",
+                parameter: .init(
+                    name: "rank",
+                    isPathComponent: false,
+                    values:  [
+                        "Popular (Monthly)": "popmonth",
+                        "Popular (All)": "popular",
+                        "Activity (Week)": "week",
+                        "Activity (Monthly)": "month",
+                        "Activity (All)": "sixmonths"
+                    ]
+                )
+            ),
+            NUListingService(
+                serviceType: .genre,
+                servicePathComponent: "genre",
+                parameter: .init(
+                    name: "genre",
+                    isPathComponent: true,
+                    values:  WNGenre.allCases.reduce(into: [:]) {
+                        $0[$1.camelCased] = $1.dashSeparated
+                    }
+                ),
+                sortingCriteria: []
+            ),
+            NUListingService(
+                serviceType: .language,
+                servicePathComponent: "language",
+                parameter: .init(
+                    name: "language",
+                    isPathComponent: true,
+                    values:  [
+                        "Chinese": "chinese",
+                        "Korean": "korean",
+                        "Japanese": "japanese"
+                    ]
+                ),
+                sortingCriteria: []
+            ),
+            NUListingService(serviceType: .all, servicePathComponent: "novelslisting", sortingCriteria: []),
+            NUListingService(serviceType: .latest, servicePathComponent: "latest-series"),
+        ]
     }
 }

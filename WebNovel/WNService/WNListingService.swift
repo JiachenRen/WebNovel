@@ -9,11 +9,26 @@
 import Foundation
 import PromiseKit
 
-enum WNListingService: String {
-    typealias Option = String
-    
+protocol WNListingService {
+    var serviceType: WNListingServiceType {get}
+    var availableParameters: [String] {get}
+    var availableSortingCriteria: [WNSortingCriterion] {get}
+    func fetchListing(page: Int, parameter: String?, sortBy criterion: WNSortingCriterion?) -> Promise<[WebNovel]>
+}
+
+enum WNSortingCriterion: String {
+    case numberOfReleases = "N. Releases" // sort=nrelease
+    case rank = "Rank" // sort=trank
+    case rating = "Rating" // sort=trate
+    case releaseFrequency = "Release Freq." // sort=tfreq
+    case title = "Title" // sort=abc
+    case numberOfReaders = "N. Readers" // sort=tread
+}
+
+enum WNListingServiceType: String {
     case latest = "Latest"
     case all = "All"
     case ranking = "Ranking"
     case genre = "Genre"
+    case language = "Language"
 }
