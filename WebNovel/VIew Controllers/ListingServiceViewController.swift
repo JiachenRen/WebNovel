@@ -14,16 +14,12 @@ class ListingServiceViewController: UIViewController {
     
     @IBOutlet weak var optionsPickerView: UIPickerView!
     
-    var manager: WNServiceManager {
+    var mgr: WNServiceManager {
         return WNServiceManager.shared
     }
     
-    var serviceProvider: WNServiceProvider {
-        return manager.serviceProvider
-    }
-    
     var listingServices: [WNListingService] {
-        return serviceProvider
+        return mgr.serviceProvider
             .availableListingServices()
             .sorted {
                 $0.serviceType.rawValue < $1.serviceType.rawValue
@@ -40,14 +36,14 @@ class ListingServiceViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let currentListingService = manager.serviceProvider.listingService {
+        if let currentListingService = mgr.serviceProvider.listingService {
             let row = listingServices.enumerated().reduce(into: [:]) {
                 $0[$1.1.serviceType] = $1.0
             }[currentListingService.serviceType]!
             listingPickerView.selectRow(row, inComponent: 0, animated: true)
         }
         
-        if let parameter = manager.listingServiceParameter {
+        if let parameter = mgr.serviceProvider.listingService?.parameterValue {
             let idx = currentOptions.enumerated().filter {$0.element == parameter}[0].offset
             optionsPickerView.selectRow(idx, inComponent: 0, animated: true)
         }
@@ -58,15 +54,15 @@ class ListingServiceViewController: UIViewController {
     }
     
     @IBAction func done(_ sender: Any) {
-        manager.serviceProvider.listingService = listingServices[listingPickerView.selectedRow(inComponent: 0)]
+        mgr.serviceProvider.listingService = listingServices[listingPickerView.selectedRow(inComponent: 0)]
         let options = currentOptions
         if options.count > 0 {
-            manager.listingServiceParameter = options[optionsPickerView.selectedRow(inComponent: 0)]
+            mgr.serviceProvider.listingService?.parameterValue = options[optionsPickerView.selectedRow(inComponent: 0)]
         } else {
-            manager.listingServiceParameter = nil
+            mgr.serviceProvider.listingService?.parameterValue = nil
         }
-        manager.listingServiceSortAscending = false
-        manager.listingServiceSortingCriterion = nil
+        mgr.serviceProvider.listingService?.sortAscending = false
+        mgr.serviceProvider.listingService?.sortingCriterion = nil
         self.dismiss(animated: true)
         postNotification(.listingServiceUpdated)
     }

@@ -14,6 +14,15 @@ import SwiftSoup
 /// Novel Updates listing service
 class NUListingService {
     
+    /// Current sorting criterion to be used for searching
+    var sortingCriterion: WNSortingCriterion?
+    
+    /// If true, listing entries are listed in the ascending order
+    var sortAscending: Bool = false
+    
+    /// Value for the parameter
+    var parameterValue: String?
+    
     /// Type of listing service.
     /// e.g. .genre, .language
     var serviceType: WNListingServiceType
@@ -51,21 +60,21 @@ class NUListingService {
     /// - Parameter criterion: Criterion for sorting the results
     /// - Parameter asc: If true, results are sorted in the ascending order
     /// e.g. "Adventure" is a parameter for listing service "Genre"
-    func htmlResponse(for page: Int, with parameterName: String?, sortBy criterion: WNSortingCriterion?, asc: Bool) throws -> Promise<String> {
+    func htmlResponse(for page: Int) throws -> Promise<String> {
         let url = NovelUpdates.baseUrl.appendingPathComponent(servicePathComponent, isDirectory: true)
         var parameters: Parameters = ["pg": page]
-        guard let name = parameterName else {
+        guard let name = parameterValue else {
             return htmlRequestResponse(url, parameters: parameters)
         }
         guard let parameter = self.parameter else {
             throw WNError.invalidListingServiceParameter
         }
-        if let crit = criterion {
+        if let crit = sortingCriterion {
             if !availableCriteria.contains(crit) {
                 throw WNError.unsupportedSortingCriterion
             }
             parameters["sort"] = criteriaParameterValues[crit]
-            parameters["order"] = asc ? "asc" : "desc"
+            parameters["order"] = sortAscending ? "asc" : "desc"
         }
         if parameter.isPathComponent {
             guard let pathComponent = parameter.pathComponent(for: name) else {
@@ -122,9 +131,9 @@ extension NUListingService: WNListingService {
     
     /// Fetches web novel listing for the specified listing service type
     /// Notifies delegate upon completion of data task
-    func fetchListing(page: Int, parameter: String?, sortBy criterion: WNSortingCriterion?, asc: Bool) -> Promise<[WebNovel]> {
+    func fetchListing(page: Int) -> Promise<[WebNovel]> {
         return firstly {
-            try htmlResponse(for: page, with: parameter, sortBy: criterion, asc: asc)
+            try htmlResponse(for: page)
         }.then { htmlStr in
             try self.parseListing(htmlStr)
         }

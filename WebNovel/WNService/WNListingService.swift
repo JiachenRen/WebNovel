@@ -11,18 +11,21 @@ import PromiseKit
 
 protocol WNListingService {
     var serviceType: WNListingServiceType {get}
+    var sortAscending: Bool {get set}
+    var parameterValue: String? {get set}
+    var sortingCriterion: WNSortingCriterion? {get set}
     var availableParameters: [String] {get}
     var availableSortingCriteria: [WNSortingCriterion] {get}
-    func fetchListing(page: Int, parameter: String?, sortBy criterion: WNSortingCriterion?, asc: Bool) -> Promise<[WebNovel]>
+    func fetchListing(page: Int) -> Promise<[WebNovel]>
 }
 
 enum WNSortingCriterion: String, CaseIterable {
-    case numberOfReleases = "N. Releases" // sort=nrelease
+    case numberOfReaders = "Number of Readers" // sort=tread
+    case numberOfReleases = "Number of Releases" // sort=nrelease
     case rank = "Rank" // sort=trank
     case rating = "Rating" // sort=trate
-    case releaseFrequency = "Release Freq." // sort=tfreq
+    case releaseFrequency = "Release Frequency" // sort=tfreq
     case title = "Title" // sort=abc
-    case numberOfReaders = "N. Readers" // sort=tread
 }
 
 enum WNListingServiceType: String {

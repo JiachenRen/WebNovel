@@ -21,7 +21,7 @@ class DiscoverTableViewController: UITableViewController {
     
     @IBOutlet weak var sortingOrderButton: UIButton!
     
-    var serviceManager: WNServiceManager {
+    var mgr: WNServiceManager {
         return WNServiceManager.shared
     }
     
@@ -30,11 +30,11 @@ class DiscoverTableViewController: UITableViewController {
     }
     
     var listingServiceParameter: String? {
-        return serviceManager.listingServiceParameter
+        return listingService?.parameterValue
     }
     
     var serviceProvider: WNServiceProvider {
-        return serviceManager.serviceProvider
+        return mgr.serviceProvider
     }
     
     var novelListing = [WebNovel]() {
@@ -44,6 +44,7 @@ class DiscoverTableViewController: UITableViewController {
             }
         }
     }
+    
     var cachedCoverImages = [IndexPath: UIImage]()
     var currentPage = 1
     var fetchingInProgress = false {
@@ -68,7 +69,7 @@ class DiscoverTableViewController: UITableViewController {
         let controller = UIAlertController(title: "Sort By", message: nil, preferredStyle: .actionSheet)
         serviceProvider.listingService?.availableSortingCriteria.forEach { criterion in
             controller.addAction(UIAlertAction(title: criterion.rawValue, style: .default) { _ in
-                self.serviceManager.listingServiceSortingCriterion = criterion
+                self.mgr.serviceProvider.listingService?.sortingCriterion = criterion
                 self.listingServiceUpdated()
             })
         }
@@ -77,7 +78,9 @@ class DiscoverTableViewController: UITableViewController {
     }
     
     @IBAction func sortingOrderButtonTouched(_ sender: Any) {
-        serviceManager.listingServiceSortAscending = !serviceManager.listingServiceSortAscending
+        if let b = mgr.serviceProvider.listingService?.sortAscending {
+            mgr.serviceProvider.listingService?.sortAscending = !b
+        }
         listingServiceUpdated()
     }
     
@@ -102,26 +105,29 @@ class DiscoverTableViewController: UITableViewController {
     }
     
     func updateSortingOrderButton() {
-        let image = UIImage(named: serviceManager.listingServiceSortAscending ? "sort-asc-icon" : "sort-desc-icon")
+        guard let ls = serviceProvider.listingService else {
+            return
+        }
+        let image = UIImage(named: ls.sortAscending ? "sort-asc-icon" : "sort-desc-icon")
         sortingOrderButton.setImage(image, for: .normal)
     }
     
     func updateSortingCriterionButton() {
-        let title = serviceManager.listingServiceSortingCriterion?.rawValue ?? "None"
+        let title = serviceProvider.listingService?.sortingCriterion?.rawValue ?? "None"
         sortingCriterionButton.setTitle(title, for: .normal)
     }
     
     /// Updates the listing service label
     func updateListingServiceLabel() {
-        guard let listingService = serviceProvider.listingService?.serviceType.rawValue else {
+        guard let listingService = serviceProvider.listingService else {
             listingServiceLabel.text = "Listing service unavailable"
             return
         }
         var parameterStr = ""
-        if let parameter = serviceManager.listingServiceParameter {
+        if let parameter = listingService.parameterValue {
             parameterStr = " / \(parameter)"
         }
-        listingServiceLabel.text = "Listing - \(listingService)\(parameterStr)"
+        listingServiceLabel.text = "Listing - \(listingService.serviceType.rawValue)\(parameterStr)"
     }
     
     func fetchListing() {
@@ -129,13 +135,7 @@ class DiscoverTableViewController: UITableViewController {
             return
         }
         fetchingInProgress = true
-        serviceProvider.listingService?
-            .fetchListing(
-                page: currentPage,
-                parameter: serviceManager.listingServiceParameter,
-                sortBy: serviceManager.listingServiceSortingCriterion,
-                asc: serviceManager.listingServiceSortAscending
-            )
+        serviceProvider.listingService?.fetchListing(page: currentPage)
             .done(on: DispatchQueue.main) { webNovels in
                 self.novelListing.append(contentsOf: webNovels)
                 self.tableView.reloadData()
