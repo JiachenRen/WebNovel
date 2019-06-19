@@ -17,6 +17,10 @@ class DiscoverTableViewController: UITableViewController {
     
     @IBOutlet weak var listingServiceLabel: UILabel!
     
+    @IBOutlet weak var sortingCriterionButton: UIButton!
+    
+    @IBOutlet weak var sortingOrderButton: UIButton!
+    
     var serviceManager: WNServiceManager {
         return WNServiceManager.shared
     }
@@ -54,12 +58,33 @@ class DiscoverTableViewController: UITableViewController {
         super.viewDidLoad()
 
         updateListingServiceLabel()
+        updateSortingCriterionButton()
+        updateSortingOrderButton()
         fetchListing()
         observe(.listingServiceUpdated, #selector(listingServiceUpdated))
     }
     
+    @IBAction func sortingCriterionButtonTouched(_ sender: Any) {
+        let controller = UIAlertController(title: "Sort By", message: nil, preferredStyle: .actionSheet)
+        serviceProvider.listingService?.availableSortingCriteria.forEach { criterion in
+            controller.addAction(UIAlertAction(title: criterion.rawValue, style: .default) { _ in
+                self.serviceManager.listingServiceSortingCriterion = criterion
+                self.listingServiceUpdated()
+            })
+        }
+        controller.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        self.present(controller, animated: true)
+    }
+    
+    @IBAction func sortingOrderButtonTouched(_ sender: Any) {
+        serviceManager.listingServiceSortAscending = !serviceManager.listingServiceSortAscending
+        listingServiceUpdated()
+    }
+    
     @objc func listingServiceUpdated() {
         updateListingServiceLabel()
+        updateSortingCriterionButton()
+        updateSortingOrderButton()
         // Wait for current fetches to complete
         let queue = DispatchQueue(label: "com.wn.fetch-listing.wait")
         queue.async {
@@ -76,6 +101,16 @@ class DiscoverTableViewController: UITableViewController {
         }
     }
     
+    func updateSortingOrderButton() {
+        let image = UIImage(named: serviceManager.listingServiceSortAscending ? "sort-asc-icon" : "sort-desc-icon")
+        sortingOrderButton.setImage(image, for: .normal)
+    }
+    
+    func updateSortingCriterionButton() {
+        let title = serviceManager.listingServiceSortingCriterion?.rawValue ?? "None"
+        sortingCriterionButton.setTitle(title, for: .normal)
+    }
+    
     /// Updates the listing service label
     func updateListingServiceLabel() {
         guard let listingService = serviceProvider.listingService?.serviceType.rawValue else {
@@ -86,7 +121,7 @@ class DiscoverTableViewController: UITableViewController {
         if let parameter = serviceManager.listingServiceParameter {
             parameterStr = " / \(parameter)"
         }
-        listingServiceLabel.text = "Listing: \(listingService)\(parameterStr)"
+        listingServiceLabel.text = "Listing - \(listingService)\(parameterStr)"
     }
     
     func fetchListing() {
@@ -95,7 +130,12 @@ class DiscoverTableViewController: UITableViewController {
         }
         fetchingInProgress = true
         serviceProvider.listingService?
-            .fetchListing(page: currentPage, parameter: serviceManager.listingServiceParameter, sortBy: nil)
+            .fetchListing(
+                page: currentPage,
+                parameter: serviceManager.listingServiceParameter,
+                sortBy: serviceManager.listingServiceSortingCriterion,
+                asc: serviceManager.listingServiceSortAscending
+            )
             .done(on: DispatchQueue.main) { webNovels in
                 self.novelListing.append(contentsOf: webNovels)
                 self.tableView.reloadData()

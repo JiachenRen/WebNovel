@@ -163,6 +163,7 @@
 		1FED6E3222B34C92002F9317 /* WebNovel */ = {
 			isa = PBXGroup;
 			children = (
+				1F52AAEA22B8E9EA00D4FB6C /* Extensions */,
 				1FED6EBB22B73A40002F9317 /* Views */,
 				1FED6EBA22B73928002F9317 /* VIew Controllers */,
 				1FED6E7D22B5700A002F9317 /* WNService */,
@@ -215,7 +216,6 @@
 		1FED6E7D22B5700A002F9317 /* WNService */ = {
 			isa = PBXGroup;
 			children = (
-				1F52AAEA22B8E9EA00D4FB6C /* Extensions */,
 				1FED6EAF22B6FD34002F9317 /* Caching */,
 				1FED6E9422B58ED6002F9317 /* Service Providers */,
 				1FED6E7B22B56EA6002F9317 /* WebNovel.swift */,

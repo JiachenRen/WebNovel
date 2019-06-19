@@ -65,6 +65,8 @@ class ListingServiceViewController: UIViewController {
         } else {
             manager.listingServiceParameter = nil
         }
+        manager.listingServiceSortAscending = false
+        manager.listingServiceSortingCriterion = nil
         self.dismiss(animated: true)
         postNotification(.listingServiceUpdated)
     }

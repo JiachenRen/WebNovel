@@ -13,10 +13,10 @@ protocol WNListingService {
     var serviceType: WNListingServiceType {get}
     var availableParameters: [String] {get}
     var availableSortingCriteria: [WNSortingCriterion] {get}
-    func fetchListing(page: Int, parameter: String?, sortBy criterion: WNSortingCriterion?) -> Promise<[WebNovel]>
+    func fetchListing(page: Int, parameter: String?, sortBy criterion: WNSortingCriterion?, asc: Bool) -> Promise<[WebNovel]>
 }
 
-enum WNSortingCriterion: String {
+enum WNSortingCriterion: String, CaseIterable {
     case numberOfReleases = "N. Releases" // sort=nrelease
     case rank = "Rank" // sort=trank
     case rating = "Rating" // sort=trate

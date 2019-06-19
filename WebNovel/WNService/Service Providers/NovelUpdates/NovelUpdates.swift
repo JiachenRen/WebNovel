@@ -150,7 +150,7 @@ class NovelUpdates: WNServiceProvider {
                         $0[$1.camelCased] = $1.dashSeparated
                     }
                 ),
-                sortingCriteria: []
+                sortingCriteria: WNSortingCriterion.allCases
             ),
             NUListingService(
                 serviceType: .language,
@@ -164,9 +164,13 @@ class NovelUpdates: WNServiceProvider {
                         "Japanese": "japanese"
                     ]
                 ),
-                sortingCriteria: []
+                sortingCriteria: WNSortingCriterion.allCases
             ),
-            NUListingService(serviceType: .all, servicePathComponent: "novelslisting", sortingCriteria: []),
+            NUListingService(
+                serviceType: .all,
+                servicePathComponent: "novelslisting",
+                sortingCriteria: WNSortingCriterion.allCases
+            ),
             NUListingService(serviceType: .latest, servicePathComponent: "latest-series"),
         ]
     }

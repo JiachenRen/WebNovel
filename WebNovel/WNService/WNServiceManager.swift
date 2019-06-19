@@ -15,5 +15,6 @@ class WNServiceManager {
     
     var serviceProvider: WNServiceProvider = NovelUpdates()
     var listingServiceSortingCriterion: WNSortingCriterion?
+    var listingServiceSortAscending: Bool = false
     var listingServiceParameter: String?
 }

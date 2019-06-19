@@ -48,8 +48,10 @@ class NUListingService {
     
     /// - Parameter page: Page of the listing (usually 25 items per page)
     /// - Parameter parameter: Optinonal parameter for the listing service.
+    /// - Parameter criterion: Criterion for sorting the results
+    /// - Parameter asc: If true, results are sorted in the ascending order
     /// e.g. "Adventure" is a parameter for listing service "Genre"
-    func htmlResponse(for page: Int, with parameterName: String? = nil, sortBy criterion: WNSortingCriterion? = nil) throws -> Promise<String> {
+    func htmlResponse(for page: Int, with parameterName: String?, sortBy criterion: WNSortingCriterion?, asc: Bool) throws -> Promise<String> {
         let url = NovelUpdates.baseUrl.appendingPathComponent(servicePathComponent, isDirectory: true)
         var parameters: Parameters = ["pg": page]
         guard let name = parameterName else {
@@ -63,6 +65,7 @@ class NUListingService {
                 throw WNError.unsupportedSortingCriterion
             }
             parameters["sort"] = criteriaParameterValues[crit]
+            parameters["order"] = asc ? "asc" : "desc"
         }
         if parameter.isPathComponent {
             guard let pathComponent = parameter.pathComponent(for: name) else {
@@ -119,9 +122,9 @@ extension NUListingService: WNListingService {
     
     /// Fetches web novel listing for the specified listing service type
     /// Notifies delegate upon completion of data task
-    func fetchListing(page: Int, parameter: String?, sortBy criterion: WNSortingCriterion?) -> Promise<[WebNovel]> {
+    func fetchListing(page: Int, parameter: String?, sortBy criterion: WNSortingCriterion?, asc: Bool) -> Promise<[WebNovel]> {
         return firstly {
-            try htmlResponse(for: page, with: parameter, sortBy: criterion)
+            try htmlResponse(for: page, with: parameter, sortBy: criterion, asc: asc)
         }.then { htmlStr in
             try self.parseListing(htmlStr)
         }
