@@ -16,6 +16,7 @@
 		1F52AAEC22B8EAFA00D4FB6C /* NSObject+observe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F52AAEB22B8EAFA00D4FB6C /* NSObject+observe.swift */; };
 		1F52AAEE22B901A300D4FB6C /* WNGenre.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F52AAED22B901A300D4FB6C /* WNGenre.swift */; };
 		1F52AAF022B9B96300D4FB6C /* NUListingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F52AAEF22B9B96300D4FB6C /* NUListingService.swift */; };
+		1F52AAF222BC88C600D4FB6C /* UIViewConroller+alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F52AAF122BC88C600D4FB6C /* UIViewConroller+alert.swift */; };
 		1FED6E3422B34C92002F9317 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FED6E3322B34C92002F9317 /* AppDelegate.swift */; };
 		1FED6E3622B34C92002F9317 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FED6E3522B34C92002F9317 /* ViewController.swift */; };
 		1FED6E3922B34C92002F9317 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1FED6E3722B34C92002F9317 /* Main.storyboard */; };
@@ -81,6 +82,7 @@
 		1F52AAEB22B8EAFA00D4FB6C /* NSObject+observe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSObject+observe.swift"; sourceTree = "<group>"; };
 		1F52AAED22B901A300D4FB6C /* WNGenre.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WNGenre.swift; sourceTree = "<group>"; };
 		1F52AAEF22B9B96300D4FB6C /* NUListingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NUListingService.swift; sourceTree = "<group>"; };
+		1F52AAF122BC88C600D4FB6C /* UIViewConroller+alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewConroller+alert.swift"; sourceTree = "<group>"; };
 		1FED6E3022B34C92002F9317 /* WebNovel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WebNovel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FED6E3322B34C92002F9317 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1FED6E3522B34C92002F9317 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -137,6 +139,7 @@
 			children = (
 				1F52AAE822B8E88800D4FB6C /* Notification.swift */,
 				1F52AAEB22B8EAFA00D4FB6C /* NSObject+observe.swift */,
+				1F52AAF122BC88C600D4FB6C /* UIViewConroller+alert.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -385,6 +388,7 @@
 				1FED6E3622B34C92002F9317 /* ViewController.swift in Sources */,
 				1F52AAE722B8DC7100D4FB6C /* ListingServiceViewController.swift in Sources */,
 				1F3B25B522B87EEB00F1B2CA /* WNCoverImage.swift in Sources */,
+				1F52AAF222BC88C600D4FB6C /* UIViewConroller+alert.swift in Sources */,
 				1FED6EB422B6FDB7002F9317 /* WNManagedObject.swift in Sources */,
 				1F52AAF022B9B96300D4FB6C /* NUListingService.swift in Sources */,
 				1FED6E9822B5E16B002F9317 /* WNChapter.swift in Sources */,

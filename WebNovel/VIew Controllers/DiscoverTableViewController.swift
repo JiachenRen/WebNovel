@@ -21,6 +21,8 @@ class DiscoverTableViewController: UITableViewController {
     
     @IBOutlet weak var sortingOrderButton: UIButton!
     
+    @IBOutlet var tableHeaderView: UIView!
+    
     var mgr: WNServiceManager {
         return WNServiceManager.shared
     }
@@ -37,14 +39,7 @@ class DiscoverTableViewController: UITableViewController {
         return mgr.serviceProvider
     }
     
-    var novelListing = [WebNovel]() {
-        didSet {
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
-        }
-    }
-    
+    var novelListing = [WebNovel]()
     var cachedCoverImages = [IndexPath: UIImage]()
     var currentPage = 1
     var fetchingInProgress = false {
@@ -55,13 +50,28 @@ class DiscoverTableViewController: UITableViewController {
         }
     }
     
+    let searchController = UISearchController(searchResultsController: nil)
+    var searchTimer: Timer?
+    var isSearching = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Setup search controller
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search Titles"
+        searchController.searchBar.delegate = self
+        navigationItem.searchController = searchController
+        definesPresentationContext = true
 
+        // Update UI
         updateListingServiceLabel()
         updateSortingCriterionButton()
         updateSortingOrderButton()
         fetchListing()
+        
+        // Observe notifications
         observe(.listingServiceUpdated, #selector(listingServiceUpdated))
     }
     
@@ -78,29 +88,37 @@ class DiscoverTableViewController: UITableViewController {
     }
     
     @IBAction func sortingOrderButtonTouched(_ sender: Any) {
-        if let b = mgr.serviceProvider.listingService?.sortAscending {
-            mgr.serviceProvider.listingService?.sortAscending = !b
-        }
+        mgr.serviceProvider.listingService?.sortAscending.toggle()
         listingServiceUpdated()
+    }
+    
+    @IBAction func searchButtonTouched(_ sender: Any) {
+        searchController.searchBar.becomeFirstResponder()
     }
     
     @objc func listingServiceUpdated() {
         updateListingServiceLabel()
         updateSortingCriterionButton()
         updateSortingOrderButton()
-        // Wait for current fetches to complete
-        let queue = DispatchQueue(label: "com.wn.fetch-listing.wait")
-        queue.async {
+        
+        waitThen {
+            // Reset everything
+            self.reset()
+            // Fetch listing data using the new listing service
+            self.fetchListing()
+        }
+    }
+    
+    /// Wait for current fetches to complete, then execute the handler
+    func waitThen(on queue: DispatchQueue = .main, _ handler: @escaping () -> Void) {
+        let backgroundQueue = DispatchQueue(label: "com.wn.fetch-listing.wait")
+        backgroundQueue.async {
             while self.fetchingInProgress {
                 Thread.sleep(forTimeInterval: 0.1)
             }
-            // Reset current page
-            self.currentPage = 1
-            // Clear listing data & cover image cache from previous listing
-            self.novelListing = []
-            self.cachedCoverImages = [:]
-            // Fetch listing data using the new listing service
-            self.fetchListing()
+            queue.async {
+                handler()
+            }
         }
     }
     
@@ -130,21 +148,33 @@ class DiscoverTableViewController: UITableViewController {
         listingServiceLabel.text = "Listing - \(listingService.serviceType.rawValue)\(parameterStr)"
     }
     
+    func reset() {
+        // Reset current page
+        currentPage = 1
+        // Clear listing data & cover image cache from previous listing
+        cachedCoverImages = [:]
+        novelListing = []
+        tableView.reloadData()
+    }
+    
     func fetchListing() {
         if fetchingInProgress {
             return
         }
         fetchingInProgress = true
         serviceProvider.listingService?.fetchListing(page: currentPage)
-            .done(on: DispatchQueue.main) { webNovels in
+            .done(on: .main) { webNovels in
                 self.novelListing.append(contentsOf: webNovels)
                 self.tableView.reloadData()
                 self.currentPage += 1
             }.ensure {
                 self.fetchingInProgress = false
-            }.catch { err in
-                print(err)
-        }
+            }.catch(presentError)
+    }
+    
+    func presentError(_ err: Error) {
+        let errMsg = (err as? WNError)?.localizedDescription ?? err.localizedDescription
+        self.alert(title: "Error", msg: errMsg)
     }
 
     // MARK: - Table view data source
@@ -181,7 +211,9 @@ class DiscoverTableViewController: UITableViewController {
                     downloadImage(from: url)
                 }.done { image in
                     discoverCell.setCoverImage(image)
-                    self.cachedCoverImages[indexPath] = image
+                    if !self.isSearching {
+                        self.cachedCoverImages[indexPath] = image
+                    }
                 }.ensure {
                     discoverCell.loadingCoverImage = false
                 }.catch { err in
@@ -190,18 +222,17 @@ class DiscoverTableViewController: UITableViewController {
             }
         }
         
-        discoverCell.titleLabel.text = wn.title
-        let rating = wn.rating ?? 0.0
-        let filledStars = (0..<Int(round(rating)))
-            .map {_ in "⭑"}
-            .reduce("") {$0 + $1}
-        let emptyStars = (0..<(5 - Int(round(rating))))
-            .map {_ in "⭐︎"}
-            .reduce("") {$0 + $1}
-        discoverCell.starsLabel.text = filledStars + emptyStars
-        discoverCell.ratingLabel.text = " \(rating) / 5.0"
-        discoverCell.descriptionLabel.text = wn.shortDescription ?? wn.fullDescription
+        if isSearching {
+            serviceProvider.loadDetails(wn, cachePolicy: .usesCache)
+                .done(on: .main) {
+                    discoverCell.setWNMetadata($0)
+                }.catch { err in
+                    print(err)
+            }
+        }
 
+        discoverCell.setWNMetadata(wn)
+        
         return discoverCell
     }
     
@@ -210,6 +241,9 @@ class DiscoverTableViewController: UITableViewController {
     }
     
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if isSearching {
+            return
+        }
         let height = scrollView.frame.size.height
         let contentYoffset = scrollView.contentOffset.y
         let distanceFromBottom = scrollView.contentSize.height - contentYoffset
@@ -217,50 +251,40 @@ class DiscoverTableViewController: UITableViewController {
             fetchListing()
         }
     }
+}
 
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
+extension DiscoverTableViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let name = searchController.searchBar.text, isSearching else {
+            return
+        }
+        searchTimer?.invalidate()
+        searchTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) {
+            [unowned self] _ in
+            self.reset()
+            self.fetchingInProgress = true
+            self.serviceProvider.search(byName: name)
+                .done(on: .main) {
+                    self.fetchingInProgress = false
+                    self.novelListing = $0
+                    self.tableView.reloadData()
+            }.catch(self.presentError)
+        }
     }
-    */
+}
 
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+extension DiscoverTableViewController: UISearchBarDelegate {
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        tableView.tableHeaderView = tableHeaderView
+        searchTimer?.invalidate()
+        isSearching = false
+        reset()
+        fetchListing()
     }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        tableView.tableHeaderView = nil
+        tableView.setContentOffset(.zero, animated: true)
+        isSearching = true
     }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

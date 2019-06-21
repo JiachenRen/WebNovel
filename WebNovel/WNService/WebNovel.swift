@@ -29,6 +29,7 @@ class WebNovel: Serializable {
     var votes: Int?
     var aliases: [String]?
     var releases: Int?
+    var status: String?
     var coverImageUrl: String?
     
     static var entityName: String = "Novel"

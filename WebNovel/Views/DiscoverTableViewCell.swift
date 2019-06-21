@@ -39,4 +39,30 @@ class DiscoverTableViewCell: UITableViewCell {
         coverImageView.alpha = 1
         activityIndicatorView.stopAnimating()
     }
+    
+    func setRating(_ rating: Double?) {
+        let rating = rating ?? 0.0
+        let filledStars = (0..<Int(round(rating)))
+            .map {_ in "⭑"}
+            .reduce("") {$0 + $1}
+        let emptyStars = (0..<(5 - Int(round(rating))))
+            .map {_ in "⭐︎"}
+            .reduce("") {$0 + $1}
+        starsLabel.text = filledStars + emptyStars
+        ratingLabel.text = " \(rating) / 5.0"
+    }
+    
+    func setTitle(_ title: String?) {
+        titleLabel.text = title
+    }
+    
+    func setDescription(_ desc: String?) {
+        descriptionLabel.text = desc
+    }
+    
+    func setWNMetadata(_ wn: WebNovel) {
+        setTitle(wn.title)
+        setRating(wn.rating)
+        setDescription(wn.shortDescription ?? wn.fullDescription)
+    }
 }
