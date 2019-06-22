@@ -38,7 +38,7 @@ extension NovelUpdates {
         wn.title = try doc.getElementsByClass("seriestitlenu").first()?.text()
         wn.fullDescription = try doc.getElementById("editdescription")?.children()
             .reduce("") {
-            try ($0 == "" ? "" : $0 + "\n") + $1.html()
+            try ($0 == "" ? "" : $0 + "\n") + $1.text()
         }
         wn.aliases = try doc.getElementById("editassociated")?.html().components(separatedBy: "<br>").map {
             $0.replacingOccurrences(of: "\n", with: "")
@@ -64,6 +64,12 @@ extension NovelUpdates {
             wn.rating = Double(ratingStr)
             let votesStr = components[1].replacingOccurrences(of: "[^0-9]+", with: "", options: .regularExpression)
             wn.votes = Int(votesStr)
+        }
+        if let readers = try doc.getElementsByClass("rlist").first()?.text() {
+            wn.readers = Int(readers)
+        }
+        if let year = try doc.getElementById("edityear")?.text() {
+            wn.year = Int(year)
         }
         wn.status = try doc.getElementById("editstatus")?.text()
         wn.coverImageUrl = try doc.getElementsByClass("seriesimg")

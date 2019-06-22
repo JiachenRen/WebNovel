@@ -40,12 +40,14 @@ class NUListingService {
     
     /// Maps sorting criterion to its corresponding http parameter value
     var criteriaParameterValues: [WNSortingCriterion: String] = [
-        .numberOfReleases: "nrelease",
-        .rank: "trank",
-        .rating: "trate",
-        .releaseFrequency: "tfreq",
-        .title: "abc",
-        .numberOfReaders: "tread",
+        .chapters: "5",
+        .frequency: "1",
+        .rank: "2",
+        .rating: "3",
+        .readers: "4",
+        .reviews: "6",
+        .title: "7",
+        .lastUpdated: "8"
     ]
     
     init(serviceType: WNListingServiceType, servicePathComponent: String, parameter: NUParameter? = nil, sortingCriteria: [WNSortingCriterion] = []) {
@@ -74,7 +76,7 @@ class NUListingService {
                 throw WNError.unsupportedSortingCriterion
             }
             parameters["sort"] = criteriaParameterValues[crit]
-            parameters["order"] = sortAscending ? "asc" : "desc"
+            parameters["order"] = sortAscending ? "1" : "2"
         }
         if parameter.isPathComponent {
             guard let pathComponent = parameter.pathComponent(for: name) else {
@@ -143,13 +145,11 @@ extension NUListingService: WNListingService {
     private func parseListing(_ htmlStr: String) throws -> Promise<[WebNovel]> {
         return Promise {seal in
             let doc = try SwiftSoup.parse(htmlStr)
-            // #myTable is a table containing the listing of novels
-            guard let tbl = try doc.getElementById("myTable") else {
-                seal.reject(WNError.parsingError("failed to find content table"))
-                return
-            }
             // Each entry contains metadata for the web novel
-            let entries = try tbl.getElementsByClass("bdrank")
+            let entries = try doc.getElementsByClass("search_main_box_nu")
+            if entries.count == 0 {
+                throw WNError.parsingError("Web novel entries not found")
+            }
             var webNovels = [WebNovel]()
             for entry in entries {
                 let wn = try parseWebNovel(entry)
@@ -171,56 +171,45 @@ extension NUListingService: WNListingService {
     ///      class = sfstext (html contains number of releases
     private func parseWebNovel(_ element: Element) throws -> WebNovel {
         let wn = WebNovel()
-        if let rating = try element.getElementsByClass("lstrate").first() {
+        if let rating = try element.getElementsByClass("search_ratings").first() {
+            let org = try rating.getElementsByTag("span").first()
+            wn.organization = try org?.text()
+            try org?.remove()
             let ratingTxt = try rating.text()
                 .replacingOccurrences(of: "[()]", with: "", options: .regularExpression)
+                .trimmingCharacters(in: .whitespaces)
             wn.rating = Double(ratingTxt) ?? 0.0
         }
-        wn.organization = try element.getElementsByClass("orgalign").first()?.text()
-        if let main = element.children().last() {
-            if let link = try main.getElementsByTag("a").first() {
+        if let main = try element.getElementsByClass("search_body_nu").first() {
+            if let link = try main.getElementsByClass("search_title")
+                .first()?.getElementsByTag("a").first() {
                 wn.url = link.getAttributes()?.filter {
                     $0.getKey() == "href"
                     }.first?.getValue() ?? ""
-                // Follow the official link to find the url of the cover image
-                
                 wn.title = try link.text()
             }
-            if let genresContainer = try main.getElementsByClass("rankgenre").first() {
+            if let genresContainer = try main.getElementsByClass("search_genre").first() {
                 wn.genres = try genresContainer.children().map {
                     try $0.text()
                 }
             }
-            if let desc = try main.getElementsByClass("noveldesc").first() {
-                // Sanitize html
-                try desc.children().forEach {
-                    if try $0.classNames().contains("morelink") {
-                        try $0.remove()
+            let classes = [
+                "search_title", "search_stats", "search_genre", "dots", "morelink list"
+            ]
+            try main.children().forEach { child in
+                for c in classes {
+                    if child.hasClass(c) {
+                        try child.remove()
                     }
                 }
-                if let container = desc.children().last() {
-                    try container.children().forEach {
-                        if $0.tagName() == "span" {
-                            try $0.remove()
-                        }
-                    }
-                    // Extract full description
-                    let pTagRegex = #"<\s*p[^>]*>(.*?)<\s*/\s*p>"#
-                    wn.fullDescription = try container.html()
-                        .replacingOccurrences(of: pTagRegex, with: "\n", options: .regularExpression)
-                }
-                
-                try desc.children().forEach {
+            }
+            wn.fullDescription = try main.text()
+            try main.children().forEach {
+                if $0.hasClass("testhide") {
                     try $0.remove()
                 }
-                wn.shortDescription = try desc.text()
-                wn.fullDescription = (wn.shortDescription ?? "") + "\n" + (wn.fullDescription ?? "")
             }
-            if let releases = try main.getElementsByClass("sfstext").first() {
-                let releasesTxt = try releases.text()
-                    .replacingOccurrences(of: "[^0-9]+", with: "", options: .regularExpression)
-                wn.releases = Int(releasesTxt) ?? 0
-            }
+            wn.shortDescription = try main.text()
         }
         return wn
     }

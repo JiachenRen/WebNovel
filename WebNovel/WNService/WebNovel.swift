@@ -29,8 +29,10 @@ class WebNovel: Serializable {
     var allTimeRank: Int?
     var rating: Double?
     var votes: Int?
+    var readers: Int?
+    var year: Int?
+    var updateFrequency: String?
     var aliases: [String]?
-    var releases: Int?
     var status: String?
     var coverImageUrl: String?
     
@@ -83,7 +85,7 @@ extension WebNovel: CustomStringConvertible {
         All Time Rank: \(str(allTimeRank))
         Rating: \(str(rating))
         Votes: \(str(votes))
-        Releases: \(str(releases))
+        Readers: \(str(readers))
         Language: \(language ?? "N/A")
         Type: \(str(type))
         Short Description: \(str(shortDescription))

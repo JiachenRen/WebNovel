@@ -28,7 +28,6 @@
 		1F9890BB22BDB24300A09F3F /* StatsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F9890BA22BDB24300A09F3F /* StatsTableViewCell.swift */; };
 		1F9890BD22BDDCFD00A09F3F /* FactTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F9890BC22BDDCFD00A09F3F /* FactTableViewCell.swift */; };
 		1FED6E3422B34C92002F9317 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FED6E3322B34C92002F9317 /* AppDelegate.swift */; };
-		1FED6E3622B34C92002F9317 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FED6E3522B34C92002F9317 /* ViewController.swift */; };
 		1FED6E3922B34C92002F9317 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1FED6E3722B34C92002F9317 /* Main.storyboard */; };
 		1FED6E3C22B34C92002F9317 /* WebNovel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1FED6E3A22B34C92002F9317 /* WebNovel.xcdatamodeld */; };
 		1FED6E3E22B34C93002F9317 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1FED6E3D22B34C93002F9317 /* Assets.xcassets */; };
@@ -105,7 +104,6 @@
 		1F9890BC22BDDCFD00A09F3F /* FactTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FactTableViewCell.swift; sourceTree = "<group>"; };
 		1FED6E3022B34C92002F9317 /* WebNovel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WebNovel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FED6E3322B34C92002F9317 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		1FED6E3522B34C92002F9317 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		1FED6E3822B34C92002F9317 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		1FED6E3B22B34C92002F9317 /* WebNovel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WebNovel.xcdatamodel; sourceTree = "<group>"; };
 		1FED6E3D22B34C93002F9317 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -194,7 +192,6 @@
 				1FED6E7D22B5700A002F9317 /* WNService */,
 				1FED6E6822B402CD002F9317 /* Storyboards */,
 				1FED6E3322B34C92002F9317 /* AppDelegate.swift */,
-				1FED6E3522B34C92002F9317 /* ViewController.swift */,
 				1FED6E6922B4031B002F9317 /* Resources */,
 				1FED6E4222B34C93002F9317 /* Info.plist */,
 			);
@@ -415,7 +412,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				1FED6EB322B6FDB7002F9317 /* WNCache.swift in Sources */,
-				1FED6E3622B34C92002F9317 /* ViewController.swift in Sources */,
 				1F52AAE722B8DC7100D4FB6C /* ListingServiceViewController.swift in Sources */,
 				1F9890B722BD096900A09F3F /* GenresTableViewCell.swift in Sources */,
 				1F3B25B522B87EEB00F1B2CA /* WNCoverImage.swift in Sources */,

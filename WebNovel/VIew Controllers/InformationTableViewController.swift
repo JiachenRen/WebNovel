@@ -40,11 +40,11 @@ class InformationTableViewController: UITableViewController {
     fileprivate var sections: [Section] = Section.allCases
     
     var facts: [(String, PartialKeyPath<WebNovel>)] = [
-        ("Releases", \WebNovel.releases),
-        ("Authors", \WebNovel.authors),
+        ("Year", \WebNovel.year),
         ("Language", \WebNovel.language),
         ("Organization", \WebNovel.organization),
         ("Type", \WebNovel.type),
+        ("Authors", \WebNovel.authors),
         ("Other Names", \WebNovel.aliases)
     ]
     
@@ -163,7 +163,7 @@ class InformationTableViewController: UITableViewController {
         case .stats:
             let cell = makeCell(.stats, as: StatsTableViewCell.self)
             cell.setRank(webNovel.allTimeRank)
-            cell.setVotes(webNovel.votes)
+            cell.setReaders(webNovel.readers)
             return cell
         case .facts:
             let cell = makeCell(.fact, as: FactTableViewCell.self)

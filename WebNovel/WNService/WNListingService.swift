@@ -20,12 +20,14 @@ protocol WNListingService {
 }
 
 enum WNSortingCriterion: String, CaseIterable {
-    case numberOfReaders = "Number of Readers" // sort=tread
-    case numberOfReleases = "Number of Releases" // sort=nrelease
-    case rank = "Rank" // sort=trank
-    case rating = "Rating" // sort=trate
-    case releaseFrequency = "Release Frequency" // sort=tfreq
-    case title = "Title" // sort=abc
+    case chapters = "Chapters" // sort=5
+    case frequency = "Frequency" // sort=1
+    case rank = "Rank" // sort=2
+    case rating = "Rating" // sort=3
+    case readers = "Readers" // sort=4
+    case reviews = "Reviews" // sort=6
+    case title = "Title" // sort=7
+    case lastUpdated = "Last Updated" // sort=8
 }
 
 enum WNListingServiceType: String {

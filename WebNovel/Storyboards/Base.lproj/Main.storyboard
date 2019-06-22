@@ -639,8 +639,8 @@
                                                             <color key="tintColor" red="0.34522765874862671" green="0.69350975751876831" blue="0.36072233319282532" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                             <state key="normal" image="readers"/>
                                                         </button>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Votes" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U9z-Ce-mnE">
-                                                            <rect key="frame" x="46" y="16.5" width="39" height="18"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Readers" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U9z-Ce-mnE">
+                                                            <rect key="frame" x="46" y="16.5" width="56" height="18"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
@@ -683,7 +683,7 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="rankLabel" destination="09W-iC-8cr" id="igi-Zq-GWf"/>
-                                    <outlet property="votesLabel" destination="z92-JQ-L93" id="XAm-1I-kwp"/>
+                                    <outlet property="readersLabel" destination="z92-JQ-L93" id="XAm-1I-kwp"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="information.fact" rowHeight="41" id="dXZ-D2-2UL" customClass="FactTableViewCell" customModule="WebNovel" customModuleProvider="target">

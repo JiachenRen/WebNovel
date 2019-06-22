@@ -12,22 +12,22 @@ class StatsTableViewCell: UITableViewCell {
     
     @IBOutlet weak var rankLabel: UILabel!
 
-    @IBOutlet weak var votesLabel: UILabel!
+    @IBOutlet weak var readersLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
         
         rankLabel.clipsToBounds = true
         rankLabel.layer.cornerRadius = 4
-        votesLabel.clipsToBounds = true
-        votesLabel.layer.cornerRadius = 4
+        readersLabel.clipsToBounds = true
+        readersLabel.layer.cornerRadius = 4
     }
     
     func setRank(_ rank: Int?) {
         rankLabel.text = rank == nil ? "  N/A  " : "  #\(rank!)  "
     }
     
-    func setVotes(_ votes: Int?) {
-        votesLabel.text = votes == nil ? "  N/A  " : "  \(votes!)  "
+    func setReaders(_ readers: Int?) {
+        readersLabel.text = readers == nil ? "  N/A  " : "  \(readers!)  "
     }
 }
