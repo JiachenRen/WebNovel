@@ -23,16 +23,6 @@ class DiscoverTableViewCell: UITableViewCell {
     @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
     
     var loadingCoverImage = false
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        
-    }
 
     func setCoverImage(_ image: UIImage) {
         coverImageView.image = image

@@ -171,18 +171,12 @@ extension NUListingService: WNListingService {
     ///      class = sfstext (html contains number of releases
     private func parseWebNovel(_ element: Element) throws -> WebNovel {
         let wn = WebNovel()
-        // In some cases rank does not exist, in which case the index should shift by 1
-        var index = 0
-        if let rank = try element.child(index).getElementsByClass("ranknum").first() {
-            wn.rank = Int(try rank.text()) ?? -1
-            index += 1
-        }
-        if let rating = try element.child(index).getElementsByClass("lstrate").first() {
+        if let rating = try element.getElementsByClass("lstrate").first() {
             let ratingTxt = try rating.text()
                 .replacingOccurrences(of: "[()]", with: "", options: .regularExpression)
             wn.rating = Double(ratingTxt) ?? 0.0
         }
-        wn.organization = try element.child(index + 1).child(0).text()
+        wn.organization = try element.getElementsByClass("orgalign").first()?.text()
         if let main = element.children().last() {
             if let link = try main.getElementsByTag("a").first() {
                 wn.url = link.getAttributes()?.filter {

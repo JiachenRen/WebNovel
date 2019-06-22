@@ -18,13 +18,15 @@ class WebNovel: Serializable {
     var fullDescription: String?
     var organization: String?
     var title: String?
-    var author: String?
+    var authors: [String]?
     var url: String?
     var genres: [String]?
     var tags: [String]?
     var language: String?
     var type: String?
-    var rank: Int?
+    var weeklyRank: Int?
+    var monthlyRank: Int?
+    var allTimeRank: Int?
     var rating: Double?
     var votes: Int?
     var aliases: [String]?
@@ -52,25 +54,40 @@ class WebNovel: Serializable {
     }
 }
 
+fileprivate func str(_ arr: [String]?) -> String{
+    return arr?.joined(separator: ", ") ?? "N/A"
+}
+
+fileprivate func str<T: LosslessStringConvertible>(_ n: T?) -> String {
+    return n == nil ? "N/A" : String(n!)
+}
+
+fileprivate func str(_ s: String?) -> String {
+    return s ?? "N/A"
+}
+
 extension WebNovel: CustomStringConvertible {
     var description: String {
         return """
-        Title: \(title ?? "N/A")
-        Author: \(author ?? "N/A")
-        Aliases: \(aliases?.joined(separator: ", ") ?? "N/A")
-        Genres: \(genres?.joined(separator: ", ") ?? "N/A")
-        Tags: \(tags?.joined(separator: ", ") ?? "N/A")
-        Organization: \(organization ?? "N/A")
-        Link: \(url ?? "N/A")
-        Cover Image URL: \(coverImageUrl ?? "N/A")
-        Rank: \(rank == nil ? "N/A" : String(rank!))
-        Rating: \(rating == nil ? "N/A" : String(rating!))
-        Votes: \(votes == nil ? "N/A" : String(votes!))
-        Releases: \(releases == nil ? "N/A" : String(releases!))
+        Title: \(str(title))
+        Author: \(str(authors))
+        Aliases: \(str(aliases))
+        Status: \(str(status))
+        Genres: \(str(genres))
+        Tags: \(str(tags))
+        Organization: \(str(organization))
+        Link: \(str(url))
+        Cover Image URL: \(str(coverImageUrl))
+        Weekly Rank: \(str(weeklyRank))
+        Monthly Rank: \(str(monthlyRank))
+        All Time Rank: \(str(allTimeRank))
+        Rating: \(str(rating))
+        Votes: \(str(votes))
+        Releases: \(str(releases))
         Language: \(language ?? "N/A")
-        Type: \(type ?? "N/A")
-        Short Description: \(shortDescription ?? "N/A")
-        Full Description: \(fullDescription ?? "N/A")
+        Type: \(str(type))
+        Short Description: \(str(shortDescription))
+        Full Description: \(str(fullDescription))
         """
     }
 }

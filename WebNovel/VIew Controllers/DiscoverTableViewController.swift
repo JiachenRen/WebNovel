@@ -126,7 +126,7 @@ class DiscoverTableViewController: UITableViewController {
         guard let ls = serviceProvider.listingService else {
             return
         }
-        let image = UIImage(named: ls.sortAscending ? "sort-asc-icon" : "sort-desc-icon")
+        let image: UIImage = ls.sortAscending ? .sortAscIcon: .sortDescIcon
         sortingOrderButton.setImage(image, for: .normal)
     }
     
@@ -171,11 +171,6 @@ class DiscoverTableViewController: UITableViewController {
                 self.fetchingInProgress = false
             }.catch(presentError)
     }
-    
-    func presentError(_ err: Error) {
-        let errMsg = (err as? WNError)?.localizedDescription ?? err.localizedDescription
-        self.alert(title: "Error", msg: errMsg)
-    }
 
     // MARK: - Table view data source
 
@@ -217,7 +212,7 @@ class DiscoverTableViewController: UITableViewController {
                 }.ensure {
                     discoverCell.loadingCoverImage = false
                 }.catch { err in
-                    discoverCell.setCoverImage(UIImage(named: "cover-placeholder")!)
+                    discoverCell.setCoverImage(.coverPlaceholder)
                     print(err)
             }
         }
@@ -249,6 +244,13 @@ class DiscoverTableViewController: UITableViewController {
         let distanceFromBottom = scrollView.contentSize.height - contentYoffset
         if distanceFromBottom < height {
             fetchListing()
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let infoController = segue.destination as? InformationTableViewController,
+            let idx = tableView.indexPathForSelectedRow?.row {
+            infoController.webNovel = novelListing[idx]
         }
     }
 }

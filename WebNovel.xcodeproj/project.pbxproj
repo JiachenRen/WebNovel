@@ -17,6 +17,16 @@
 		1F52AAEE22B901A300D4FB6C /* WNGenre.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F52AAED22B901A300D4FB6C /* WNGenre.swift */; };
 		1F52AAF022B9B96300D4FB6C /* NUListingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F52AAEF22B9B96300D4FB6C /* NUListingService.swift */; };
 		1F52AAF222BC88C600D4FB6C /* UIViewConroller+alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F52AAF122BC88C600D4FB6C /* UIViewConroller+alert.swift */; };
+		1F9890A922BCCBAB00A09F3F /* InformationTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F9890A822BCCBAB00A09F3F /* InformationTableViewController.swift */; };
+		1F9890AB22BCDEE800A09F3F /* UIViewController+presentError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F9890AA22BCDEE800A09F3F /* UIViewController+presentError.swift */; };
+		1F9890AD22BCDF5B00A09F3F /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F9890AC22BCDF5B00A09F3F /* UIImage.swift */; };
+		1F9890B122BCF1AE00A09F3F /* SectionHeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F9890B022BCF1AE00A09F3F /* SectionHeaderTableViewCell.swift */; };
+		1F9890B322BCF6D400A09F3F /* SummaryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F9890B222BCF6D400A09F3F /* SummaryTableViewCell.swift */; };
+		1F9890B522BD00F700A09F3F /* InformationTableViewCellDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F9890B422BD00F700A09F3F /* InformationTableViewCellDelegate.swift */; };
+		1F9890B722BD096900A09F3F /* GenresTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F9890B622BD096900A09F3F /* GenresTableViewCell.swift */; };
+		1F9890B922BD219700A09F3F /* GenreLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F9890B822BD219700A09F3F /* GenreLabel.swift */; };
+		1F9890BB22BDB24300A09F3F /* StatsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F9890BA22BDB24300A09F3F /* StatsTableViewCell.swift */; };
+		1F9890BD22BDDCFD00A09F3F /* FactTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F9890BC22BDDCFD00A09F3F /* FactTableViewCell.swift */; };
 		1FED6E3422B34C92002F9317 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FED6E3322B34C92002F9317 /* AppDelegate.swift */; };
 		1FED6E3622B34C92002F9317 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FED6E3522B34C92002F9317 /* ViewController.swift */; };
 		1FED6E3922B34C92002F9317 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1FED6E3722B34C92002F9317 /* Main.storyboard */; };
@@ -83,6 +93,16 @@
 		1F52AAED22B901A300D4FB6C /* WNGenre.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WNGenre.swift; sourceTree = "<group>"; };
 		1F52AAEF22B9B96300D4FB6C /* NUListingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NUListingService.swift; sourceTree = "<group>"; };
 		1F52AAF122BC88C600D4FB6C /* UIViewConroller+alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewConroller+alert.swift"; sourceTree = "<group>"; };
+		1F9890A822BCCBAB00A09F3F /* InformationTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationTableViewController.swift; sourceTree = "<group>"; };
+		1F9890AA22BCDEE800A09F3F /* UIViewController+presentError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+presentError.swift"; sourceTree = "<group>"; };
+		1F9890AC22BCDF5B00A09F3F /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
+		1F9890B022BCF1AE00A09F3F /* SectionHeaderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeaderTableViewCell.swift; sourceTree = "<group>"; };
+		1F9890B222BCF6D400A09F3F /* SummaryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryTableViewCell.swift; sourceTree = "<group>"; };
+		1F9890B422BD00F700A09F3F /* InformationTableViewCellDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationTableViewCellDelegate.swift; sourceTree = "<group>"; };
+		1F9890B622BD096900A09F3F /* GenresTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenresTableViewCell.swift; sourceTree = "<group>"; };
+		1F9890B822BD219700A09F3F /* GenreLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreLabel.swift; sourceTree = "<group>"; };
+		1F9890BA22BDB24300A09F3F /* StatsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsTableViewCell.swift; sourceTree = "<group>"; };
+		1F9890BC22BDDCFD00A09F3F /* FactTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FactTableViewCell.swift; sourceTree = "<group>"; };
 		1FED6E3022B34C92002F9317 /* WebNovel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WebNovel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FED6E3322B34C92002F9317 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1FED6E3522B34C92002F9317 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -140,6 +160,8 @@
 				1F52AAE822B8E88800D4FB6C /* Notification.swift */,
 				1F52AAEB22B8EAFA00D4FB6C /* NSObject+observe.swift */,
 				1F52AAF122BC88C600D4FB6C /* UIViewConroller+alert.swift */,
+				1F9890AA22BCDEE800A09F3F /* UIViewController+presentError.swift */,
+				1F9890AC22BCDF5B00A09F3F /* UIImage.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -269,6 +291,7 @@
 			isa = PBXGroup;
 			children = (
 				1F0E2EB022B73E5500CD77A9 /* DiscoverTableViewController.swift */,
+				1F9890A822BCCBAB00A09F3F /* InformationTableViewController.swift */,
 				1F52AAE622B8DC7100D4FB6C /* ListingServiceViewController.swift */,
 			);
 			path = "VIew Controllers";
@@ -278,6 +301,13 @@
 			isa = PBXGroup;
 			children = (
 				1F0E2EB222B73F7500CD77A9 /* DiscoverTableViewCell.swift */,
+				1F9890B022BCF1AE00A09F3F /* SectionHeaderTableViewCell.swift */,
+				1F9890B222BCF6D400A09F3F /* SummaryTableViewCell.swift */,
+				1F9890B622BD096900A09F3F /* GenresTableViewCell.swift */,
+				1F9890BA22BDB24300A09F3F /* StatsTableViewCell.swift */,
+				1F9890BC22BDDCFD00A09F3F /* FactTableViewCell.swift */,
+				1F9890B822BD219700A09F3F /* GenreLabel.swift */,
+				1F9890B422BD00F700A09F3F /* InformationTableViewCellDelegate.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -387,15 +417,21 @@
 				1FED6EB322B6FDB7002F9317 /* WNCache.swift in Sources */,
 				1FED6E3622B34C92002F9317 /* ViewController.swift in Sources */,
 				1F52AAE722B8DC7100D4FB6C /* ListingServiceViewController.swift in Sources */,
+				1F9890B722BD096900A09F3F /* GenresTableViewCell.swift in Sources */,
 				1F3B25B522B87EEB00F1B2CA /* WNCoverImage.swift in Sources */,
 				1F52AAF222BC88C600D4FB6C /* UIViewConroller+alert.swift in Sources */,
 				1FED6EB422B6FDB7002F9317 /* WNManagedObject.swift in Sources */,
+				1F9890B322BCF6D400A09F3F /* SummaryTableViewCell.swift in Sources */,
 				1F52AAF022B9B96300D4FB6C /* NUListingService.swift in Sources */,
+				1F9890AB22BCDEE800A09F3F /* UIViewController+presentError.swift in Sources */,
 				1FED6E9822B5E16B002F9317 /* WNChapter.swift in Sources */,
+				1F9890A922BCCBAB00A09F3F /* InformationTableViewController.swift in Sources */,
 				1FED6E7622B42C69002F9317 /* WNError.swift in Sources */,
 				1FED6E9B22B5F61F002F9317 /* WNParser.swift in Sources */,
 				1FED6E9322B58C7A002F9317 /* NetworkUtils.swift in Sources */,
+				1F9890B522BD00F700A09F3F /* InformationTableViewCellDelegate.swift in Sources */,
 				1FED6EA322B627A1002F9317 /* NovelUpdates+loadDetails.swift in Sources */,
+				1F9890B122BCF1AE00A09F3F /* SectionHeaderTableViewCell.swift in Sources */,
 				1FED6EB922B72557002F9317 /* WNListingService.swift in Sources */,
 				1F0E2EB122B73E5500CD77A9 /* DiscoverTableViewController.swift in Sources */,
 				1FED6E3C22B34C92002F9317 /* WebNovel.xcdatamodeld in Sources */,
@@ -403,9 +439,13 @@
 				1FED6EB522B6FDB7002F9317 /* Serializable.swift in Sources */,
 				1FED6E3422B34C92002F9317 /* AppDelegate.swift in Sources */,
 				1F52AAE522B8D3F500D4FB6C /* WNServiceManager.swift in Sources */,
+				1F9890BB22BDB24300A09F3F /* StatsTableViewCell.swift in Sources */,
+				1F9890AD22BCDF5B00A09F3F /* UIImage.swift in Sources */,
 				1FED6EA622B627A1002F9317 /* NovelUpdates.swift in Sources */,
 				1F52AAE922B8E88800D4FB6C /* Notification.swift in Sources */,
+				1F9890BD22BDDCFD00A09F3F /* FactTableViewCell.swift in Sources */,
 				1F0E2EB322B73F7500CD77A9 /* DiscoverTableViewCell.swift in Sources */,
+				1F9890B922BD219700A09F3F /* GenreLabel.swift in Sources */,
 				1FED6E6D22B403F6002F9317 /* WNServiceProvider.swift in Sources */,
 				1F52AAEC22B8EAFA00D4FB6C /* NSObject+observe.swift in Sources */,
 				1FED6EAE22B6FB57002F9317 /* WNChaptersCatalogue.swift in Sources */,
