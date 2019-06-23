@@ -286,7 +286,6 @@ extension DiscoverTableViewController: UISearchBarDelegate {
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         tableView.tableHeaderView = nil
-        tableView.setContentOffset(.zero, animated: true)
         isSearching = true
     }
 }

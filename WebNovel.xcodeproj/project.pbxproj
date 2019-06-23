@@ -188,7 +188,7 @@
 			children = (
 				1F52AAEA22B8E9EA00D4FB6C /* Extensions */,
 				1FED6EBB22B73A40002F9317 /* Views */,
-				1FED6EBA22B73928002F9317 /* VIew Controllers */,
+				1FED6EBA22B73928002F9317 /* Controllers */,
 				1FED6E7D22B5700A002F9317 /* WNService */,
 				1FED6E6822B402CD002F9317 /* Storyboards */,
 				1FED6E3322B34C92002F9317 /* AppDelegate.swift */,
@@ -284,14 +284,14 @@
 			path = Caching;
 			sourceTree = "<group>";
 		};
-		1FED6EBA22B73928002F9317 /* VIew Controllers */ = {
+		1FED6EBA22B73928002F9317 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
 				1F0E2EB022B73E5500CD77A9 /* DiscoverTableViewController.swift */,
 				1F9890A822BCCBAB00A09F3F /* InformationTableViewController.swift */,
 				1F52AAE622B8DC7100D4FB6C /* ListingServiceViewController.swift */,
 			);
-			path = "VIew Controllers";
+			path = Controllers;
 			sourceTree = "<group>";
 		};
 		1FED6EBB22B73A40002F9317 /* Views */ = {

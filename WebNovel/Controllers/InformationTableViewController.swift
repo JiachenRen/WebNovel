@@ -41,6 +41,8 @@ class InformationTableViewController: UITableViewController {
     
     var facts: [(String, PartialKeyPath<WebNovel>)] = [
         ("Year", \WebNovel.year),
+        ("Rating", \WebNovel.rating),
+        ("Votes", \WebNovel.votes),
         ("Language", \WebNovel.language),
         ("Organization", \WebNovel.organization),
         ("Type", \WebNovel.type),
@@ -49,21 +51,20 @@ class InformationTableViewController: UITableViewController {
     ]
     
     var availableFacts: [(String, String)] {
-        func describe(_ v: Any) -> String {
+        func describe(_ v: Any) -> String? {
             if let arr = v as? [String] {
                 return arr.joined(separator: "\n")
-            } else if let str = v as? String {
-                return str
-            } else if let n = v as? Int {
-                return String(n)
+            } else if let n: Any = v as? String ?? v as? Double ?? v as? Int {
+                return String(describing: n)
             }
-            return "N/A"
+            return nil
         }
         return facts.compactMap { key, value in
-            guard let v = webNovel?[keyPath: value] else {
+            guard let v = webNovel?[keyPath: value],
+                let str = describe(v) else {
                 return nil
             }
-            return (key, describe(v))
+            return (key, str)
         }
     }
     
