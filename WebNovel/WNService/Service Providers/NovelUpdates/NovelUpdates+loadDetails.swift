@@ -71,6 +71,32 @@ extension NovelUpdates {
         if let year = try doc.getElementById("edityear")?.text() {
             wn.year = Int(year)
         }
+        var status = 0
+        var recommendations: [WebNovel] = []
+        var related: [WebNovel] = []
+        try doc.getElementsByClass("wpb_wrapper").last()?
+            .children().forEach { child in
+            let txt = try child.text()
+            switch txt {
+            case "Related Series":
+                status = 1
+            case "Recommendations":
+                status = 2
+            default: break
+            }
+            if child.id().starts(with: "sid") {
+                let wn1 = WebNovel()
+                wn1.title = txt
+                wn1.url = try child.attr("href")
+                if status == 1 {
+                    related.append(wn1)
+                } else if status == 2 {
+                    recommendations.append(wn1)
+                }
+            }
+            wn.recommendations = recommendations.count > 0 ? recommendations : nil
+            wn.relatedSeries = related.count > 0 ? related : nil
+        }
         wn.status = try doc.getElementById("editstatus")?.text()
         wn.coverImageUrl = try doc.getElementsByClass("seriesimg")
             .first()?.getElementsByTag("img")

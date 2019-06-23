@@ -39,6 +39,8 @@ class DiscoverTableViewController: UITableViewController {
         return mgr.serviceProvider
     }
     
+    // MARK: Listing Service
+    
     var novelListing = [WebNovel]()
     var cachedCoverImages = [IndexPath: UIImage]()
     var currentPage = 1
@@ -50,9 +52,12 @@ class DiscoverTableViewController: UITableViewController {
         }
     }
     
+    // MARK: Search
+    
     let searchController = UISearchController(searchResultsController: nil)
-    var searchTimer: Timer?
     var isSearching = false
+    var searchTimer: Timer?
+    var searchTask: WNCancellableTask?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -188,45 +193,22 @@ class DiscoverTableViewController: UITableViewController {
             return cell
         }
         let wn = novelListing[indexPath.row]
+        discoverCell.setWNMetadata(wn)
         
         // Load cover image
-        discoverCell.activityIndicatorView.startAnimating()
-        discoverCell.coverImageView.alpha = 0.1
         if let image = cachedCoverImages[indexPath] {
             discoverCell.setCoverImage(image)
-        } else if !discoverCell.loadingCoverImage {
-            discoverCell.loadingCoverImage = true
-            serviceProvider.loadDetails(wn, cachePolicy: .usesCache)
-                .map { wn -> String in
-                    guard let coverImgUrl = wn.coverImageUrl else {
-                        throw WNError.urlNotFound
-                    }
-                    return coverImgUrl
-                }.then { url in
-                    downloadImage(from: url)
-                }.done { image in
-                    discoverCell.setCoverImage(image)
-                    if !self.isSearching {
-                        self.cachedCoverImages[indexPath] = image
-                    }
-                }.ensure {
-                    discoverCell.loadingCoverImage = false
-                }.catch { err in
-                    discoverCell.setCoverImage(.coverPlaceholder)
-                    print(err)
+        } else {
+            discoverCell.loadCoverImage { image in
+                if !self.isSearching {
+                    self.cachedCoverImages[indexPath] = image
+                }
             }
         }
         
         if isSearching {
-            serviceProvider.loadDetails(wn, cachePolicy: .usesCache)
-                .done(on: .main) {
-                    discoverCell.setWNMetadata($0)
-                }.catch { err in
-                    print(err)
-            }
+            discoverCell.loadDetails()
         }
-
-        discoverCell.setWNMetadata(wn)
         
         return discoverCell
     }
@@ -250,7 +232,8 @@ class DiscoverTableViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let infoController = segue.destination as? InformationTableViewController,
             let idx = tableView.indexPathForSelectedRow?.row {
-            infoController.webNovel = novelListing[idx]
+            let wn = novelListing[idx]
+            infoController.webNovel = wn
         }
     }
 }
@@ -261,16 +244,30 @@ extension DiscoverTableViewController: UISearchResultsUpdating {
             return
         }
         searchTimer?.invalidate()
-        searchTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) {
-            [unowned self] _ in
-            self.reset()
-            self.fetchingInProgress = true
-            self.serviceProvider.search(byName: name)
-                .done(on: .main) {
-                    self.fetchingInProgress = false
-                    self.novelListing = $0
-                    self.tableView.reloadData()
-            }.catch(self.presentError)
+        // Introduce latency before filing the search request
+        Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false) {
+            [unowned self] timer in
+            // If the search task is already running, cancel it and launch a new one,
+            // since the query is updated
+            self.searchTask?.isCancelled = true
+            self.searchTask = WNCancellableTask { task in
+                self.reset()
+                self.fetchingInProgress = true
+                self.serviceProvider.search(byName: name)
+                    .done(on: .main) {
+                        if !task.isCancelled {
+                            // Only update the search results if the task is the most updated one
+                            print("Search task completed with query \(name)")
+                            self.novelListing = $0
+                            self.tableView.reloadData()
+                        } else {
+                            print("Search task cancelled with query \(name)")
+                        }
+                    }.ensure {
+                        self.fetchingInProgress = task.isCancelled
+                    }.catch(self.presentError)
+            }
+            self.searchTask?.run()
         }
     }
 }
@@ -278,6 +275,8 @@ extension DiscoverTableViewController: UISearchResultsUpdating {
 extension DiscoverTableViewController: UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         tableView.tableHeaderView = tableHeaderView
+        // Cancel current search task; cancel latent search task.
+        searchTask?.isCancelled = true
         searchTimer?.invalidate()
         isSearching = false
         reset()

@@ -35,6 +35,8 @@ class WebNovel: Serializable {
     var aliases: [String]?
     var status: String?
     var coverImageUrl: String?
+    var relatedSeries: [WebNovel]?
+    var recommendations: [WebNovel]?
     
     static var entityName: String = "Novel"
     
@@ -56,8 +58,8 @@ class WebNovel: Serializable {
     }
 }
 
-fileprivate func str(_ arr: [String]?) -> String{
-    return arr?.joined(separator: ", ") ?? "N/A"
+fileprivate func str(_ arr: [CustomStringConvertible]?) -> String {
+    return arr?.map {$0.description}.joined(separator: ", ") ?? "N/A"
 }
 
 fileprivate func str<T: LosslessStringConvertible>(_ n: T?) -> String {
@@ -88,6 +90,8 @@ extension WebNovel: CustomStringConvertible {
         Readers: \(str(readers))
         Language: \(language ?? "N/A")
         Type: \(str(type))
+        Related Series: \(str(relatedSeries))
+        Recommendations: \(str(recommendations))
         Short Description: \(str(shortDescription))
         Full Description: \(str(fullDescription))
         """

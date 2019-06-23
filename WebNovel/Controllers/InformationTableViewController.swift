@@ -14,6 +14,7 @@ fileprivate enum ID: String {
     case genres = "information.genres"
     case stats = "information.stats"
     case fact = "information.fact"
+    case entry = "information.entry"
 }
 
 fileprivate enum Section: String, CaseIterable {
@@ -21,6 +22,8 @@ fileprivate enum Section: String, CaseIterable {
     case genres = "Genres"
     case stats = "Stats"
     case facts = "Other Facts"
+    case relatedSeries = "Related Series"
+    case recommendations = "Recommendations"
 }
 
 class InformationTableViewController: UITableViewController {
@@ -37,7 +40,16 @@ class InformationTableViewController: UITableViewController {
         return WNServiceManager.shared
     }
     
-    fileprivate var sections: [Section] = Section.allCases
+    fileprivate var sections: [Section] {
+        var secs = Section.allCases
+        if webNovel.relatedSeries == nil {
+            secs.removeAll(where: {$0 == .relatedSeries})
+        }
+        if webNovel.recommendations == nil {
+            secs.removeAll(where: {$0 == .recommendations})
+        }
+        return secs
+    }
     
     var facts: [(String, PartialKeyPath<WebNovel>)] = [
         ("Year", \WebNovel.year),
@@ -70,10 +82,13 @@ class InformationTableViewController: UITableViewController {
     
     var webNovel: WebNovel!
     
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        tableView.allowsSelection = false
         tableView.separatorColor = .clear
         load()
     }
@@ -126,7 +141,16 @@ class InformationTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return sections[section] == .facts ? availableFacts.count : 1
+        switch sections[section] {
+        case .facts:
+            return availableFacts.count
+        case .recommendations:
+            return webNovel.recommendations?.count ?? 0
+        case .relatedSeries:
+            return webNovel.relatedSeries?.count ?? 0
+        default:
+            return 1
+        }
     }
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -172,7 +196,36 @@ class InformationTableViewController: UITableViewController {
             cell.nameLabel.text = name
             cell.valueLabel.text = value
             return cell
+        case .recommendations, .relatedSeries:
+            let cell = makeCell(.entry, as: DiscoverTableViewCell.self)
+            if let wn = webNovelForIndexPath(at: indexPath) {
+                cell.setWNMetadata(wn)
+                cell.loadCoverImage(nil)
+                cell.loadDetails()
+            }
+            return cell
         }
+    }
+    
+    private func webNovelForIndexPath(at indexPath: IndexPath) -> WebNovel? {
+        let list = sections[indexPath.section] == .recommendations ? webNovel.recommendations : webNovel.relatedSeries
+        return list?[indexPath.row]
+    }
+    
+    override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        let section = sections[indexPath.section]
+        return section == .recommendations || section == .relatedSeries ? indexPath : nil
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let storyboard = UIStoryboard.init(name: "Main", bundle: nil)
+        guard let infoController = storyboard.instantiateViewController(withIdentifier: "main.information") as? InformationTableViewController,
+            let wn = webNovelForIndexPath(at: indexPath) else {
+            return
+        }
+        infoController.webNovel = wn
+        infoController.navigationItem.title = wn.title
+        navigationController?.pushViewController(infoController, animated: true)
     }
 }
 
