@@ -26,16 +26,7 @@ class DiscoverTableViewCell: UITableViewCell {
         return WNServiceManager.shared.serviceProvider
     }
     
-    var loadImageTask: WNCancellableTask?
-    var loadingCoverImage = false
-    var loadingDetails = false
     var wn: WebNovel?
-
-    func setCoverImage(_ image: UIImage) {
-        coverImageView.image = image
-        coverImageView.alpha = 1
-        activityIndicatorView.stopAnimating()
-    }
     
     func setRating(_ rating: Double?) {
         let rating = rating ?? 0.0
@@ -64,58 +55,14 @@ class DiscoverTableViewCell: UITableViewCell {
         setDescription(wn.shortDescription ?? wn.fullDescription)
     }
     
-    /// Load details (other information for the WN
-    func loadDetails() {
-        guard let wn = self.wn, !loadingDetails else {
+    func setCoverImage(_ image: UIImage?) {
+        guard let image = image else {
+            activityIndicatorView.startAnimating()
+            coverImageView?.alpha = 0.1
             return
         }
-        loadingDetails = true
-        self.serviceProvider.loadDetails(wn, cachePolicy: .usesCache)
-            .done(on: .main) {
-                self.setWNMetadata($0)
-            }.ensure {
-                self.loadingDetails = false
-            }.catch { err in
-                print(err)
-        }
-    }
-    
-    /// Load the cover image for the WN.
-    func loadCoverImage(_ completionHandler: ((UIImage) -> Void)?) {
-        guard let wn = self.wn, !loadingCoverImage else {
-            return
-        }
-        /// Invalidates existing cover image
-        activityIndicatorView.startAnimating()
-        coverImageView.alpha = 0.1
-        loadingCoverImage = true
-        
-        loadImageTask = WNCancellableTask { [unowned self] task in
-            self.serviceProvider.loadDetails(wn, cachePolicy: .usesCache)
-                .map { wn -> String in
-                    guard let coverImgUrl = wn.coverImageUrl else {
-                        throw WNError.urlNotFound
-                    }
-                    return coverImgUrl
-                }.then { url in
-                    downloadImage(from: url)
-                }.done { image in
-                    if !task.isCancelled {
-                        self.setCoverImage(image)
-                    }
-                    completionHandler?(image)
-                }.ensure {
-                    self.loadingCoverImage = false
-                }.catch { err in
-                    self.setCoverImage(.coverPlaceholder)
-                    print(err)
-            }
-        }
-        loadImageTask?.run()
-    }
-    
-    override func prepareForReuse() {
-        loadImageTask?.isCancelled = true
-        loadingCoverImage = false
+        activityIndicatorView.stopAnimating()
+        coverImageView.alpha = 1
+        coverImageView.image = image
     }
 }

@@ -21,4 +21,17 @@ class WNCancellableTask {
     func run() {
         task(self)
     }
+    
+    func isNotCancelled<T>(_ obj: T) -> Promise<T> {
+        return Promise { seal in
+            if isCancelled {
+                seal.reject(WNError.cancelled)
+            }
+            seal.fulfill(obj)
+        }
+    }
+    
+    func cancel() {
+        isCancelled = true
+    }
 }

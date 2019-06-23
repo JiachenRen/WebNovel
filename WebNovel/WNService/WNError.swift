@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum WNError: Error {
+enum WNError: Error, Equatable {
     case unknownResponseError
     case parsingError(_ supplementalMsg: String)
     case missingParameter(_ parameter: String)
@@ -22,6 +22,8 @@ enum WNError: Error {
     case invalidParsingInstruction
     case decodingFailed
     case managedContextNotFound
+    case cancelled
+    case coverImageUrlNotFound
     
     var localizedDescription: String {
         switch self {
@@ -51,6 +53,10 @@ enum WNError: Error {
             return "Failed to decode html string"
         case .managedContextNotFound:
             return "Unable to find managed object context"
+        case .cancelled:
+            return "The operation is cancelled"
+        case .coverImageUrlNotFound:
+            return "The url for the cover image is not found"
         }
     }
 }

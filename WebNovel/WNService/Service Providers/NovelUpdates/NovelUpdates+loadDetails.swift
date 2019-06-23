@@ -34,7 +34,6 @@ extension NovelUpdates {
     
     /// Parse detailed information from response html document
     private func parseDetails(_ doc: Document, _ wn: WebNovel) throws {
-        var wn = wn
         wn.title = try doc.getElementsByClass("seriestitlenu").first()?.text()
         wn.fullDescription = try doc.getElementById("editdescription")?.children()
             .reduce("") {
@@ -102,7 +101,7 @@ extension NovelUpdates {
             .first()?.getElementsByTag("img")
             .first()?.attr("src")
             .addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed)
-        let paths: [WritableKeyPath<WebNovel, Int?>] = [
+        let paths: [ReferenceWritableKeyPath<WebNovel, Int?>] = [
             \.weeklyRank, \.monthlyRank, \.allTimeRank
         ]
         for (idx, rank) in try doc.getElementsByClass("userrate rank").enumerated() {

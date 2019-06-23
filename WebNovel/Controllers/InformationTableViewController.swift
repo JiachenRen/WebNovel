@@ -111,11 +111,12 @@ class InformationTableViewController: UITableViewController {
         mgr.serviceProvider.loadDetails(webNovel, cachePolicy: .usesCache)
             .done { wn in
                 self.webNovel = wn
+                self.loadCoverImage()
                 self.presentWebNovel()
             }.catch(presentError)
     }
     
-    func presentWebNovel() {
+    func loadCoverImage() {
         if let url = webNovel.coverImageUrl {
             activityIndicatorView.startAnimating()
             downloadImage(from: url).done { image in
@@ -129,6 +130,9 @@ class InformationTableViewController: UITableViewController {
         } else {
             coverImageView.image = .coverPlaceholder
         }
+    }
+    
+    func presentWebNovel() {
         titleLabel.text = webNovel.title
         statusLabel.text = webNovel.status ?? "Status Unknown"
         tableView.reloadData()
@@ -200,8 +204,25 @@ class InformationTableViewController: UITableViewController {
             let cell = makeCell(.entry, as: DiscoverTableViewCell.self)
             if let wn = webNovelForIndexPath(at: indexPath) {
                 cell.setWNMetadata(wn)
-                cell.loadCoverImage(nil)
-                cell.loadDetails()
+                cell.coverImageView.image = nil
+                mgr.serviceProvider.loadDetails(wn, cachePolicy: .usesCache)
+                .done { wn in
+                    cell.setWNMetadata(wn)
+                    cell.coverImageView.image = .coverPlaceholder
+                    cell.coverImageView.alpha = 0.1
+                    if let url = wn.coverImageUrl {
+                        downloadImage(from: url).done { image in
+                            cell.setCoverImage(image)
+                        }.catch { err in
+                            print(err)
+                            cell.setCoverImage(.coverPlaceholder)
+                        }
+                    } else {
+                        cell.setCoverImage(.coverPlaceholder)
+                    }
+                }.catch {err in
+                    print(err)
+                }
             }
             return cell
         }

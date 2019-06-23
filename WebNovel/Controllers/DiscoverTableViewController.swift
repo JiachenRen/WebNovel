@@ -43,6 +43,7 @@ class DiscoverTableViewController: UITableViewController {
     
     var novelListing = [WebNovel]()
     var cachedCoverImages = [IndexPath: UIImage]()
+    var loadTasks: [WNCancellableTask] = []
     var currentPage = 1
     var fetchingInProgress = false {
         didSet {
@@ -159,6 +160,11 @@ class DiscoverTableViewController: UITableViewController {
         // Clear listing data & cover image cache from previous listing
         cachedCoverImages = [:]
         novelListing = []
+        // Cancel all load tasks
+        loadTasks.forEach {
+            $0.cancel()
+        }
+        loadTasks = []
         tableView.reloadData()
     }
     
@@ -167,14 +173,71 @@ class DiscoverTableViewController: UITableViewController {
             return
         }
         fetchingInProgress = true
-        serviceProvider.listingService?.fetchListing(page: currentPage)
+        listingService?.fetchListing(page: currentPage)
             .done(on: .main) { webNovels in
+                // Reload table view with preliminary information about the WN
+                let num = self.novelListing.count
                 self.novelListing.append(contentsOf: webNovels)
                 self.tableView.reloadData()
                 self.currentPage += 1
-            }.ensure {
+                
+                // Fetch details & load cover image
+                self.loadAll(webNovels, num)
+            }
+            .ensure {
                 self.fetchingInProgress = false
-            }.catch(presentError)
+            }
+            .catch(presentError)
+    }
+    
+    func loadAll(_ novels: [WebNovel], _ startIdx: Int) {
+        for (i, wn) in novels.enumerated() {
+            self.load(wn, IndexPath(row: startIdx + i, section: 0))
+        }
+    }
+    
+    func load(_ wn: WebNovel, _ indexPath: IndexPath) {
+        let task = WNCancellableTask { task in
+            self.serviceProvider.loadDetails(wn, cachePolicy: .usesCache)
+                .then(task.isNotCancelled)
+                .get { wn in
+                    self.novelListing[indexPath.row] = wn
+                    self.updateWNMetadata(at: indexPath)
+                }
+                .then { wn -> Promise<UIImage> in
+                    if let url = wn.coverImageUrl {
+                        return downloadImage(from: url, cachePolicy: .usesCache)
+                    } else {
+                        throw WNError.coverImageUrlNotFound
+                    }
+                }
+                .then(task.isNotCancelled)
+                .done { image in
+                    self.cachedCoverImages[indexPath] = image
+                    self.updateCoverImage(at: indexPath)
+                }
+                .catch { err in
+                    if let wnErr = err as? WNError, wnErr == .coverImageUrlNotFound {
+                        self.cachedCoverImages[indexPath] = .coverPlaceholder
+                        self.updateCoverImage(at: indexPath)
+                    }
+                    print(err)
+            }
+        }
+        task.run()
+        loadTasks.append(task)
+    }
+    
+    func updateWNMetadata(at indexPath: IndexPath) {
+        cell(at: indexPath)?.setWNMetadata(novelListing[indexPath.row])
+    }
+    
+    func updateCoverImage(at indexPath: IndexPath) {
+        cell(at: indexPath)?.setCoverImage(self.cachedCoverImages[indexPath])
+    }
+    
+    func cell(at indexPath: IndexPath) -> DiscoverTableViewCell? {
+        return self.tableView.cellForRow(at: indexPath) as? DiscoverTableViewCell
     }
 
     // MARK: - Table view data source
@@ -194,21 +257,7 @@ class DiscoverTableViewController: UITableViewController {
         }
         let wn = novelListing[indexPath.row]
         discoverCell.setWNMetadata(wn)
-        
-        // Load cover image
-        if let image = cachedCoverImages[indexPath] {
-            discoverCell.setCoverImage(image)
-        } else {
-            discoverCell.loadCoverImage { image in
-                if !self.isSearching {
-                    self.cachedCoverImages[indexPath] = image
-                }
-            }
-        }
-        
-        if isSearching {
-            discoverCell.loadDetails()
-        }
+        discoverCell.setCoverImage(cachedCoverImages[indexPath])
         
         return discoverCell
     }
@@ -249,7 +298,7 @@ extension DiscoverTableViewController: UISearchResultsUpdating {
             [unowned self] timer in
             // If the search task is already running, cancel it and launch a new one,
             // since the query is updated
-            self.searchTask?.isCancelled = true
+            self.searchTask?.cancel()
             self.searchTask = WNCancellableTask { task in
                 self.reset()
                 self.fetchingInProgress = true
@@ -260,6 +309,7 @@ extension DiscoverTableViewController: UISearchResultsUpdating {
                             print("Search task completed with query \(name)")
                             self.novelListing = $0
                             self.tableView.reloadData()
+                            self.loadAll($0, 0)
                         } else {
                             print("Search task cancelled with query \(name)")
                         }
@@ -276,7 +326,7 @@ extension DiscoverTableViewController: UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         tableView.tableHeaderView = tableHeaderView
         // Cancel current search task; cancel latent search task.
-        searchTask?.isCancelled = true
+        searchTask?.cancel()
         searchTimer?.invalidate()
         isSearching = false
         reset()
