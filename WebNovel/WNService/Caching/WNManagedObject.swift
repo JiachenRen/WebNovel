@@ -10,8 +10,15 @@ import Foundation
 import CoreData
 
 protocol WNManagedObject: NSManagedObject {
+    static var entityName: String {get}
     var data: NSObject? {get set}
     var url: String? {get set}
+}
+
+extension WNManagedObject {
+    static var entityName: String {
+        return String(describing: Self.self)
+    }
 }
 
 extension Chapter: WNManagedObject {

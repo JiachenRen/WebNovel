@@ -9,12 +9,12 @@
 import Foundation
 
 class WNChaptersCatalogue: Serializable {
+    typealias ManagedObject = ChaptersCatalogue
+    
     var chapters: [WNChapter]
     
     /// Url for the WN that this catalogue belongs
     var url: String?
-    
-    static var entityName: String = "ChaptersCatalogue"
     
     init(_ url: String, _ chapters: [WNChapter]) {
         self.url = url

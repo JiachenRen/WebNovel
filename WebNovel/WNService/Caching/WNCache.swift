@@ -22,31 +22,9 @@ class WNCache {
         case usesCache
     }
     
-    /// Saves loaded chapters for the given url to core data
-    static func save(_ wnChaptersCatalogue: WNChaptersCatalogue) throws {
-        try save(object: wnChaptersCatalogue, managedObject: ChaptersCatalogue.self)
-    }
-    
-    /// Saves the WN to core data
-    /// If an existing WN entry with the same url exists, it is overwritten.
-    static func save(_ webNovel: WebNovel) throws {
-        try save(object: webNovel, managedObject: Novel.self)
-    }
-    
-    /// Saves the WN chapter to core data
+    /// Saves the WN chapter, cover image, information, or chapters catalogue to core data
     /// If an existing WN chapter with the same url exists, it is overwritten.
-    static func save(_ wnChapter: WNChapter) throws {
-        try save(object: wnChapter, managedObject: Chapter.self)
-    }
-    
-    /// Saves the cover image for the WN to core data
-    static func save(_ wnCoverImage: WNCoverImage) throws {
-        try save(object: wnCoverImage, managedObject: CoverImage.self)
-    }
-    
-    /// Saves the WN chapter to core data
-    /// If an existing WN chapter with the same url exists, it is overwritten.
-    private static func save<T: Serializable, K: WNManagedObject>(object: T, managedObject: K.Type) throws {
+    static func save<T: Serializable>(_ object: T) throws {
         guard let ctx = managedContext else {
             throw WNError.managedContextNotFound
         }
@@ -54,39 +32,24 @@ class WNCache {
             throw WNError.urlNotFound
         }
         
-        let request = fetchRequest(url, for: K.self)
-        let chapter = try fetchOrCreate(request, entityName: T.entityName)
+        let request = fetchRequest(url, for: T.ManagedObject.self)
+        let managedObj = try fetchOrCreate(request)
         
         // Update the object's properties
-        chapter.url = url
-        chapter.data = try jsonEncoder.encode(object) as NSObject
+        managedObj.url = url
+        managedObj.data = try jsonEncoder.encode(object) as NSObject
         
         // Apply changes
         try ctx.save()
     }
     
-    static func fetchWebNovel(_ url: String) throws -> WebNovel? {
-        return try fetch(by: url, managedObject: Novel.self, object: WebNovel.self)
-    }
-    
-    static func fetchChapter(_ url: String) throws -> WNChapter? {
-        return try fetch(by: url, managedObject: Chapter.self, object: WNChapter.self)
-    }
-    
-    static func fetchChaptersCatalogue(_ url: String) throws -> WNChaptersCatalogue? {
-        return try fetch(by: url, managedObject: ChaptersCatalogue.self, object: WNChaptersCatalogue.self)
-    }
-    
-    static func fetchCoverImage(_ url: String) throws -> WNCoverImage? {
-        return try fetch(by: url, managedObject: CoverImage.self, object: WNCoverImage.self)
-    }
-    
-    private static func fetch<T: Codable, K: WNManagedObject>(by url: String, managedObject: K.Type, object: T.Type) throws -> T? {
+    /// Fetches the first object in core data of coresponding type and url.
+    static func fetch<T: Serializable>(by url: String, object: T.Type) throws -> T? {
         guard let ctx = managedContext else {
-            throw WNError.urlNotFound
+            throw WNError.managedContextNotFound
         }
         
-        let request = fetchRequest(url, for: K.self)
+        let request = fetchRequest(url, for: T.ManagedObject.self)
         if let obj = try ctx.fetch(request).first {
             if let data = obj.data as? Data {
                 return try jsonDecoder.decode(T.self, from: data)
@@ -107,15 +70,15 @@ class WNCache {
     /// if not, a new object is created from provided entity name.
     /// - Parameter request: A NSFetchRequest for retrieving object
     /// - Parameter entityName: The entity name for the object
-    /// - Returns: Retrieved or newly created NSManagedObject
-    private static func fetchOrCreate<T>(_ request: NSFetchRequest<T>, entityName: String) throws -> T {
+    /// - Returns: Retrieved or newly created WNManagedObject
+    private static func fetchOrCreate<T: WNManagedObject>(_ request: NSFetchRequest<T>) throws -> T {
         guard let ctx = managedContext else {
             throw WNError.managedContextNotFound
         }
         if let retrieved = try ctx.fetch(request).first {
             return retrieved
         } else {
-            let entity = NSEntityDescription.entity(forEntityName: entityName, in: ctx)!
+            let entity = NSEntityDescription.entity(forEntityName: T.entityName, in: ctx)!
             return NSManagedObject(entity: entity, insertInto: ctx) as! T
         }
     }

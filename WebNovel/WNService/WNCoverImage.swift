@@ -10,10 +10,10 @@ import Foundation
 import UIKit
 
 class WNCoverImage: Serializable {
+    typealias ManagedObject = CoverImage
+    
     var url: String?
     var imageData: Data
-    
-    static var entityName: String = "CoverImage"
     
     init?(uiImage: UIImage , _ url: String) {
         guard let data = uiImage.pngData() else {

@@ -7,9 +7,10 @@
 //
 
 import Foundation
+import CoreData
 
 /// JSON serializable
 protocol Serializable: Codable {
+    associatedtype ManagedObject: WNManagedObject
     var url: String? {get}
-    static var entityName: String {get}
 }

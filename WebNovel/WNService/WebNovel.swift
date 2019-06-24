@@ -14,6 +14,8 @@ import Alamofire
 /// Represents a web novel object.
 /// The variables are self explanatory
 class WebNovel: Serializable {
+    typealias ManagedObject = Novel
+    
     var shortDescription: String?
     var fullDescription: String?
     var organization: String?
@@ -37,8 +39,6 @@ class WebNovel: Serializable {
     var coverImageUrl: String?
     var relatedSeries: [WebNovel]?
     var recommendations: [WebNovel]?
-    
-    static var entityName: String = "Novel"
     
     private func getUrl() -> Promise<String> {
         return Promise { seal in

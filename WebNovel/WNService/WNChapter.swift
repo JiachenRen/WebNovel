@@ -9,14 +9,14 @@
 import Foundation
 
 class WNChapter: Serializable, CustomStringConvertible {
+    typealias ManagedObject = Chapter
+    
     var url: String?
     var chapter: String
     var date: String?
     var title: String?
     var content: String?
     var id: Int
-    
-    static var entityName: String = "Chapter"
     
     init(url: String, chapter: String, id: Int) {
         self.url = url
