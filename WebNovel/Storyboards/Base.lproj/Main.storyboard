@@ -259,7 +259,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="REh-VL-FhV">
-                                            <rect key="frame" x="68" y="83" width="20" height="20"/>
+                                            <rect key="frame" x="67.5" y="82.5" width="20" height="20"/>
                                         </activityIndicatorView>
                                     </subviews>
                                     <constraints>
@@ -404,6 +404,7 @@
                                                     <state key="normal" image="read"/>
                                                     <connections>
                                                         <action selector="chaptersButtonTapped:" destination="vxg-VG-G9L" eventType="touchUpInside" id="aE3-Ay-VCV"/>
+                                                        <segue destination="1PQ-i4-8n6" kind="show" id="O9A-YQ-YpC"/>
                                                     </connections>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Chapters" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ous-wp-e6k">
@@ -825,9 +826,107 @@
             </objects>
             <point key="canvasLocation" x="3350.7246376811595" y="-773.4375"/>
         </scene>
+        <!--Chapters Table View Controller-->
+        <scene sceneID="93W-1J-Faf">
+            <objects>
+                <tableViewController id="1PQ-i4-8n6" customClass="ChaptersTableViewController" customModule="WebNovel" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="0VW-BV-QJy">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <view key="tableHeaderView" contentMode="scaleToFill" id="Kz7-lW-kmw">
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0 chapters" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1yv-6V-ASk">
+                                    <rect key="frame" x="20" y="14" width="65" height="16"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gdy-LU-nvD">
+                                    <rect key="frame" x="226" y="7" width="168" height="30"/>
+                                    <state key="normal" title="Order By: Descending ↓"/>
+                                    <connections>
+                                        <action selector="orderButtonTapped:" destination="1PQ-i4-8n6" eventType="touchUpInside" id="Hca-Yh-pAA"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstItem="1yv-6V-ASk" firstAttribute="centerY" secondItem="Kz7-lW-kmw" secondAttribute="centerY" id="1rn-Pt-4OE"/>
+                                <constraint firstAttribute="trailing" secondItem="Gdy-LU-nvD" secondAttribute="trailing" constant="20" id="FnI-qn-qEb"/>
+                                <constraint firstItem="1yv-6V-ASk" firstAttribute="leading" secondItem="Kz7-lW-kmw" secondAttribute="leading" constant="20" id="ZIn-iF-boj"/>
+                                <constraint firstItem="Gdy-LU-nvD" firstAttribute="centerY" secondItem="1yv-6V-ASk" secondAttribute="centerY" id="a6N-4t-SK3"/>
+                                <constraint firstItem="Gdy-LU-nvD" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="1yv-6V-ASk" secondAttribute="trailing" constant="20" id="iD9-Qa-JUP"/>
+                            </constraints>
+                        </view>
+                        <view key="tableFooterView" contentMode="scaleToFill" id="J00-nK-akb">
+                            <rect key="frame" x="0.0" y="116" width="414" height="79"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Z1z-dJ-cUU">
+                                    <rect key="frame" x="197" y="16" width="20" height="20"/>
+                                </activityIndicatorView>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LOADING" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NAr-uD-DfL">
+                                    <rect key="frame" x="180.5" y="44" width="53.5" height="14.5"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                    <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstItem="NAr-uD-DfL" firstAttribute="top" secondItem="Z1z-dJ-cUU" secondAttribute="bottom" constant="8" id="IMn-RF-qxT"/>
+                                <constraint firstItem="Z1z-dJ-cUU" firstAttribute="top" secondItem="J00-nK-akb" secondAttribute="top" constant="16" id="c9j-7F-g2B"/>
+                                <constraint firstItem="NAr-uD-DfL" firstAttribute="centerX" secondItem="J00-nK-akb" secondAttribute="centerX" id="j5U-LO-lhv"/>
+                                <constraint firstItem="Z1z-dJ-cUU" firstAttribute="centerX" secondItem="J00-nK-akb" secondAttribute="centerX" id="nyA-MP-txE"/>
+                            </constraints>
+                        </view>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="chapters.chapter" id="YET-aR-Qc2" customClass="ChapterTableViewCell" customModule="WebNovel" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="72" width="414" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="YET-aR-Qc2" id="T6I-Ft-Khw">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Chapter" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lkP-tw-a9g">
+                                            <rect key="frame" x="20" y="13" width="55.5" height="18"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="lkP-tw-a9g" firstAttribute="leading" secondItem="T6I-Ft-Khw" secondAttribute="leadingMargin" id="X5T-zZ-uve"/>
+                                        <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="lkP-tw-a9g" secondAttribute="trailing" constant="20" id="tC5-EE-aNO"/>
+                                        <constraint firstItem="lkP-tw-a9g" firstAttribute="centerY" secondItem="T6I-Ft-Khw" secondAttribute="centerY" id="wR1-Lx-XtI"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="chapterLabel" destination="lkP-tw-a9g" id="nCp-jR-cIm"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="1PQ-i4-8n6" id="qyf-nL-h3O"/>
+                            <outlet property="delegate" destination="1PQ-i4-8n6" id="LYN-PD-mUg"/>
+                        </connections>
+                    </tableView>
+                    <connections>
+                        <outlet property="chaptersCountLabel" destination="1yv-6V-ASk" id="UES-1r-cFd"/>
+                        <outlet property="loadingView" destination="J00-nK-akb" id="Qbw-qF-yon"/>
+                        <outlet property="orderButton" destination="Gdy-LU-nvD" id="o8b-JP-Z5v"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="R0z-CZ-kqD" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4257" y="-773"/>
+        </scene>
     </scenes>
     <resources>
-        <image name="cover-placeholder" width="480" height="696"/>
+        <image name="cover-placeholder" width="1412" height="1882"/>
         <image name="discover-icon" width="30" height="30"/>
         <image name="heart-outlined" width="50" height="50"/>
         <image name="rank" width="50" height="50"/>

@@ -27,7 +27,9 @@ class NovelUpdates: WNServiceProvider {
             throw WNError.parsingError("Missing chapters list")
         }
         return try list.children().enumerated().map { (idx, chapter) in
-            let a = try chapter.getElementsByAttribute("data-id").first()!
+            guard let a = try chapter.getElementsByAttribute("data-id").first() else {
+                throw WNError.parsingError("No chapters found")
+            }
             return try WNChapter(url: "https:\(a.attr("href"))", chapter: a.text(), id: idx + 1)
         }
     }

@@ -205,6 +205,7 @@ class InformationTableViewController: UITableViewController {
             if let wn = webNovelForIndexPath(at: indexPath) {
                 cell.setWNMetadata(wn)
                 cell.coverImageView.image = nil
+                cell.activityIndicatorView.startAnimating()
                 mgr.serviceProvider.loadDetails(wn, cachePolicy: .usesCache)
                 .done { wn in
                     cell.setWNMetadata(wn)
@@ -247,6 +248,13 @@ class InformationTableViewController: UITableViewController {
         infoController.webNovel = wn
         infoController.navigationItem.title = wn.title
         navigationController?.pushViewController(infoController, animated: true)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let chaptersController = segue.destination as? ChaptersTableViewController else {
+            return
+        }
+        chaptersController.webNovel = webNovel
     }
 }
 

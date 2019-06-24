@@ -28,6 +28,8 @@
 		1F9890BB22BDB24300A09F3F /* StatsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F9890BA22BDB24300A09F3F /* StatsTableViewCell.swift */; };
 		1F9890BD22BDDCFD00A09F3F /* FactTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F9890BC22BDDCFD00A09F3F /* FactTableViewCell.swift */; };
 		1FCD41E722BF76EE0050ECEC /* WNCancellableTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCD41E622BF76EE0050ECEC /* WNCancellableTask.swift */; };
+		1FCD41E922C06E4C0050ECEC /* ChaptersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCD41E822C06E4C0050ECEC /* ChaptersTableViewController.swift */; };
+		1FCD41EB22C0713F0050ECEC /* ChapterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCD41EA22C0713F0050ECEC /* ChapterTableViewCell.swift */; };
 		1FED6E3422B34C92002F9317 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FED6E3322B34C92002F9317 /* AppDelegate.swift */; };
 		1FED6E3922B34C92002F9317 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1FED6E3722B34C92002F9317 /* Main.storyboard */; };
 		1FED6E3C22B34C92002F9317 /* WebNovel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1FED6E3A22B34C92002F9317 /* WebNovel.xcdatamodeld */; };
@@ -104,6 +106,8 @@
 		1F9890BA22BDB24300A09F3F /* StatsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsTableViewCell.swift; sourceTree = "<group>"; };
 		1F9890BC22BDDCFD00A09F3F /* FactTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FactTableViewCell.swift; sourceTree = "<group>"; };
 		1FCD41E622BF76EE0050ECEC /* WNCancellableTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WNCancellableTask.swift; sourceTree = "<group>"; };
+		1FCD41E822C06E4C0050ECEC /* ChaptersTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChaptersTableViewController.swift; sourceTree = "<group>"; };
+		1FCD41EA22C0713F0050ECEC /* ChapterTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChapterTableViewCell.swift; sourceTree = "<group>"; };
 		1FED6E3022B34C92002F9317 /* WebNovel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WebNovel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FED6E3322B34C92002F9317 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1FED6E3822B34C92002F9317 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -292,6 +296,7 @@
 			children = (
 				1F0E2EB022B73E5500CD77A9 /* DiscoverTableViewController.swift */,
 				1F9890A822BCCBAB00A09F3F /* InformationTableViewController.swift */,
+				1FCD41E822C06E4C0050ECEC /* ChaptersTableViewController.swift */,
 				1F52AAE622B8DC7100D4FB6C /* ListingServiceViewController.swift */,
 			);
 			path = Controllers;
@@ -301,6 +306,7 @@
 			isa = PBXGroup;
 			children = (
 				1F0E2EB222B73F7500CD77A9 /* DiscoverTableViewCell.swift */,
+				1FCD41EA22C0713F0050ECEC /* ChapterTableViewCell.swift */,
 				1F9890B022BCF1AE00A09F3F /* SectionHeaderTableViewCell.swift */,
 				1F9890B222BCF6D400A09F3F /* SummaryTableViewCell.swift */,
 				1F9890B622BD096900A09F3F /* GenresTableViewCell.swift */,
@@ -443,8 +449,10 @@
 				1FED6EA622B627A1002F9317 /* NovelUpdates.swift in Sources */,
 				1F52AAE922B8E88800D4FB6C /* Notification.swift in Sources */,
 				1F9890BD22BDDCFD00A09F3F /* FactTableViewCell.swift in Sources */,
+				1FCD41EB22C0713F0050ECEC /* ChapterTableViewCell.swift in Sources */,
 				1F0E2EB322B73F7500CD77A9 /* DiscoverTableViewCell.swift in Sources */,
 				1F9890B922BD219700A09F3F /* GenreLabel.swift in Sources */,
+				1FCD41E922C06E4C0050ECEC /* ChaptersTableViewController.swift in Sources */,
 				1FED6E6D22B403F6002F9317 /* WNServiceProvider.swift in Sources */,
 				1F52AAEC22B8EAFA00D4FB6C /* NSObject+observe.swift in Sources */,
 				1FED6EAE22B6FB57002F9317 /* WNChaptersCatalogue.swift in Sources */,
