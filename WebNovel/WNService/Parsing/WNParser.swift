@@ -9,8 +9,64 @@
 import Foundation
 import PromiseKit
 import SwiftSoup
+import JavaScriptCore
 
 class WNParser {
+    
+    /// Readability parser
+    private static var reader: Readability = Readability()
+    
+    /// A dictionary of hosts and their corresponding extractors
+    private static var extractors: [String: Extractor] = [
+        "rtd.moe": .init([
+            \.title: [
+                .id("content"),
+                .tag("h2", idx: 0),
+                .parse {try? decode($0.text())}
+            ],
+            \.textContent: [
+                .id("content"),
+                .parse {
+                    try? $0.getElementsByTag("p")
+                        .reduce("") {
+                            try $0 + "\n" + decode($1.text())
+                    }
+                }
+            ]
+            ]),
+        "blastron01.tumblr.com": .init([
+            \.title: [
+                .id("blog"),
+                .tag("div", idx: 0),
+                .tag("h1", idx: 1),
+                .parse {try? decode($0.text())}
+            ],
+            \.textContent: [
+                .id("blog"),
+                .tag("div", idx: 0),
+                .parse {
+                    try? $0.getElementsByTag("p")
+                        .reduce("") {
+                            try $0 + "\n" + decode($1.text())
+                    }
+                }
+            ]
+            ]),
+        "turb0translation.blogspot.com": .init([
+            \.title: [
+                .class("post-body entry-content", idx: 0),
+                .tag("b", idx: 0),
+                .tag("span", idx: 0),
+                .parse {try? decode($0.text())}
+            ],
+            \.textContent: [
+                .class("post-body entry-content", idx: 0),
+                .parse {
+                    try? decode($0.html().replacingOccurrences(of: "<br>", with: "\n"))
+                }
+            ]
+            ])
+    ]
     
     /// Decodes html string.
     /// e.g. &#8216;Du bist ein shwein&#8217; becomes 'Du bist ein shwein'
@@ -35,79 +91,28 @@ class WNParser {
     /// - Parameter html: Raw html string for the WN chapter
     /// - Parameter url: The  host url is used for figuring out the extraction method for the chapter.
     /// - Parameter chapter: Parsed info is merged into existing chapter object
-    static func parseChapter(_ html: String, _ url: URL, mergeInto chapter: WNChapter) -> Promise<WNChapter> {
-        return Promise { seal in
-            guard let host = url.host else {
-                seal.reject(WNError.hostNotFound)
-                return
+    static func parseChapter(_ html: String, _ url: URL, mergeInto chapter: WNChapter) {
+        
+        // Save chapter raw html string
+        chapter.rawHtml = html
+        
+        // Extract chapter information from raw html using custom, host-specific parser
+        if let host = url.host, let extractor = extractors[host]  {
+            if let doc = try? SwiftSoup.parse(html) {
+                try? extractor.extract(from: doc, into: chapter)
             }
-            guard let extractor = extractors[host] else {
-                seal.reject(WNError.unsupportedHost(host))
-                return
-            }
-            let doc = try SwiftSoup.parse(html)
-            try extractor.extract(from: doc, into: chapter)
-            print(chapter.chapter)
-            seal.fulfill(chapter)
         }
+        
+        // Since there are countless websites for WN out there, it is not possible
+        // to have a host specific parser for every one of them.
+        // Therefore, Readability is used as a generic parser. (It is used by Fire Fox for its reader's view)
+        chapter.article = reader.parse(html)
     }
-    
-    /// A dictionary of hosts and their corresponding extractors
-    static var extractors: [String: Extractor] = [
-        "rtd.moe": .init([
-            \.title: [
-                .id("content"),
-                .tag("h2", idx: 0),
-                .parse {try? decode($0.text())}
-            ],
-            \.content: [
-                .id("content"),
-                .parse {
-                    try? $0.getElementsByTag("p")
-                        .reduce("") {
-                            try $0 + "\n" + decode($1.text())
-                    }
-                }
-            ]
-        ]),
-        "blastron01.tumblr.com": .init([
-            \.title: [
-                .id("blog"),
-                .tag("div", idx: 0),
-                .tag("h1", idx: 1),
-                .parse {try? decode($0.text())}
-            ],
-            \.content: [
-                .id("blog"),
-                .tag("div", idx: 0),
-                .parse {
-                    try? $0.getElementsByTag("p")
-                        .reduce("") {
-                            try $0 + "\n" + decode($1.text())
-                    }
-                }
-            ]
-        ]),
-        "turb0translation.blogspot.com": .init([
-            \.title: [
-                .class("post-body entry-content", idx: 0),
-                .tag("b", idx: 0),
-                .tag("span", idx: 0),
-                .parse {try? decode($0.text())}
-            ],
-            \.content: [
-                .class("post-body entry-content", idx: 0),
-                .parse {
-                    try? decode($0.html().replacingOccurrences(of: "<br>", with: "\n"))
-                }
-            ]
-        ])
-    ]
     
     /// The Extractor contains the instructions and logic for extracting WN information from raw html string.
     class Extractor {
         
-        typealias Instructions = [WritableKeyPath<WNChapter, String?>: [ExtractionStep]]
+        typealias Instructions = [ReferenceWritableKeyPath<WNChapter, String?>: [ExtractionStep]]
         
         enum ExtractionStep {
             case id(_ id: String)
@@ -150,7 +155,6 @@ class WNParser {
         
         /// Extracts WNChapter properties from html String by following instructions
         func extract(from doc: Document, into chapter: WNChapter) throws {
-            var chapter = chapter
             try instructions.forEach { keyPath, steps in
                 var element: Element = doc
                 var steps = steps

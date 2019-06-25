@@ -73,12 +73,13 @@ class NovelUpdates: WNServiceProvider {
     func loadChapter(_ chapter: WNChapter, cachePolicy: WNCache.Policy) -> Promise<WNChapter> {
         if cachePolicy == .usesCache, let url = chapter.url {
             if let chapter = try! WNCache.fetch(by: url, object: WNChapter.self) {
+                print("Loaded chapter with url \(url) from core data")
                 return Promise { seal in
                     seal.fulfill(chapter)
                 }
             }
         }
-        return Promise<(String, URL, WNChapter)> { seal in
+        return Promise { seal in
             guard let url = chapter.url else {
                 throw WNError.urlNotFound
             }
@@ -96,10 +97,11 @@ class NovelUpdates: WNServiceProvider {
                     seal.reject(WNError.urlNotFound)
                     return
                 }
-                seal.fulfill((html, url, chapter))
+                WNParser.parseChapter(html, url, mergeInto: chapter)
+                try! WNCache.save(chapter)
+                print("Saved chapter with url \(url) to core data")
+                seal.fulfill(chapter)
             }
-        }.then {
-            WNParser.parseChapter($0.0, $0.1, mergeInto: $0.2)
         }
     }
     

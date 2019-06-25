@@ -21,18 +21,7 @@ extension WNManagedObject {
     }
 }
 
-extension Chapter: WNManagedObject {
-    
-}
-
-extension Novel: WNManagedObject {
-    
-}
-
-extension ChaptersCatalogue: WNManagedObject {
-    
-}
-
-extension CoverImage: WNManagedObject {
-    
-}
+extension Chapter: WNManagedObject {}
+extension Novel: WNManagedObject {}
+extension ChaptersCatalogue: WNManagedObject {}
+extension CoverImage: WNManagedObject {}

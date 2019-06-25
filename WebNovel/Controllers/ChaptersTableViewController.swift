@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SafariServices
 
 private let reuseIdentifier = "chapters.chapter"
 
@@ -87,6 +88,10 @@ class ChaptersTableViewController: UITableViewController {
         }
     }
     
+    private func chapter(at indexPath: IndexPath) -> WNChapter {
+        return sections[indexPath.section][indexPath.row]
+    }
+    
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -102,7 +107,7 @@ class ChaptersTableViewController: UITableViewController {
         guard let chapterCell = cell as? ChapterTableViewCell else {
             return cell
         }
-        chapterCell.chapterLabel.text = sections[indexPath.section][indexPath.row].chapter
+        chapterCell.chapterLabel.text = chapter(at: indexPath).chapter
         return cell
     }
     
@@ -114,5 +119,17 @@ class ChaptersTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
         return index
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(withIdentifier: "chapters->chapter", sender: self)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let nav = segue.destination as? UINavigationController,
+            let chapterController = nav.topViewController as? ChapterViewController,
+            let indexPath = tableView.indexPathForSelectedRow {
+            chapterController.chapter = chapter(at: indexPath)
+        }
     }
 }

@@ -30,6 +30,14 @@
 		1FCD41E722BF76EE0050ECEC /* WNCancellableTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCD41E622BF76EE0050ECEC /* WNCancellableTask.swift */; };
 		1FCD41E922C06E4C0050ECEC /* ChaptersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCD41E822C06E4C0050ECEC /* ChaptersTableViewController.swift */; };
 		1FCD41EB22C0713F0050ECEC /* ChapterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCD41EA22C0713F0050ECEC /* ChapterTableViewCell.swift */; };
+		1FCD41ED22C0CA480050ECEC /* String+save.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCD41EC22C0CA480050ECEC /* String+save.swift */; };
+		1FCD41F722C1B3A70050ECEC /* Readability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCD41F622C1B3A70050ECEC /* Readability.swift */; };
+		1FCD41F922C1B4510050ECEC /* Article.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCD41F822C1B4500050ECEC /* Article.swift */; };
+		1FCD41FB22C1B7BE0050ECEC /* Optional+losslessStr.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCD41FA22C1B7BE0050ECEC /* Optional+losslessStr.swift */; };
+		1FCD41FF22C1C2850050ECEC /* bundle.js in Resources */ = {isa = PBXBuildFile; fileRef = 1FCD41FE22C1C2850050ECEC /* bundle.js */; };
+		1FCD420122C1C5B70050ECEC /* ChapterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCD420022C1C5B70050ECEC /* ChapterViewController.swift */; };
+		1FCD420522C1D5D00050ECEC /* ChapterOptionsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCD420422C1D5D00050ECEC /* ChapterOptionsTableViewController.swift */; };
+		1FCD420722C25AF60050ECEC /* FontFamilyTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCD420622C25AF60050ECEC /* FontFamilyTableViewController.swift */; };
 		1FED6E3422B34C92002F9317 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FED6E3322B34C92002F9317 /* AppDelegate.swift */; };
 		1FED6E3922B34C92002F9317 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1FED6E3722B34C92002F9317 /* Main.storyboard */; };
 		1FED6E3C22B34C92002F9317 /* WebNovel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1FED6E3A22B34C92002F9317 /* WebNovel.xcdatamodeld */; };
@@ -108,6 +116,14 @@
 		1FCD41E622BF76EE0050ECEC /* WNCancellableTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WNCancellableTask.swift; sourceTree = "<group>"; };
 		1FCD41E822C06E4C0050ECEC /* ChaptersTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChaptersTableViewController.swift; sourceTree = "<group>"; };
 		1FCD41EA22C0713F0050ECEC /* ChapterTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChapterTableViewCell.swift; sourceTree = "<group>"; };
+		1FCD41EC22C0CA480050ECEC /* String+save.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+save.swift"; sourceTree = "<group>"; };
+		1FCD41F622C1B3A70050ECEC /* Readability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Readability.swift; sourceTree = "<group>"; };
+		1FCD41F822C1B4500050ECEC /* Article.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Article.swift; sourceTree = "<group>"; };
+		1FCD41FA22C1B7BE0050ECEC /* Optional+losslessStr.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Optional+losslessStr.swift"; sourceTree = "<group>"; };
+		1FCD41FE22C1C2850050ECEC /* bundle.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = bundle.js; sourceTree = "<group>"; };
+		1FCD420022C1C5B70050ECEC /* ChapterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChapterViewController.swift; sourceTree = "<group>"; };
+		1FCD420422C1D5D00050ECEC /* ChapterOptionsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChapterOptionsTableViewController.swift; sourceTree = "<group>"; };
+		1FCD420622C25AF60050ECEC /* FontFamilyTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontFamilyTableViewController.swift; sourceTree = "<group>"; };
 		1FED6E3022B34C92002F9317 /* WebNovel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WebNovel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FED6E3322B34C92002F9317 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1FED6E3822B34C92002F9317 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -166,8 +182,29 @@
 				1F52AAF122BC88C600D4FB6C /* UIViewConroller+alert.swift */,
 				1F9890AA22BCDEE800A09F3F /* UIViewController+presentError.swift */,
 				1F9890AC22BCDF5B00A09F3F /* UIImage.swift */,
+				1FCD41EC22C0CA480050ECEC /* String+save.swift */,
+				1FCD41FA22C1B7BE0050ECEC /* Optional+losslessStr.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		1FCD41EE22C0E2290050ECEC /* Javascript */ = {
+			isa = PBXGroup;
+			children = (
+				1FCD41FE22C1C2850050ECEC /* bundle.js */,
+			);
+			path = Javascript;
+			sourceTree = "<group>";
+		};
+		1FCD41EF22C0E2400050ECEC /* Parsing */ = {
+			isa = PBXGroup;
+			children = (
+				1FCD41EE22C0E2290050ECEC /* Javascript */,
+				1FED6E9A22B5F61F002F9317 /* WNParser.swift */,
+				1FCD41F622C1B3A70050ECEC /* Readability.swift */,
+				1FCD41F822C1B4500050ECEC /* Article.swift */,
+			);
+			path = Parsing;
 			sourceTree = "<group>";
 		};
 		1FED6E2722B34C92002F9317 = {
@@ -244,12 +281,12 @@
 		1FED6E7D22B5700A002F9317 /* WNService */ = {
 			isa = PBXGroup;
 			children = (
+				1FCD41EF22C0E2400050ECEC /* Parsing */,
 				1FED6EAF22B6FD34002F9317 /* Caching */,
 				1FED6E9422B58ED6002F9317 /* Service Providers */,
 				1FED6E7B22B56EA6002F9317 /* WebNovel.swift */,
 				1FCD41E622BF76EE0050ECEC /* WNCancellableTask.swift */,
 				1F3B25B422B87EEB00F1B2CA /* WNCoverImage.swift */,
-				1FED6E9A22B5F61F002F9317 /* WNParser.swift */,
 				1FED6E9722B5E16B002F9317 /* WNChapter.swift */,
 				1F52AAED22B901A300D4FB6C /* WNGenre.swift */,
 				1FED6EAD22B6FB57002F9317 /* WNChaptersCatalogue.swift */,
@@ -295,8 +332,11 @@
 			isa = PBXGroup;
 			children = (
 				1F0E2EB022B73E5500CD77A9 /* DiscoverTableViewController.swift */,
+				1FCD420622C25AF60050ECEC /* FontFamilyTableViewController.swift */,
 				1F9890A822BCCBAB00A09F3F /* InformationTableViewController.swift */,
 				1FCD41E822C06E4C0050ECEC /* ChaptersTableViewController.swift */,
+				1FCD420022C1C5B70050ECEC /* ChapterViewController.swift */,
+				1FCD420422C1D5D00050ECEC /* ChapterOptionsTableViewController.swift */,
 				1F52AAE622B8DC7100D4FB6C /* ListingServiceViewController.swift */,
 			);
 			path = Controllers;
@@ -402,6 +442,7 @@
 			files = (
 				1FED6E4122B34C93002F9317 /* LaunchScreen.storyboard in Resources */,
 				1FED6E3E22B34C93002F9317 /* Assets.xcassets in Resources */,
+				1FCD41FF22C1C2850050ECEC /* bundle.js in Resources */,
 				1FED6E3922B34C92002F9317 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -433,6 +474,8 @@
 				1F9890A922BCCBAB00A09F3F /* InformationTableViewController.swift in Sources */,
 				1FED6E7622B42C69002F9317 /* WNError.swift in Sources */,
 				1FED6E9B22B5F61F002F9317 /* WNParser.swift in Sources */,
+				1FCD41ED22C0CA480050ECEC /* String+save.swift in Sources */,
+				1FCD41F922C1B4510050ECEC /* Article.swift in Sources */,
 				1FED6E9322B58C7A002F9317 /* NetworkUtils.swift in Sources */,
 				1F9890B522BD00F700A09F3F /* InformationTableViewCellDelegate.swift in Sources */,
 				1FED6EA322B627A1002F9317 /* NovelUpdates+loadDetails.swift in Sources */,
@@ -448,14 +491,19 @@
 				1F9890AD22BCDF5B00A09F3F /* UIImage.swift in Sources */,
 				1FED6EA622B627A1002F9317 /* NovelUpdates.swift in Sources */,
 				1F52AAE922B8E88800D4FB6C /* Notification.swift in Sources */,
+				1FCD420522C1D5D00050ECEC /* ChapterOptionsTableViewController.swift in Sources */,
 				1F9890BD22BDDCFD00A09F3F /* FactTableViewCell.swift in Sources */,
 				1FCD41EB22C0713F0050ECEC /* ChapterTableViewCell.swift in Sources */,
+				1FCD41F722C1B3A70050ECEC /* Readability.swift in Sources */,
 				1F0E2EB322B73F7500CD77A9 /* DiscoverTableViewCell.swift in Sources */,
 				1F9890B922BD219700A09F3F /* GenreLabel.swift in Sources */,
 				1FCD41E922C06E4C0050ECEC /* ChaptersTableViewController.swift in Sources */,
 				1FED6E6D22B403F6002F9317 /* WNServiceProvider.swift in Sources */,
+				1FCD420722C25AF60050ECEC /* FontFamilyTableViewController.swift in Sources */,
 				1F52AAEC22B8EAFA00D4FB6C /* NSObject+observe.swift in Sources */,
+				1FCD41FB22C1B7BE0050ECEC /* Optional+losslessStr.swift in Sources */,
 				1FED6EAE22B6FB57002F9317 /* WNChaptersCatalogue.swift in Sources */,
+				1FCD420122C1C5B70050ECEC /* ChapterViewController.swift in Sources */,
 				1F52AAEE22B901A300D4FB6C /* WNGenre.swift in Sources */,
 				1FED6EA522B627A1002F9317 /* NovelUpdates+search.swift in Sources */,
 				1FCD41E722BF76EE0050ECEC /* WNCancellableTask.swift in Sources */,
