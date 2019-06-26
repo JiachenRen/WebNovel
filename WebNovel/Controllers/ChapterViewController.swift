@@ -87,7 +87,7 @@ class ChapterViewController: UIViewController {
     var attributes: Attributes = Attributes()
     var titleAttributes: Attributes {
         var titleAttrs = attributes
-        titleAttrs.fontSize *= 1.5
+        titleAttrs.fontSize *= 1.2
         titleAttrs.fontWeight = .semiBold
         return titleAttrs
     }
@@ -96,13 +96,33 @@ class ChapterViewController: UIViewController {
         super.viewDidLoad()
 
         textView.textContainerInset = .init(top: 0, left: 20, bottom: 0, right: 20)
-        navigationController?.hidesBarsOnTap = true
+        navigationItem.title = chapter.chapter
+        navigationController?.setNavigationBarHidden(true, animated: true)
         loadChapter()
+        
+        // Setup tap gesture recognizers
+        textView.addGestureRecognizer(makeTapGestureRecognizer())
         
         // Observe notifications
         observe(.sanitizationUpdated, #selector(sanitizationUpdated(_:)))
         observe(.reloadChapter, #selector(reloadChapter))
         observe(.attributesUpdated, #selector(attributesUpdated(_:)))
+    }
+    
+    /// Instantiates a tap gesture recognizer that recognizes a single touch by one finger
+    private func makeTapGestureRecognizer() -> UITapGestureRecognizer {
+        let recognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+        recognizer.numberOfTapsRequired = 1
+        recognizer.numberOfTouchesRequired = 1
+        return recognizer
+    }
+    
+    @objc private func handleTap(_ sender: UIGestureRecognizer? = nil) {
+        guard let nav = navigationController else {
+            return
+        }
+        nav.setNavigationBarHidden(!nav.isNavigationBarHidden, animated: true)
+        textView.selectedTextRange = nil
     }
     
     @objc private func attributesUpdated(_ notif: Notification) {
@@ -129,6 +149,8 @@ class ChapterViewController: UIViewController {
             .done { chapter in
                 self.chapter = chapter
                 self.presentChapter()
+                // Prevent the top from being clipped by the annoying face ID camera
+                self.textView.setContentOffset(.init(x: 0, y: -40), animated: true)
             }.catch(self.presentError)
     }
     
@@ -138,7 +160,7 @@ class ChapterViewController: UIViewController {
             let supplier: SanitizedContentSupplier? = sanitization == .readability ? chapter.article : chapter
             let attrStr = NSMutableAttributedString()
             if let title = supplier?.title {
-                attrStr.append(titleAttributes.apply(to: "\(title)\n"))
+                attrStr.append(titleAttributes.apply(to: "\(title)"))
             }
             if let textContent = supplier?.textContent {
                 attrStr.append(attributes.apply(to: textContent))
@@ -170,7 +192,6 @@ class ChapterViewController: UIViewController {
                 webView.loadHTMLString(html, baseURL: url)
             }
         }
-        
         webView.isHidden = sanitization != .rawHtml
         textView.isHidden = sanitization == .rawHtml
     }
@@ -206,6 +227,7 @@ class ChapterViewController: UIViewController {
 }
 
 extension ChapterViewController: UIPopoverPresentationControllerDelegate {
+    /// Ensure that the presentation controller is NOT fullscreen
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
         return .none
     }

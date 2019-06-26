@@ -41,6 +41,14 @@ class ChapterOptionsTableViewController: UITableViewController {
         observe(.fontFamilyUpdated, #selector(updateFontFamily(_:)))
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.setNavigationBarHidden(true, animated: false)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        navigationController?.setNavigationBarHidden(false, animated: false)
+    }
+    
     @objc func updateFontFamily(_ notif: Notification) {
         guard let family = notif.object as? String else {
             return

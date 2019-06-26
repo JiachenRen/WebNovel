@@ -38,6 +38,8 @@ class ChaptersTableViewController: UITableViewController {
         
         tableView.sectionIndexMinimumDisplayRowCount = 100
         loadChapters()
+        
+        observe(.downloadChapters, #selector(chaptersAddedToDownloads))
     }
     
     @IBAction func orderButtonTapped(_ sender: Any) {
@@ -48,16 +50,26 @@ class ChaptersTableViewController: UITableViewController {
         self.tableView.reloadData()
     }
     
+    @objc private func chaptersAddedToDownloads() {
+        Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { _ in
+            let controller = UIAlertController(title: "Added To Downloads", message: nil, preferredStyle: .alert)
+            self.present(controller, animated: true)
+            Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { _ in
+                controller.dismiss(animated: true)
+            }
+        }
+    }
+    
     private func groupChaptersIntoSections() {
         if chaptersInSection == 0 {
             sections = [chapters]
             return
         }
-        sections = chapters.enumerated().split { arg in
-                let (idx, _) = arg
-                return idx % chaptersInSection == 0
-            }.map { slice in
-                slice.map {$0.element}
+        sections = []
+        for i in stride(from: 0, to: chapters.count, by: chaptersInSection) {
+            var endIdx = i + chaptersInSection
+            endIdx = endIdx > chapters.count ? chapters.count : endIdx
+            sections.append(Array(chapters[i..<endIdx]))
         }
     }
     
@@ -125,11 +137,30 @@ class ChaptersTableViewController: UITableViewController {
         performSegue(withIdentifier: "chapters->chapter", sender: self)
     }
     
+    // MARK: - Navigation
+    
+    override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
+        switch identifier {
+        case "chapters->download":
+            if webNovel.url == nil {
+                presentError(WNError.urlNotFound)
+                return false
+            }
+        default:
+            break
+        }
+        return true
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let nav = segue.destination as? UINavigationController,
-            let chapterController = nav.topViewController as? ChapterViewController,
-            let indexPath = tableView.indexPathForSelectedRow {
-            chapterController.chapter = chapter(at: indexPath)
+        if let nav = segue.destination as? UINavigationController {
+            if let chapterController = nav.topViewController as? ChapterViewController,
+                let indexPath = tableView.indexPathForSelectedRow {
+                chapterController.chapter = chapter(at: indexPath)
+            } else if let downloadController = nav.topViewController as? DownloadChaptersTableViewController {
+                downloadController.chapters = chapters
+                downloadController.webNovelUrl = webNovel.url
+            }
         }
     }
 }

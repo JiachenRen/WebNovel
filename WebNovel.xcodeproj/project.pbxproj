@@ -38,6 +38,8 @@
 		1FCD420122C1C5B70050ECEC /* ChapterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCD420022C1C5B70050ECEC /* ChapterViewController.swift */; };
 		1FCD420522C1D5D00050ECEC /* ChapterOptionsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCD420422C1D5D00050ECEC /* ChapterOptionsTableViewController.swift */; };
 		1FCD420722C25AF60050ECEC /* FontFamilyTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCD420622C25AF60050ECEC /* FontFamilyTableViewController.swift */; };
+		1FCD420B22C381A60050ECEC /* DownloadChaptersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCD420A22C381A60050ECEC /* DownloadChaptersTableViewController.swift */; };
+		1FCD420D22C384860050ECEC /* SelectableChapterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCD420C22C384860050ECEC /* SelectableChapterTableViewCell.swift */; };
 		1FED6E3422B34C92002F9317 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FED6E3322B34C92002F9317 /* AppDelegate.swift */; };
 		1FED6E3922B34C92002F9317 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1FED6E3722B34C92002F9317 /* Main.storyboard */; };
 		1FED6E3C22B34C92002F9317 /* WebNovel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1FED6E3A22B34C92002F9317 /* WebNovel.xcdatamodeld */; };
@@ -124,6 +126,8 @@
 		1FCD420022C1C5B70050ECEC /* ChapterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChapterViewController.swift; sourceTree = "<group>"; };
 		1FCD420422C1D5D00050ECEC /* ChapterOptionsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChapterOptionsTableViewController.swift; sourceTree = "<group>"; };
 		1FCD420622C25AF60050ECEC /* FontFamilyTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontFamilyTableViewController.swift; sourceTree = "<group>"; };
+		1FCD420A22C381A60050ECEC /* DownloadChaptersTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadChaptersTableViewController.swift; sourceTree = "<group>"; };
+		1FCD420C22C384860050ECEC /* SelectableChapterTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableChapterTableViewCell.swift; sourceTree = "<group>"; };
 		1FED6E3022B34C92002F9317 /* WebNovel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WebNovel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FED6E3322B34C92002F9317 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1FED6E3822B34C92002F9317 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -338,6 +342,7 @@
 				1FCD420022C1C5B70050ECEC /* ChapterViewController.swift */,
 				1FCD420422C1D5D00050ECEC /* ChapterOptionsTableViewController.swift */,
 				1F52AAE622B8DC7100D4FB6C /* ListingServiceViewController.swift */,
+				1FCD420A22C381A60050ECEC /* DownloadChaptersTableViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -354,6 +359,7 @@
 				1F9890BC22BDDCFD00A09F3F /* FactTableViewCell.swift */,
 				1F9890B822BD219700A09F3F /* GenreLabel.swift */,
 				1F9890B422BD00F700A09F3F /* InformationTableViewCellDelegate.swift */,
+				1FCD420C22C384860050ECEC /* SelectableChapterTableViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -500,11 +506,13 @@
 				1FCD41E922C06E4C0050ECEC /* ChaptersTableViewController.swift in Sources */,
 				1FED6E6D22B403F6002F9317 /* WNServiceProvider.swift in Sources */,
 				1FCD420722C25AF60050ECEC /* FontFamilyTableViewController.swift in Sources */,
+				1FCD420B22C381A60050ECEC /* DownloadChaptersTableViewController.swift in Sources */,
 				1F52AAEC22B8EAFA00D4FB6C /* NSObject+observe.swift in Sources */,
 				1FCD41FB22C1B7BE0050ECEC /* Optional+losslessStr.swift in Sources */,
 				1FED6EAE22B6FB57002F9317 /* WNChaptersCatalogue.swift in Sources */,
 				1FCD420122C1C5B70050ECEC /* ChapterViewController.swift in Sources */,
 				1F52AAEE22B901A300D4FB6C /* WNGenre.swift in Sources */,
+				1FCD420D22C384860050ECEC /* SelectableChapterTableViewCell.swift in Sources */,
 				1FED6EA522B627A1002F9317 /* NovelUpdates+search.swift in Sources */,
 				1FCD41E722BF76EE0050ECEC /* WNCancellableTask.swift in Sources */,
 			);
