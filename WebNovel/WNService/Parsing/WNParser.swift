@@ -15,6 +15,7 @@ class WNParser {
     
     /// Readability parser
     private static var reader: Readability = Readability()
+    private static let queue = DispatchQueue(label: "com.jiachenren.WebNovel.parsing", qos: .utility, attributes: .concurrent, autoreleaseFrequency: .workItem, target: nil)
     
     /// A dictionary of hosts and their corresponding extractors
     private static var extractors: [String: Extractor] = [
@@ -91,22 +92,27 @@ class WNParser {
     /// - Parameter html: Raw html string for the WN chapter
     /// - Parameter url: The  host url is used for figuring out the extraction method for the chapter.
     /// - Parameter chapter: Parsed info is merged into existing chapter object
-    static func parseChapter(_ html: String, _ url: URL, mergeInto chapter: WNChapter) {
-        
-        // Save chapter raw html string
-        chapter.rawHtml = html
-        
-        // Extract chapter information from raw html using custom, host-specific parser
-        if let host = url.host, let extractor = extractors[host]  {
-            if let doc = try? SwiftSoup.parse(html) {
-                try? extractor.extract(from: doc, into: chapter)
+    static func parseChapter(_ html: String, _ url: URL, mergeInto chapter: WNChapter) -> Guarantee<WNChapter> {
+        return Guarantee { fulfill in
+            queue.async {
+                // Save chapter raw html string
+                chapter.rawHtml = html
+                
+                // Extract chapter information from raw html using custom, host-specific parser
+                if let host = url.host, let extractor = extractors[host]  {
+                    if let doc = try? SwiftSoup.parse(html) {
+                        try? extractor.extract(from: doc, into: chapter)
+                    }
+                }
+                
+                // Since there are countless websites for WN out there, it is not possible
+                // to have a host specific parser for every one of them.
+                // Therefore, Readability is used as a generic parser. (It is used by Fire Fox for its reader's view)
+                chapter.article = reader.parse(html)
+                fulfill(chapter)
             }
         }
         
-        // Since there are countless websites for WN out there, it is not possible
-        // to have a host specific parser for every one of them.
-        // Therefore, Readability is used as a generic parser. (It is used by Fire Fox for its reader's view)
-        chapter.article = reader.parse(html)
     }
     
     /// The Extractor contains the instructions and logic for extracting WN information from raw html string.

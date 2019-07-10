@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Ewx-lf-7Ns">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Add to download-->
+        <scene sceneID="xma-ai-FNK">
+            <objects>
+                <tableViewController title="Add to download" id="ie3-cM-8s7" customClass="DownloadChaptersTableViewController" customModule="WebNovel" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="xbD-41-M58">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <view key="tableFooterView" contentMode="scaleToFill" id="V4K-ph-iF3">
+                            <rect key="frame" x="0.0" y="72" width="414" height="44"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </view>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="downloadChapters.chapter" id="DcQ-Ay-St2" customClass="SelectableChapterTableViewCell" customModule="WebNovel" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="414" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="DcQ-Ay-St2" id="sue-U0-lQf">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vgd-Yu-vlj">
+                                            <rect key="frame" x="20" y="7" width="30" height="30"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" secondItem="vgd-Yu-vlj" secondAttribute="height" multiplier="1:1" id="MvY-fh-uVI"/>
+                                                <constraint firstAttribute="width" constant="30" id="Ytb-fq-6BL"/>
+                                            </constraints>
+                                            <color key="tintColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <state key="normal" image="empty-circle"/>
+                                        </button>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="v3c254" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sj0-E2-1jz">
+                                            <rect key="frame" x="70" y="11.5" width="304" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vqd-MG-yMM">
+                                            <rect key="frame" x="20" y="7" width="30" height="30"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" secondItem="vqd-MG-yMM" secondAttribute="height" multiplier="1:1" id="NvQ-EZ-tOb"/>
+                                                <constraint firstAttribute="width" constant="30" id="jbt-ul-8AG"/>
+                                            </constraints>
+                                            <state key="normal" image="ok-filled"/>
+                                        </button>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="sj0-E2-1jz" firstAttribute="centerY" secondItem="sue-U0-lQf" secondAttribute="centerY" id="3K9-3v-cgf"/>
+                                        <constraint firstItem="sj0-E2-1jz" firstAttribute="leading" secondItem="vgd-Yu-vlj" secondAttribute="trailing" constant="20" id="3OB-hY-WN2"/>
+                                        <constraint firstItem="vgd-Yu-vlj" firstAttribute="centerY" secondItem="sue-U0-lQf" secondAttribute="centerY" id="69n-zV-z63"/>
+                                        <constraint firstItem="vqd-MG-yMM" firstAttribute="width" secondItem="vqd-MG-yMM" secondAttribute="height" multiplier="1:1" id="cPL-sE-NTd"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="sj0-E2-1jz" secondAttribute="trailing" constant="20" id="hXc-On-iLY"/>
+                                        <constraint firstItem="vqd-MG-yMM" firstAttribute="leading" secondItem="sue-U0-lQf" secondAttribute="leading" constant="20" id="n6p-OC-b6e"/>
+                                        <constraint firstItem="vqd-MG-yMM" firstAttribute="centerY" secondItem="sue-U0-lQf" secondAttribute="centerY" id="p2y-aV-iY2"/>
+                                        <constraint firstItem="vgd-Yu-vlj" firstAttribute="leading" secondItem="sue-U0-lQf" secondAttribute="leading" constant="20" id="vcd-Yu-lZE"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <inset key="separatorInset" minX="69" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <connections>
+                                    <outlet property="chapterLabel" destination="sj0-E2-1jz" id="TKe-zf-G7K"/>
+                                    <outlet property="deselectedStateButton" destination="vgd-Yu-vlj" id="KjP-lC-riS"/>
+                                    <outlet property="selectedStateButton" destination="vqd-MG-yMM" id="TgK-j1-FUG"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="ie3-cM-8s7" id="wU9-BX-waQ"/>
+                            <outlet property="delegate" destination="ie3-cM-8s7" id="cmH-ya-PQK"/>
+                        </connections>
+                    </tableView>
+                    <toolbarItems>
+                        <barButtonItem enabled="NO" title="No chapters selected" id="u2e-kZ-i7z"/>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="Fd2-JB-RKT"/>
+                        <barButtonItem image="download" id="ZaV-Kh-3ut">
+                            <connections>
+                                <action selector="downloadButtonTapped:" destination="ie3-cM-8s7" id="y1M-s0-nV1"/>
+                            </connections>
+                        </barButtonItem>
+                    </toolbarItems>
+                    <navigationItem key="navigationItem" title="Add to download" id="VKh-si-rrR">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="TpC-Fw-wwC">
+                            <connections>
+                                <action selector="cancelButtonTapped:" destination="ie3-cM-8s7" id="2t8-fr-8YQ"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Select All" id="Q7D-fo-NkI">
+                            <connections>
+                                <action selector="selectAllButtonTapped:" destination="ie3-cM-8s7" id="QW4-id-1vu"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="downloadButton" destination="ZaV-Kh-3ut" id="IaK-dB-jVv"/>
+                        <outlet property="selectAllButton" destination="Q7D-fo-NkI" id="LWh-BX-lSQ"/>
+                        <outlet property="selectedChaptersLabel" destination="u2e-kZ-i7z" id="ghn-H1-p6q"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="m15-oA-bSX" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6087" y="-1568"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="2Be-1c-g2H">
+            <objects>
+                <navigationController toolbarHidden="NO" id="Ewx-lf-7Ns" sceneMemberID="viewController">
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="IuI-io-ijG">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="fNh-7w-coN">
+                        <rect key="frame" x="0.0" y="813" width="414" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
+                    <connections>
+                        <segue destination="ie3-cM-8s7" kind="relationship" relationship="rootViewController" id="sUh-XH-uon"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5Oh-r0-S6b" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5168" y="-1568"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="download" width="32" height="32"/>
+        <image name="empty-circle" width="50" height="50"/>
+        <image name="ok-filled" width="50" height="50"/>
+    </resources>
+</document>

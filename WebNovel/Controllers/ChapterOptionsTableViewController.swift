@@ -132,12 +132,11 @@ class ChapterOptionsTableViewController: UITableViewController {
             }
         default: break
         }
-        
     }
     
     private func visitChapterWebPage() {
-        guard let urlStr = chapter.url, let url = URL(string: urlStr) else {
-            self.presentError(WNError.urlNotFound)
+        guard let url = URL(string: chapter.url) else {
+            self.presentError(WNError.invalidUrl)
             return
         }
         let config = SFSafariViewController.Configuration()

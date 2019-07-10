@@ -16,15 +16,6 @@ class DownloadChaptersTableViewController: UITableViewController {
     
     @IBOutlet weak var downloadButton: UIBarButtonItem!
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        selectedChaptersLabel.setTitleTextAttributes(
-            [NSAttributedString.Key.foregroundColor: UIColor.black],
-            for: .normal
-        )
-        updateBarItems()
-    }
-    
     var chapters: [WNChapter]! {
         didSet {
             selections = [Bool](repeating: false, count: chapters.count)
@@ -34,6 +25,34 @@ class DownloadChaptersTableViewController: UITableViewController {
     
     var selectedAll = false
     var selections: [Bool]!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        reloadDownloadableChapters()
+        selectedChaptersLabel.setTitleTextAttributes(
+            [NSAttributedString.Key.foregroundColor: UIColor.black],
+            for: .normal
+        )
+        updateBarItems()
+        
+        observe(.downloadTaskStatusUpdated, #selector(reloadDownloadableChapters))
+    }
+    
+    @objc private func reloadDownloadableChapters() {
+        guard let catalogue = try? WNCache.fetch(by: webNovelUrl, object: WNChaptersCatalogue.self) else {
+            return
+        }
+        // Remove pending or downloaded chapters from candidates
+        self.chapters = catalogue.chapters.filter { ch in
+            let pending = WNDownloadsManager.shared.currentTasks[webNovelUrl]?.pending.contains {$0.url == ch.url} ?? false
+            return !catalogue.downloadedChapterUrls.contains {$0 == ch.url} && !pending
+        }
+        
+        DispatchQueue.main.async { [unowned self] in
+            self.tableView.reloadData()
+        }
+    }
     
     @IBAction func cancelButtonTapped(_ sender: Any) {
         self.dismiss(animated: true)
@@ -51,8 +70,8 @@ class DownloadChaptersTableViewController: UITableViewController {
         let selectedChapters = zip(chapters, selections)
             .filter {$0.1}
             .map {$0.0}
-        let catalogue = WNChaptersCatalogue(webNovelUrl, selectedChapters)
-        postNotification(.downloadChapters, object: catalogue)
+        let downloadTask = WNDownloadsManager.Task(webNovelUrl, selectedChapters)
+        WNDownloadsManager.shared.download(downloadTask, using: WNServiceManager.shared.serviceProvider)
         self.dismiss(animated: true)
     }
     

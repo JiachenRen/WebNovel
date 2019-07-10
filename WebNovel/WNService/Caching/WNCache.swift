@@ -22,18 +22,22 @@ class WNCache {
         case usesCache
     }
     
+    enum OperationStatus {
+        case created
+        case overwritten
+    }
+    
     /// Saves the WN chapter, cover image, information, or chapters catalogue to core data
     /// If an existing WN chapter with the same url exists, it is overwritten.
-    static func save<T: Serializable>(_ object: T) throws {
+    @discardableResult
+    static func save<T: Serializable>(_ object: T) throws -> OperationStatus {
         guard let ctx = managedContext else {
             throw WNError.managedContextNotFound
         }
-        guard let url = object.url else {
-            throw WNError.urlNotFound
-        }
         
+        let url = object.url
         let request = fetchRequest(url, for: T.ManagedObject.self)
-        let managedObj = try fetchOrCreate(request)
+        let (managedObj, created) = try fetchOrCreate(request)
         
         // Update the object's properties
         managedObj.url = url
@@ -41,9 +45,27 @@ class WNCache {
         
         // Apply changes
         try ctx.save()
+        
+        // Return the appropriate status
+        return created ? .created : .overwritten
     }
     
-    /// Fetches the first object in core data of coresponding type and url.
+    /// Fetches all objects of specified type in core data
+    static func fetchAll<T: Serializable>(_ object: T.Type) throws -> [T] {
+        guard let ctx = managedContext else {
+            throw WNError.managedContextNotFound
+        }
+        
+        let request: NSFetchRequest<T.ManagedObject> = T.ManagedObject.fetchRequest() as! NSFetchRequest<T.ManagedObject>
+        return try ctx.fetch(request).compactMap {
+            guard let data = $0.data as? Data else {
+                return nil
+            }
+            return try jsonDecoder.decode(T.self, from: data)
+        }
+    }
+    
+    /// Fetches the first object in core data of corresponding type and url.
     static func fetch<T: Serializable>(by url: String, object: T.Type) throws -> T? {
         guard let ctx = managedContext else {
             throw WNError.managedContextNotFound
@@ -71,15 +93,15 @@ class WNCache {
     /// - Parameter request: A NSFetchRequest for retrieving object
     /// - Parameter entityName: The entity name for the object
     /// - Returns: Retrieved or newly created WNManagedObject
-    private static func fetchOrCreate<T: WNManagedObject>(_ request: NSFetchRequest<T>) throws -> T {
+    private static func fetchOrCreate<T: WNManagedObject>(_ request: NSFetchRequest<T>) throws -> (T, created: Bool) {
         guard let ctx = managedContext else {
             throw WNError.managedContextNotFound
         }
         if let retrieved = try ctx.fetch(request).first {
-            return retrieved
+            return (retrieved, false)
         } else {
             let entity = NSEntityDescription.entity(forEntityName: T.entityName, in: ctx)!
-            return NSManagedObject(entity: entity, insertInto: ctx) as! T
+            return (NSManagedObject(entity: entity, insertInto: ctx) as! T, true)
         }
     }
 }

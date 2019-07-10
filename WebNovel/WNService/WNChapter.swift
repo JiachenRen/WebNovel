@@ -11,8 +11,11 @@ import Foundation
 class WNChapter: Serializable, CustomStringConvertible {
     typealias ManagedObject = Chapter
     
+    /// Reference to the web novel that this chapter belongs to
+    var webNovelUrl: String
+    
     // Basic info
-    var url: String?
+    var url: String
     var chapter: String
     
     // Raw html content of the chapter
@@ -30,20 +33,55 @@ class WNChapter: Serializable, CustomStringConvertible {
     /// Id of the chapter
     var id: Int
     
-    init(url: String, chapter: String, id: Int) {
+    init(_ webNovelUrl: String, url: String, chapter: String, id: Int) {
+        self.webNovelUrl = webNovelUrl
         self.url = url
         self.chapter = chapter
         self.id = id
     }
     
+    /// Extracts chapter number and title from raw title string
+    private func parseChapterTitle() -> (chapter: Int, title: String)? {
+        guard let rawTitleStr = title ?? article?.title else {
+            return nil
+        }
+        var chapter: Int?, title: String?
+        let pattern = #"[cC]hapter\s*([0-9]+)[\:\-\s]+(.*)"#
+        let regex = try! NSRegularExpression(pattern: pattern, options: [])
+        let range = NSRange(location: 0, length: rawTitleStr.utf16.count)
+        if let match = regex.firstMatch(in: rawTitleStr, options: [], range: range) {
+            if let chapterRange = Range(match.range(at: 1), in: rawTitleStr) {
+                chapter = Int(rawTitleStr[chapterRange])
+            }
+            if let titleRange = Range(match.range(at: 2), in: rawTitleStr) {
+                title = String(rawTitleStr[titleRange])
+            }
+        }
+        guard let ch = chapter, let t = title else {
+            return nil
+        }
+        return (ch, t)
+    }
+    
+    /// - Returns: Properly formatted chapter title in the following format:
+    /// Chapter <#>: <Name>
+    func properTitle() -> String? {
+        guard let (ch, t) = parseChapterTitle() else {
+            return nil
+        }
+        return "Chapter \(ch): \(t)"
+    }
+
+    
     var description: String {
         return """
+        Web Novel Link: \(webNovelUrl)
         ID: \(id)
         Chapter: \(chapter)
-        Link: \(url ?? "N/A")
-        Title: \(title ?? "N/A")
-        Date: \(date ?? "N/A")
-        Text Content: \(textContent ?? "N/A")
+        Link: \(url)
+        Title: \(title.losslessStr)
+        Date: \(date.losslessStr)
+        Text Content: \(textContent.losslessStr)
         """
     }
 }

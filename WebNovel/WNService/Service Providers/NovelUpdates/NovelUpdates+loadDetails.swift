@@ -14,21 +14,21 @@ extension NovelUpdates {
     
     /// Get the details of the web novel from its summary page.
     func loadDetails(_ wn: WebNovel, cachePolicy: WNCache.Policy) -> Promise<WebNovel> {
-        if cachePolicy == .usesCache, let url = wn.url {
-            if let wn = try! WNCache.fetch(by: url, object: WebNovel.self) {
+        if cachePolicy == .usesCache {
+            if let wn = try! WNCache.fetch(by: wn.url, object: WebNovel.self) {
                 return Promise { seal in
-                    print("Loaded details for WN at URL \(url) from cache")
+                    print("Loaded details for WN at URL \(wn.url) from cache")
                     seal.fulfill(wn)
                 }
             }
         }
         return wn.html().map { html in
-            let doc = try SwiftSoup.parse(html)
-            try self.parseDetails(doc, wn)
-            return wn
-        }.get { wn in
-            try WNCache.save(wn)
-            print("Saved details for wn at \(wn.url!) to core data")
+                let doc = try SwiftSoup.parse(html)
+                try self.parseDetails(doc, wn)
+                return wn
+            }.get(on: .main) { wn in
+                try WNCache.save(wn)
+                print("Saved details for wn at \(wn.url) to core data")
         }
     }
     
@@ -84,9 +84,8 @@ extension NovelUpdates {
             default: break
             }
             if child.id().starts(with: "sid") {
-                let wn1 = WebNovel()
+                let wn1 = WebNovel(try child.attr("href"))
                 wn1.title = txt
-                wn1.url = try child.attr("href")
                 if status == 1 {
                     related.append(wn1)
                 } else if status == 2 {

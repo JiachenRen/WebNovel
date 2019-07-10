@@ -21,70 +21,72 @@ class NovelUpdates: WNServiceProvider {
         listingService = availableListingServices().first
     }
     
-    /// Parses raw html response for chapters catalogue into an array of WNChapter
-    private func parseChaptersCatalogue(_ doc: Document) throws -> [WNChapter] {
+    /// Parses raw html response for chapters into an array of WNChapter
+    private func parseChapters(_ webNovelUrl: String, _ doc: Document) throws -> [WNChapter] {
         guard let list = try doc.getElementsByTag("ol").first() else {
             throw WNError.parsingError("Missing chapters list")
         }
-        return try list.children().enumerated().map { (idx, chapter) in
-            guard let a = try chapter.getElementsByAttribute("data-id").first() else {
-                throw WNError.parsingError("No chapters found")
-            }
-            return try WNChapter(url: "https:\(a.attr("href"))", chapter: a.text(), id: idx + 1)
+        return try list.children()
+            .reversed()
+            .enumerated()
+            .map { (idx, chapter) in
+                guard let a = try chapter.getElementsByAttribute("data-id").first() else {
+                    throw WNError.parsingError("No chapters found")
+                }
+                return try WNChapter(
+                    webNovelUrl,
+                    url: "https:\(a.attr("href"))",
+                    chapter: a.text(),
+                    id: idx + 1
+                )
         }
     }
     
     /// Fetch links of all chapters for the given WN.
-    func fetchChapters(for wn: WebNovel, cachePolicy: WNCache.Policy) -> Promise<[WNChapter]> {
-        if cachePolicy == .usesCache, let url = wn.url {
+    func fetchChaptersCatagoue(for wn: WebNovel, cachePolicy: WNCache.Policy) -> Promise<WNChaptersCatalogue> {
+        let url = wn.url
+        if cachePolicy == .usesCache {
             if let catalogue = try! WNCache.fetch(by: url, object: WNChaptersCatalogue.self) {
                 return Promise { seal in
                     print("Loaded chapters for \(url) from core data")
-                    seal.fulfill(catalogue.chapters)
+                    seal.fulfill(catalogue)
                 }
             }
         }
         return wn.html().map { html in
-            try SwiftSoup.parse(html)
-        }.map { doc -> String in
-            guard let postId = try doc.getElementById("mypostid")?.attr("value") else {
-                throw WNError.missingParameter("mypostid")
-            }
-            return postId
-        }.then { postId -> Promise<String> in
-            let parameters: Parameters = [
-                "action": "nd_getchapters",
-                "mypostid": postId,
-            ]
-            return htmlRequestResponse(self.serviceEndpoint, method: .post, parameters: parameters, encoding: .ascii)
-        }.map { html in
-            try self.parseChaptersCatalogue(SwiftSoup.parse(html))
-        }.get { chapters in
-            guard let url = wn.url else {
-                throw WNError.urlNotFound
-            }
-            let catalogue = WNChaptersCatalogue(url, chapters)
-            try WNCache.save(catalogue)
-            print("Saved chapters for \(url) to core data")
+                try SwiftSoup.parse(html)
+            }.map { doc -> String in
+                guard let postId = try doc.getElementById("mypostid")?.attr("value") else {
+                    throw WNError.missingParameter("mypostid")
+                }
+                return postId
+            }.then { postId -> Promise<String> in
+                let parameters: Parameters = [
+                    "action": "nd_getchapters",
+                    "mypostid": postId,
+                ]
+                return htmlRequestResponse(self.serviceEndpoint, method: .post, parameters: parameters, encoding: .ascii)
+            }.map { html in
+                let chapters = try self.parseChapters(url, SwiftSoup.parse(html))
+                return WNChaptersCatalogue(url, chapters)
+            }.get(on: .main) { catalogue in
+                try WNCache.save(catalogue)
+                print("Saved chapters for \(url) to core data")
         }
     }
     
     /// Loads chapter content including title, story, etc.
     func loadChapter(_ chapter: WNChapter, cachePolicy: WNCache.Policy) -> Promise<WNChapter> {
-        if cachePolicy == .usesCache, let url = chapter.url {
-            if let chapter = try! WNCache.fetch(by: url, object: WNChapter.self) {
-                print("Loaded chapter with url \(url) from core data")
+        if cachePolicy == .usesCache {
+            if let chapter = try! WNCache.fetch(by: chapter.url, object: WNChapter.self) {
+                print("Loaded chapter with url \(chapter.url) from core data")
                 return Promise { seal in
                     seal.fulfill(chapter)
                 }
             }
         }
         return Promise { seal in
-            guard let url = chapter.url else {
-                throw WNError.urlNotFound
-            }
-            Alamofire.request(url).response {
-                dataResponse in
+            Alamofire.request(chapter.url).response { dataResponse in
                 guard let data = dataResponse.data else {
                     seal.reject(dataResponse.error ?? WNError.unknownResponseError)
                     return
@@ -97,32 +99,24 @@ class NovelUpdates: WNServiceProvider {
                     seal.reject(WNError.urlNotFound)
                     return
                 }
+                
                 WNParser.parseChapter(html, url, mergeInto: chapter)
-                try! WNCache.save(chapter)
-                print("Saved chapter with url \(url) to core data")
-                seal.fulfill(chapter)
-            }
-        }
-    }
-    
-    func loadChapters(_ chapters: [WNChapter], cachePolicy: WNCache.Policy) -> Guarantee<(loaded: [WNChapter], failed: [WNChapter])> {
-        let promises = chapters.map {
-            self.loadChapter($0, cachePolicy: cachePolicy)
-        }
-        return when(resolved: promises).map { results in
-            var fulfilled: [WNChapter] = []
-            var rejected: [WNChapter] = []
-            for (idx, result) in results.enumerated() {
-                switch result {
-                case .fulfilled(let ch):
-                    fulfilled.append(ch)
-                case .rejected(let e):
-                    print((e as? WNError)?.localizedDescription ?? e)
-                    print(chapters[idx])
-                    rejected.append(chapters[idx])
+                    .get { chapter in
+                        seal.fulfill(chapter)
+                    }.done(on: .main) { chapter in
+                        let status = try! WNCache.save(chapter)
+                        
+                        // Update chapters catalogue information
+                        if let catalogue = try? WNCache.fetch(by: chapter.webNovelUrl, object: WNChaptersCatalogue.self) {
+                            catalogue.lastModified = .now
+                            if status == .created {
+                                catalogue.downloadedChapterUrls.append(chapter.url)
+                            }
+                            try! WNCache.save(catalogue)
+                        }
+                        print("Saved chapter with url \(url) to core data")
                 }
             }
-            return (fulfilled, rejected)
         }
     }
     

@@ -13,6 +13,7 @@ enum WNError: Error, Equatable {
     case parsingError(_ supplementalMsg: String)
     case missingParameter(_ parameter: String)
     case urlNotFound
+    case invalidUrl
     case unsupportedListingService
     case invalidListingServiceParameter
     case unsupportedSortingCriterion
@@ -57,6 +58,8 @@ enum WNError: Error, Equatable {
             return "The operation is cancelled"
         case .coverImageUrlNotFound:
             return "The url for the cover image is not found"
+        case .invalidUrl:
+            return "The url is invalid"
         }
     }
 }

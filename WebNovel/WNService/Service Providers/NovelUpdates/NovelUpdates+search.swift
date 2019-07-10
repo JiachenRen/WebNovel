@@ -46,10 +46,10 @@ extension NovelUpdates {
         }
         let entries = try ul.getElementsByTag("li").map {
             entry -> WebNovel in
-            let wn = WebNovel()
-            if let url = try entry.getElementsByTag("a").first()?.attr("href") {
-                wn.url = url
+            guard let url = try entry.getElementsByTag("a").first()?.attr("href") else {
+                throw WNError.urlNotFound
             }
+            let wn = WebNovel(url)
             if let title = try entry.getElementsByTag("span").first()?.text() {
                 wn.title = title
             }

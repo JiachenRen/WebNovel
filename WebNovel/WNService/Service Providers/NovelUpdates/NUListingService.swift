@@ -170,24 +170,13 @@ extension NUListingService: WNListingService {
     ///      class = noveldesc (short desc, last child node contains long desc. in <p>)
     ///      class = sfstext (html contains number of releases
     private func parseWebNovel(_ element: Element) throws -> WebNovel {
-        let wn = WebNovel()
-        if let rating = try element.getElementsByClass("search_ratings").first() {
-            let org = try rating.getElementsByTag("span").first()
-            wn.organization = try org?.text()
-            try org?.remove()
-            let ratingTxt = try rating.text()
-                .replacingOccurrences(of: "[()]", with: "", options: .regularExpression)
-                .trimmingCharacters(in: .whitespaces)
-            wn.rating = Double(ratingTxt) ?? 0.0
+        guard let link = try element.getElementsByClass("search_title").first()?.getElementsByTag("a").first(),
+            let url = link.getAttributes()?.filter({$0.getKey() == "href"}).first?.getValue() else {
+            throw WNError.urlNotFound
         }
+        let wn = WebNovel(url)
+        wn.title = try link.text()
         if let main = try element.getElementsByClass("search_body_nu").first() {
-            if let link = try main.getElementsByClass("search_title")
-                .first()?.getElementsByTag("a").first() {
-                wn.url = link.getAttributes()?.filter {
-                    $0.getKey() == "href"
-                    }.first?.getValue() ?? ""
-                wn.title = try link.text()
-            }
             if let genresContainer = try main.getElementsByClass("search_genre").first() {
                 wn.genres = try genresContainer.children().map {
                     try $0.text()
@@ -210,6 +199,15 @@ extension NUListingService: WNListingService {
                 }
             }
             wn.shortDescription = try main.text()
+        }
+        if let rating = try element.getElementsByClass("search_ratings").first() {
+            let org = try rating.getElementsByTag("span").first()
+            wn.organization = try org?.text()
+            try org?.remove()
+            let ratingTxt = try rating.text()
+                .replacingOccurrences(of: "[()]", with: "", options: .regularExpression)
+                .trimmingCharacters(in: .whitespaces)
+            wn.rating = Double(ratingTxt) ?? 0.0
         }
         return wn
     }

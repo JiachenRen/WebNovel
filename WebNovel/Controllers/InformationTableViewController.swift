@@ -240,8 +240,8 @@ class InformationTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let storyboard = UIStoryboard.init(name: "Main", bundle: nil)
-        guard let infoController = storyboard.instantiateViewController(withIdentifier: "main.information") as? InformationTableViewController,
+        let storyboard = UIStoryboard.init(name: "NovelDetails", bundle: nil)
+        guard let infoController = storyboard.instantiateViewController(withIdentifier: "novelDetails.information") as? InformationTableViewController,
             let wn = webNovelForIndexPath(at: indexPath) else {
             return
         }

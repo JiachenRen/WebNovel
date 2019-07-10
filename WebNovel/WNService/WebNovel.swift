@@ -21,7 +21,7 @@ class WebNovel: Serializable {
     var organization: String?
     var title: String?
     var authors: [String]?
-    var url: String?
+    var url: String
     var genres: [String]?
     var tags: [String]?
     var language: String?
@@ -40,21 +40,13 @@ class WebNovel: Serializable {
     var relatedSeries: [WebNovel]?
     var recommendations: [WebNovel]?
     
-    private func getUrl() -> Promise<String> {
-        return Promise { seal in
-            guard let url = self.url else {
-                seal.reject(WNError.urlNotFound)
-                return
-            }
-            seal.fulfill(url)
-        }
+    init(_ url: String) {
+        self.url = url
     }
     
     /// Get the html response string that the URL points to.
     func html() -> Promise<String> {
-        return getUrl().then {
-            htmlRequestResponse($0)
-        }
+        return htmlRequestResponse(url)
     }
 }
 
@@ -80,7 +72,7 @@ extension WebNovel: CustomStringConvertible {
         Genres: \(str(genres))
         Tags: \(str(tags))
         Organization: \(str(organization))
-        Link: \(str(url))
+        Link: \(url)
         Cover Image URL: \(str(coverImageUrl))
         Weekly Rank: \(str(weeklyRank))
         Monthly Rank: \(str(monthlyRank))

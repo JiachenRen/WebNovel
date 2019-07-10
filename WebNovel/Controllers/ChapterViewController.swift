@@ -186,9 +186,7 @@ class ChapterViewController: UIViewController {
             }
             textView.attributedText = attrStr
         case .rawHtml:
-            if let html = chapter.rawHtml,
-                let urlStr = chapter.url,
-                let url = URL(string: urlStr) {
+            if let html = chapter.rawHtml, let url = URL(string: chapter.url) {
                 webView.loadHTMLString(html, baseURL: url)
             }
         }
@@ -201,7 +199,7 @@ class ChapterViewController: UIViewController {
     }
     
     @IBAction func moreButtonTapped(_ sender: Any) {
-        let storyBoard = UIStoryboard(name: "Main", bundle: .main)
+        let storyBoard = UIStoryboard(name: "ChapterReader", bundle: .main)
         let vc = storyBoard.instantiateViewController(withIdentifier: "chapter.options.nav") as! UINavigationController
         vc.modalPresentationStyle = .popover
         vc.popoverPresentationController?.delegate = self

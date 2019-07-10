@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import PromiseKit
 
 class WNServiceManager {
     static var shared: WNServiceManager = {

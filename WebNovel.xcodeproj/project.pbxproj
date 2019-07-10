@@ -9,7 +9,13 @@
 /* Begin PBXBuildFile section */
 		1F0E2EB122B73E5500CD77A9 /* DiscoverTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F0E2EB022B73E5500CD77A9 /* DiscoverTableViewController.swift */; };
 		1F0E2EB322B73F7500CD77A9 /* DiscoverTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F0E2EB222B73F7500CD77A9 /* DiscoverTableViewCell.swift */; };
+		1F21978222C5F10900AC435A /* TimeInterval+now.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F21978122C5F10900AC435A /* TimeInterval+now.swift */; };
 		1F3B25B522B87EEB00F1B2CA /* WNCoverImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F3B25B422B87EEB00F1B2CA /* WNCoverImage.swift */; };
+		1F3F105F22D5825900BCD32B /* DownloadedNovelProgressWrapperView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F3F105E22D5825900BCD32B /* DownloadedNovelProgressWrapperView.swift */; };
+		1F3F106122D5896100BCD32B /* UIProgressView+barHeight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F3F106022D5896100BCD32B /* UIProgressView+barHeight.swift */; };
+		1F3F106322D5913500BCD32B /* WNDownloadsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F3F106222D5913500BCD32B /* WNDownloadsManager.swift */; };
+		1F3F106722D5C7DE00BCD32B /* DownloadedNovelProgressTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F3F106622D5C7DE00BCD32B /* DownloadedNovelProgressTableViewCell.swift */; };
+		1F3F106922D62D6700BCD32B /* TimeInterval+formattedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F3F106822D62D6700BCD32B /* TimeInterval+formattedString.swift */; };
 		1F52AAE522B8D3F500D4FB6C /* WNServiceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F52AAE422B8D3F500D4FB6C /* WNServiceManager.swift */; };
 		1F52AAE722B8DC7100D4FB6C /* ListingServiceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F52AAE622B8DC7100D4FB6C /* ListingServiceViewController.swift */; };
 		1F52AAE922B8E88800D4FB6C /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F52AAE822B8E88800D4FB6C /* Notification.swift */; };
@@ -17,6 +23,12 @@
 		1F52AAEE22B901A300D4FB6C /* WNGenre.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F52AAED22B901A300D4FB6C /* WNGenre.swift */; };
 		1F52AAF022B9B96300D4FB6C /* NUListingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F52AAEF22B9B96300D4FB6C /* NUListingService.swift */; };
 		1F52AAF222BC88C600D4FB6C /* UIViewConroller+alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F52AAF122BC88C600D4FB6C /* UIViewConroller+alert.swift */; };
+		1F8FBB4422C7176200B23F8D /* AddToDownloads.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1F8FBB4322C7176200B23F8D /* AddToDownloads.storyboard */; };
+		1F8FBB4622C718C200B23F8D /* ChapterReader.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1F8FBB4522C718C200B23F8D /* ChapterReader.storyboard */; };
+		1F8FBB4A22C71CE400B23F8D /* NovelDetails.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1F8FBB4922C71CE400B23F8D /* NovelDetails.storyboard */; };
+		1F8FBB4C22C72D7900B23F8D /* DownloadedNovelTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F8FBB4B22C72D7900B23F8D /* DownloadedNovelTableViewController.swift */; };
+		1F8FBB5022C73E1000B23F8D /* Data+size.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F8FBB4F22C73E1000B23F8D /* Data+size.swift */; };
+		1F8FBB5222CB272600B23F8D /* DownloadedNovelSectionHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F8FBB5122CB272600B23F8D /* DownloadedNovelSectionHeaderCell.swift */; };
 		1F9890A922BCCBAB00A09F3F /* InformationTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F9890A822BCCBAB00A09F3F /* InformationTableViewController.swift */; };
 		1F9890AB22BCDEE800A09F3F /* UIViewController+presentError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F9890AA22BCDEE800A09F3F /* UIViewController+presentError.swift */; };
 		1F9890AD22BCDF5B00A09F3F /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F9890AC22BCDF5B00A09F3F /* UIImage.swift */; };
@@ -40,6 +52,10 @@
 		1FCD420722C25AF60050ECEC /* FontFamilyTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCD420622C25AF60050ECEC /* FontFamilyTableViewController.swift */; };
 		1FCD420B22C381A60050ECEC /* DownloadChaptersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCD420A22C381A60050ECEC /* DownloadChaptersTableViewController.swift */; };
 		1FCD420D22C384860050ECEC /* SelectableChapterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCD420C22C384860050ECEC /* SelectableChapterTableViewCell.swift */; };
+		1FCD421522C5033F0050ECEC /* DownloadsCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCD421422C5033F0050ECEC /* DownloadsCollectionViewController.swift */; };
+		1FCD421722C505750050ECEC /* DownloadsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCD421622C505750050ECEC /* DownloadsCollectionViewCell.swift */; };
+		1FCD421922C5E54E0050ECEC /* DownloadsSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCD421822C5E54E0050ECEC /* DownloadsSectionHeaderView.swift */; };
+		1FCD421B22C5E57E0050ECEC /* DownloadsSectionFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCD421A22C5E57E0050ECEC /* DownloadsSectionFooterView.swift */; };
 		1FED6E3422B34C92002F9317 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FED6E3322B34C92002F9317 /* AppDelegate.swift */; };
 		1FED6E3922B34C92002F9317 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1FED6E3722B34C92002F9317 /* Main.storyboard */; };
 		1FED6E3C22B34C92002F9317 /* WebNovel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1FED6E3A22B34C92002F9317 /* WebNovel.xcdatamodeld */; };
@@ -97,7 +113,13 @@
 /* Begin PBXFileReference section */
 		1F0E2EB022B73E5500CD77A9 /* DiscoverTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverTableViewController.swift; sourceTree = "<group>"; };
 		1F0E2EB222B73F7500CD77A9 /* DiscoverTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverTableViewCell.swift; sourceTree = "<group>"; };
+		1F21978122C5F10900AC435A /* TimeInterval+now.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeInterval+now.swift"; sourceTree = "<group>"; };
 		1F3B25B422B87EEB00F1B2CA /* WNCoverImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WNCoverImage.swift; sourceTree = "<group>"; };
+		1F3F105E22D5825900BCD32B /* DownloadedNovelProgressWrapperView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadedNovelProgressWrapperView.swift; sourceTree = "<group>"; };
+		1F3F106022D5896100BCD32B /* UIProgressView+barHeight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIProgressView+barHeight.swift"; sourceTree = "<group>"; };
+		1F3F106222D5913500BCD32B /* WNDownloadsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WNDownloadsManager.swift; sourceTree = "<group>"; };
+		1F3F106622D5C7DE00BCD32B /* DownloadedNovelProgressTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadedNovelProgressTableViewCell.swift; sourceTree = "<group>"; };
+		1F3F106822D62D6700BCD32B /* TimeInterval+formattedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeInterval+formattedString.swift"; sourceTree = "<group>"; };
 		1F52AAE422B8D3F500D4FB6C /* WNServiceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WNServiceManager.swift; sourceTree = "<group>"; };
 		1F52AAE622B8DC7100D4FB6C /* ListingServiceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingServiceViewController.swift; sourceTree = "<group>"; };
 		1F52AAE822B8E88800D4FB6C /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
@@ -105,6 +127,12 @@
 		1F52AAED22B901A300D4FB6C /* WNGenre.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WNGenre.swift; sourceTree = "<group>"; };
 		1F52AAEF22B9B96300D4FB6C /* NUListingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NUListingService.swift; sourceTree = "<group>"; };
 		1F52AAF122BC88C600D4FB6C /* UIViewConroller+alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewConroller+alert.swift"; sourceTree = "<group>"; };
+		1F8FBB4322C7176200B23F8D /* AddToDownloads.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = AddToDownloads.storyboard; sourceTree = "<group>"; };
+		1F8FBB4522C718C200B23F8D /* ChapterReader.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ChapterReader.storyboard; sourceTree = "<group>"; };
+		1F8FBB4922C71CE400B23F8D /* NovelDetails.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = NovelDetails.storyboard; sourceTree = "<group>"; };
+		1F8FBB4B22C72D7900B23F8D /* DownloadedNovelTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadedNovelTableViewController.swift; sourceTree = "<group>"; };
+		1F8FBB4F22C73E1000B23F8D /* Data+size.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+size.swift"; sourceTree = "<group>"; };
+		1F8FBB5122CB272600B23F8D /* DownloadedNovelSectionHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadedNovelSectionHeaderCell.swift; sourceTree = "<group>"; };
 		1F9890A822BCCBAB00A09F3F /* InformationTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationTableViewController.swift; sourceTree = "<group>"; };
 		1F9890AA22BCDEE800A09F3F /* UIViewController+presentError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+presentError.swift"; sourceTree = "<group>"; };
 		1F9890AC22BCDF5B00A09F3F /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
@@ -128,6 +156,10 @@
 		1FCD420622C25AF60050ECEC /* FontFamilyTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontFamilyTableViewController.swift; sourceTree = "<group>"; };
 		1FCD420A22C381A60050ECEC /* DownloadChaptersTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadChaptersTableViewController.swift; sourceTree = "<group>"; };
 		1FCD420C22C384860050ECEC /* SelectableChapterTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableChapterTableViewCell.swift; sourceTree = "<group>"; };
+		1FCD421422C5033F0050ECEC /* DownloadsCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadsCollectionViewController.swift; sourceTree = "<group>"; };
+		1FCD421622C505750050ECEC /* DownloadsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadsCollectionViewCell.swift; sourceTree = "<group>"; };
+		1FCD421822C5E54E0050ECEC /* DownloadsSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadsSectionHeaderView.swift; sourceTree = "<group>"; };
+		1FCD421A22C5E57E0050ECEC /* DownloadsSectionFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadsSectionFooterView.swift; sourceTree = "<group>"; };
 		1FED6E3022B34C92002F9317 /* WebNovel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WebNovel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FED6E3322B34C92002F9317 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1FED6E3822B34C92002F9317 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -188,6 +220,10 @@
 				1F9890AC22BCDF5B00A09F3F /* UIImage.swift */,
 				1FCD41EC22C0CA480050ECEC /* String+save.swift */,
 				1FCD41FA22C1B7BE0050ECEC /* Optional+losslessStr.swift */,
+				1F21978122C5F10900AC435A /* TimeInterval+now.swift */,
+				1F8FBB4F22C73E1000B23F8D /* Data+size.swift */,
+				1F3F106022D5896100BCD32B /* UIProgressView+barHeight.swift */,
+				1F3F106822D62D6700BCD32B /* TimeInterval+formattedString.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -268,6 +304,9 @@
 			isa = PBXGroup;
 			children = (
 				1FED6E3722B34C92002F9317 /* Main.storyboard */,
+				1F8FBB4322C7176200B23F8D /* AddToDownloads.storyboard */,
+				1F8FBB4522C718C200B23F8D /* ChapterReader.storyboard */,
+				1F8FBB4922C71CE400B23F8D /* NovelDetails.storyboard */,
 				1FED6E3F22B34C93002F9317 /* LaunchScreen.storyboard */,
 			);
 			path = Storyboards;
@@ -295,6 +334,7 @@
 				1F52AAED22B901A300D4FB6C /* WNGenre.swift */,
 				1FED6EAD22B6FB57002F9317 /* WNChaptersCatalogue.swift */,
 				1FED6E6C22B403F6002F9317 /* WNServiceProvider.swift */,
+				1F3F106222D5913500BCD32B /* WNDownloadsManager.swift */,
 				1F52AAE422B8D3F500D4FB6C /* WNServiceManager.swift */,
 				1FED6EB822B72557002F9317 /* WNListingService.swift */,
 				1FED6E7522B42C69002F9317 /* WNError.swift */,
@@ -343,6 +383,8 @@
 				1FCD420422C1D5D00050ECEC /* ChapterOptionsTableViewController.swift */,
 				1F52AAE622B8DC7100D4FB6C /* ListingServiceViewController.swift */,
 				1FCD420A22C381A60050ECEC /* DownloadChaptersTableViewController.swift */,
+				1FCD421422C5033F0050ECEC /* DownloadsCollectionViewController.swift */,
+				1F8FBB4B22C72D7900B23F8D /* DownloadedNovelTableViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -360,6 +402,12 @@
 				1F9890B822BD219700A09F3F /* GenreLabel.swift */,
 				1F9890B422BD00F700A09F3F /* InformationTableViewCellDelegate.swift */,
 				1FCD420C22C384860050ECEC /* SelectableChapterTableViewCell.swift */,
+				1FCD421622C505750050ECEC /* DownloadsCollectionViewCell.swift */,
+				1FCD421822C5E54E0050ECEC /* DownloadsSectionHeaderView.swift */,
+				1FCD421A22C5E57E0050ECEC /* DownloadsSectionFooterView.swift */,
+				1F8FBB5122CB272600B23F8D /* DownloadedNovelSectionHeaderCell.swift */,
+				1F3F105E22D5825900BCD32B /* DownloadedNovelProgressWrapperView.swift */,
+				1F3F106622D5C7DE00BCD32B /* DownloadedNovelProgressTableViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -447,9 +495,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				1FED6E4122B34C93002F9317 /* LaunchScreen.storyboard in Resources */,
+				1F8FBB4422C7176200B23F8D /* AddToDownloads.storyboard in Resources */,
 				1FED6E3E22B34C93002F9317 /* Assets.xcassets in Resources */,
+				1F8FBB4622C718C200B23F8D /* ChapterReader.storyboard in Resources */,
 				1FCD41FF22C1C2850050ECEC /* bundle.js in Resources */,
 				1FED6E3922B34C92002F9317 /* Main.storyboard in Resources */,
+				1F8FBB4A22C71CE400B23F8D /* NovelDetails.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -468,6 +519,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1FED6EB322B6FDB7002F9317 /* WNCache.swift in Sources */,
+				1FCD421522C5033F0050ECEC /* DownloadsCollectionViewController.swift in Sources */,
 				1F52AAE722B8DC7100D4FB6C /* ListingServiceViewController.swift in Sources */,
 				1F9890B722BD096900A09F3F /* GenresTableViewCell.swift in Sources */,
 				1F3B25B522B87EEB00F1B2CA /* WNCoverImage.swift in Sources */,
@@ -490,31 +542,43 @@
 				1F0E2EB122B73E5500CD77A9 /* DiscoverTableViewController.swift in Sources */,
 				1FED6E3C22B34C92002F9317 /* WebNovel.xcdatamodeld in Sources */,
 				1FED6E7C22B56EA6002F9317 /* WebNovel.swift in Sources */,
+				1F3F106122D5896100BCD32B /* UIProgressView+barHeight.swift in Sources */,
 				1FED6EB522B6FDB7002F9317 /* Serializable.swift in Sources */,
 				1FED6E3422B34C92002F9317 /* AppDelegate.swift in Sources */,
 				1F52AAE522B8D3F500D4FB6C /* WNServiceManager.swift in Sources */,
 				1F9890BB22BDB24300A09F3F /* StatsTableViewCell.swift in Sources */,
+				1F3F106322D5913500BCD32B /* WNDownloadsManager.swift in Sources */,
+				1F3F106722D5C7DE00BCD32B /* DownloadedNovelProgressTableViewCell.swift in Sources */,
+				1F8FBB5222CB272600B23F8D /* DownloadedNovelSectionHeaderCell.swift in Sources */,
 				1F9890AD22BCDF5B00A09F3F /* UIImage.swift in Sources */,
 				1FED6EA622B627A1002F9317 /* NovelUpdates.swift in Sources */,
 				1F52AAE922B8E88800D4FB6C /* Notification.swift in Sources */,
 				1FCD420522C1D5D00050ECEC /* ChapterOptionsTableViewController.swift in Sources */,
+				1F3F106922D62D6700BCD32B /* TimeInterval+formattedString.swift in Sources */,
 				1F9890BD22BDDCFD00A09F3F /* FactTableViewCell.swift in Sources */,
 				1FCD41EB22C0713F0050ECEC /* ChapterTableViewCell.swift in Sources */,
 				1FCD41F722C1B3A70050ECEC /* Readability.swift in Sources */,
+				1F8FBB4C22C72D7900B23F8D /* DownloadedNovelTableViewController.swift in Sources */,
 				1F0E2EB322B73F7500CD77A9 /* DiscoverTableViewCell.swift in Sources */,
+				1F8FBB5022C73E1000B23F8D /* Data+size.swift in Sources */,
 				1F9890B922BD219700A09F3F /* GenreLabel.swift in Sources */,
 				1FCD41E922C06E4C0050ECEC /* ChaptersTableViewController.swift in Sources */,
+				1FCD421B22C5E57E0050ECEC /* DownloadsSectionFooterView.swift in Sources */,
 				1FED6E6D22B403F6002F9317 /* WNServiceProvider.swift in Sources */,
+				1FCD421922C5E54E0050ECEC /* DownloadsSectionHeaderView.swift in Sources */,
 				1FCD420722C25AF60050ECEC /* FontFamilyTableViewController.swift in Sources */,
 				1FCD420B22C381A60050ECEC /* DownloadChaptersTableViewController.swift in Sources */,
 				1F52AAEC22B8EAFA00D4FB6C /* NSObject+observe.swift in Sources */,
 				1FCD41FB22C1B7BE0050ECEC /* Optional+losslessStr.swift in Sources */,
 				1FED6EAE22B6FB57002F9317 /* WNChaptersCatalogue.swift in Sources */,
 				1FCD420122C1C5B70050ECEC /* ChapterViewController.swift in Sources */,
+				1F21978222C5F10900AC435A /* TimeInterval+now.swift in Sources */,
 				1F52AAEE22B901A300D4FB6C /* WNGenre.swift in Sources */,
+				1FCD421722C505750050ECEC /* DownloadsCollectionViewCell.swift in Sources */,
 				1FCD420D22C384860050ECEC /* SelectableChapterTableViewCell.swift in Sources */,
 				1FED6EA522B627A1002F9317 /* NovelUpdates+search.swift in Sources */,
 				1FCD41E722BF76EE0050ECEC /* WNCancellableTask.swift in Sources */,
+				1F3F105F22D5825900BCD32B /* DownloadedNovelProgressWrapperView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

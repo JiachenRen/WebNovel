@@ -39,7 +39,7 @@ class ChaptersTableViewController: UITableViewController {
         tableView.sectionIndexMinimumDisplayRowCount = 100
         loadChapters()
         
-        observe(.downloadChapters, #selector(chaptersAddedToDownloads))
+        observe(.downloadTaskInitiated, #selector(chaptersAddedToDownloads))
     }
     
     @IBAction func orderButtonTapped(_ sender: Any) {
@@ -75,13 +75,11 @@ class ChaptersTableViewController: UITableViewController {
     
     private func loadChapters() {
         isLoadingChapters = true
-        WNServiceManager.shared.serviceProvider.fetchChapters(for: webNovel, cachePolicy: .usesCache)
-            .done(on: .main) { chapters in
-                self.chapters = chapters
-                if !self.sortDescending {
-                    self.chapters.reverse()
-                }
-                self.chaptersCountLabel.text = "\(chapters.count) chapters"
+        WNServiceManager.shared.serviceProvider.fetchChaptersCatagoue(for: webNovel, cachePolicy: .usesCache)
+            .done(on: .main) { catalogue in
+                self.chapters = catalogue.chapters
+                self.chapters.sort(by: {self.sortDescending ? $0.id > $1.id : $0.id < $1.id})
+                self.chaptersCountLabel.text = "\(self.chapters.count) chapters"
                 self.tableView.reloadData()
             }.ensure {
                 self.isLoadingChapters = false
@@ -139,26 +137,12 @@ class ChaptersTableViewController: UITableViewController {
     
     // MARK: - Navigation
     
-    override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
-        switch identifier {
-        case "chapters->download":
-            if webNovel.url == nil {
-                presentError(WNError.urlNotFound)
-                return false
-            }
-        default:
-            break
-        }
-        return true
-    }
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let nav = segue.destination as? UINavigationController {
             if let chapterController = nav.topViewController as? ChapterViewController,
                 let indexPath = tableView.indexPathForSelectedRow {
                 chapterController.chapter = chapter(at: indexPath)
             } else if let downloadController = nav.topViewController as? DownloadChaptersTableViewController {
-                downloadController.chapters = chapters
                 downloadController.webNovelUrl = webNovel.url
             }
         }
