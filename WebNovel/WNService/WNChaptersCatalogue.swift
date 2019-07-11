@@ -44,6 +44,7 @@ class WNChaptersCatalogue: Serializable {
     /// Only downloaded chapter urls are kept to save space
     /// This retrieves the downloaded chapters from core data using their urls.
     /// - Returns: Downloaded chapters sorted by ascending ID number
+    /// - Warning: This is very expensive
     func retrieveDownloads() -> [WNChapter] {
         return downloadedChapterUrls.compactMap {
             try? WNCache.fetch(by: $0, object: WNChapter.self)

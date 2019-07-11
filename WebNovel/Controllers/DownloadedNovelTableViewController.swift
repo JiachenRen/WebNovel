@@ -105,7 +105,7 @@ class DownloadedNovelTableViewController: UITableViewController {
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "downloads.chapter", for: indexPath)
             let chapter = downloadedChapters[indexPath.row]
-            cell.textLabel?.text = chapter.properTitle() ?? chapter.title ?? chapter.article?.title
+            cell.textLabel?.text = chapter.properTitle() ?? chapter.article?.title
             return cell
         }
     }

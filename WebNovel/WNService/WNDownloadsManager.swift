@@ -57,7 +57,7 @@ class WNDownloadsManager {
                 }
             }
             
-            // Allow a maximum of 50 concurrent downloads
+            // Allow a maximum of 10 concurrent downloads
             for _ in 0..<10 {
                 if chapters.count == 0 {
                     break

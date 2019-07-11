@@ -301,7 +301,7 @@
                             </constraints>
                         </view>
                         <view key="tableFooterView" contentMode="scaleToFill" id="0DQ-fm-rSl">
-                            <rect key="frame" x="0.0" y="357" width="414" height="44"/>
+                            <rect key="frame" x="0.0" y="360" width="414" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </view>
@@ -330,24 +330,16 @@
                                     <outlet property="numChaptersLabel" destination="9wg-Vh-Zsx" id="bsc-ES-Bnv"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="downloads.progress" rowHeight="95" id="J26-lG-7mq" customClass="DownloadedNovelProgressTableViewCell" customModule="WebNovel" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="218" width="414" height="95"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="downloads.progress" rowHeight="98" id="J26-lG-7mq" customClass="DownloadedNovelProgressTableViewCell" customModule="WebNovel" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="218" width="414" height="98"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="J26-lG-7mq" id="tqT-9b-wch">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="94.5"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="J26-lG-7mq" id="tqT-9b-wch">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="97.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="o6L-0A-Hhm" customClass="DownloadedNovelProgressWrapperView" customModule="WebNovel" customModuleProvider="target">
                                             <rect key="frame" x="20" y="19" width="374" height="60"/>
                                             <subviews>
-                                                <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.20000000000000001" translatesAutoresizingMaskIntoConstraints="NO" id="aqN-eK-Tiv">
-                                                    <rect key="frame" x="16" y="42" width="296" height="2"/>
-                                                    <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="number" keyPath="barHeight">
-                                                            <real key="value" value="2"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                    </userDefinedRuntimeAttributes>
-                                                </progressView>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w0C-jj-HzF">
                                                     <rect key="frame" x="328" y="15" width="30" height="30"/>
                                                     <constraints>
@@ -368,19 +360,27 @@
                                                     <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.20000000000000001" translatesAutoresizingMaskIntoConstraints="NO" id="aqN-eK-Tiv">
+                                                    <rect key="frame" x="16" y="42" width="296" height="2"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="barHeight">
+                                                            <real key="value" value="2"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
+                                                </progressView>
                                             </subviews>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstItem="3zS-Gv-YpF" firstAttribute="leading" secondItem="o6L-0A-Hhm" secondAttribute="leading" constant="16" id="30K-P2-gp9"/>
                                                 <constraint firstItem="w0C-jj-HzF" firstAttribute="leading" secondItem="aqN-eK-Tiv" secondAttribute="trailing" constant="16" id="3pn-ao-BIc"/>
                                                 <constraint firstItem="w0C-jj-HzF" firstAttribute="centerY" secondItem="o6L-0A-Hhm" secondAttribute="centerY" id="DQ6-6o-ZX4"/>
+                                                <constraint firstAttribute="height" constant="60" id="Glr-we-aBu"/>
                                                 <constraint firstItem="Xgv-8p-xhe" firstAttribute="trailing" secondItem="aqN-eK-Tiv" secondAttribute="trailing" id="Gog-7r-nx5"/>
                                                 <constraint firstAttribute="trailing" secondItem="w0C-jj-HzF" secondAttribute="trailing" constant="16" id="JwW-oF-ax7"/>
-                                                <constraint firstAttribute="bottom" secondItem="aqN-eK-Tiv" secondAttribute="bottom" constant="16" id="Ttc-Ki-qY3"/>
                                                 <constraint firstItem="aqN-eK-Tiv" firstAttribute="leading" secondItem="o6L-0A-Hhm" secondAttribute="leading" constant="16" id="U7G-p9-2F9"/>
-                                                <constraint firstAttribute="height" constant="60" id="W0X-F1-sgc"/>
                                                 <constraint firstItem="3zS-Gv-YpF" firstAttribute="top" secondItem="o6L-0A-Hhm" secondAttribute="top" constant="16" id="gTD-UW-M0o"/>
                                                 <constraint firstItem="Xgv-8p-xhe" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="3zS-Gv-YpF" secondAttribute="trailing" constant="8" id="iPy-AU-X8u"/>
+                                                <constraint firstAttribute="bottom" secondItem="aqN-eK-Tiv" secondAttribute="bottom" constant="16" id="plI-Cp-UZw"/>
                                                 <constraint firstItem="Xgv-8p-xhe" firstAttribute="firstBaseline" secondItem="3zS-Gv-YpF" secondAttribute="firstBaseline" id="ue6-zf-Jgc"/>
                                             </constraints>
                                             <userDefinedRuntimeAttributes>
@@ -398,9 +398,9 @@
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="o6L-0A-Hhm" firstAttribute="trailing" secondItem="tqT-9b-wch" secondAttribute="trailingMargin" id="0Fs-IJ-Spb"/>
-                                        <constraint firstItem="o6L-0A-Hhm" firstAttribute="bottom" secondItem="tqT-9b-wch" secondAttribute="bottomMargin" constant="8" id="2p6-d9-XFk"/>
                                         <constraint firstItem="o6L-0A-Hhm" firstAttribute="leading" secondItem="tqT-9b-wch" secondAttribute="leadingMargin" id="2up-uu-yas"/>
                                         <constraint firstItem="o6L-0A-Hhm" firstAttribute="top" secondItem="tqT-9b-wch" secondAttribute="topMargin" constant="8" id="pIg-mn-h4k"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="o6L-0A-Hhm" secondAttribute="bottom" constant="8" id="r8c-bS-ytU"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
@@ -411,7 +411,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="downloads.chapter" textLabel="FyH-Qg-PTX" style="IBUITableViewCellStyleDefault" id="ib9-9C-xGn">
-                                <rect key="frame" x="0.0" y="313" width="414" height="44"/>
+                                <rect key="frame" x="0.0" y="316" width="414" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ib9-9C-xGn" id="goP-OD-deV">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>

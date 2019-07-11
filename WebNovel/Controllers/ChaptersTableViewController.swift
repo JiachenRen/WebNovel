@@ -53,9 +53,10 @@ class ChaptersTableViewController: UITableViewController {
     @objc private func chaptersAddedToDownloads() {
         Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { _ in
             let controller = UIAlertController(title: "Added To Downloads", message: nil, preferredStyle: .alert)
-            self.present(controller, animated: true)
-            Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { _ in
-                controller.dismiss(animated: true)
+            self.present(controller, animated: true) {
+                Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { _ in
+                    controller.dismiss(animated: true)
+                }
             }
         }
     }
