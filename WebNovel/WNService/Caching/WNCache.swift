@@ -11,9 +11,17 @@ import UIKit
 import CoreData
 
 class WNCache {
-    private static var managedContext: NSManagedObjectContext? {
+    private static var parentContext: NSManagedObjectContext? {
         return (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext
     }
+    
+    /// Perform fetch and save on a concurrent MOC that is thread-safe
+    private static let ctx: NSManagedObjectContext = {
+        let moc = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+        moc.parent = parentContext
+        return moc
+    }()
+    
     private static let jsonEncoder = JSONEncoder()
     private static let jsonDecoder = JSONDecoder()
     
@@ -31,10 +39,6 @@ class WNCache {
     /// If an existing WN chapter with the same url exists, it is overwritten.
     @discardableResult
     static func save<T: Serializable>(_ object: T) throws -> OperationStatus {
-        guard let ctx = managedContext else {
-            throw WNError.managedContextNotFound
-        }
-        
         let url = object.url
         let request = fetchRequest(url, for: T.ManagedObject.self)
         let (managedObj, created) = try fetchOrCreate(request)
@@ -44,7 +48,7 @@ class WNCache {
         managedObj.data = try jsonEncoder.encode(object) as NSObject
         
         // Apply changes
-        try ctx.save()
+        try? ctx.save()
         
         // Return the appropriate status
         return created ? .created : .overwritten
@@ -52,11 +56,7 @@ class WNCache {
     
     /// Fetches all objects of specified type in core data
     static func fetchAll<T: Serializable>(_ object: T.Type) throws -> [T] {
-        guard let ctx = managedContext else {
-            throw WNError.managedContextNotFound
-        }
-        
-        let request: NSFetchRequest<T.ManagedObject> = T.ManagedObject.fetchRequest() as! NSFetchRequest<T.ManagedObject>
+        let request: NSFetchRequest<T.ManagedObject> = NSFetchRequest(entityName: T.ManagedObject.entityName)
         return try ctx.fetch(request).compactMap {
             guard let data = $0.data as? Data else {
                 return nil
@@ -67,10 +67,6 @@ class WNCache {
     
     /// Fetches the first object in core data of corresponding type and url.
     static func fetch<T: Serializable>(by url: String, object: T.Type) throws -> T? {
-        guard let ctx = managedContext else {
-            throw WNError.managedContextNotFound
-        }
-        
         let request = fetchRequest(url, for: T.ManagedObject.self)
         if let obj = try ctx.fetch(request).first {
             if let data = obj.data as? Data {
@@ -82,8 +78,8 @@ class WNCache {
     }
     
     /// Create a WN fetch request for WNs with matching URL.
-    private static func fetchRequest<T: NSManagedObject>(_ url: String, for obj: T.Type) -> NSFetchRequest<T> {
-        let fetchRequest: NSFetchRequest<T> = T.fetchRequest() as! NSFetchRequest<T>
+    private static func fetchRequest<T: WNManagedObject>(_ url: String, for obj: T.Type) -> NSFetchRequest<T> {
+        let fetchRequest: NSFetchRequest<T> = NSFetchRequest(entityName: T.entityName)
         fetchRequest.predicate = NSPredicate(format: "url == %@", url)
         return fetchRequest
     }
@@ -94,9 +90,6 @@ class WNCache {
     /// - Parameter entityName: The entity name for the object
     /// - Returns: Retrieved or newly created WNManagedObject
     private static func fetchOrCreate<T: WNManagedObject>(_ request: NSFetchRequest<T>) throws -> (T, created: Bool) {
-        guard let ctx = managedContext else {
-            throw WNError.managedContextNotFound
-        }
         if let retrieved = try ctx.fetch(request).first {
             return (retrieved, false)
         } else {

@@ -36,7 +36,7 @@ class NovelUpdates: WNServiceProvider {
                 return try WNChapter(
                     webNovelUrl,
                     url: "https:\(a.attr("href"))",
-                    chapter: a.text(),
+                    name: a.text(),
                     id: idx + 1
                 )
         }
@@ -69,7 +69,7 @@ class NovelUpdates: WNServiceProvider {
             }.map { html in
                 let chapters = try self.parseChapters(url, SwiftSoup.parse(html))
                 return WNChaptersCatalogue(url, chapters)
-            }.get(on: .main) { catalogue in
+            }.get { catalogue in
                 try WNCache.save(catalogue)
                 print("Saved chapters for \(url) to core data")
         }
@@ -99,19 +99,19 @@ class NovelUpdates: WNServiceProvider {
                     seal.reject(WNError.urlNotFound)
                     return
                 }
-                
-                WNParser.parseChapter(html, url, mergeInto: chapter)
+                chapter.isDownloaded = true
+                WNParser.parse(html, url, mergeInto: chapter)
                     .get { chapter in
+                        chapter.byteCount = chapter.serializedByteCount()
                         seal.fulfill(chapter)
-                    }.done(on: .main) { chapter in
-                        let status = try! WNCache.save(chapter)
+                    }.done { chapter in
+                        try! WNCache.save(chapter)
                         
                         // Update chapters catalogue information
                         if let catalogue = try? WNCache.fetch(by: chapter.webNovelUrl, object: WNChaptersCatalogue.self) {
                             catalogue.lastModified = .now
-                            if status == .created {
-                                catalogue.downloadedChapterUrls.append(chapter.url)
-                            }
+                            catalogue.chapters.removeAll(where: {$0.url == chapter.url})
+                            catalogue.chapters.append(chapter)
                             try! WNCache.save(catalogue)
                         }
                         print("Saved chapter with url \(url) to core data")

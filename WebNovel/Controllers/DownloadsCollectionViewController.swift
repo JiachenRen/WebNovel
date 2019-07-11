@@ -11,7 +11,6 @@ import UIKit
 private let reuseIdentifier = "downloads.webNovel"
 
 class DownloadsCollectionViewController: UICollectionViewController {
-    
     var catalogues: [WNChaptersCatalogue] = []
     var coverImages: [String: UIImage] = [:]
     var webNovels: [String: WebNovel] = [:]
@@ -35,7 +34,7 @@ class DownloadsCollectionViewController: UICollectionViewController {
         }
         // Only present catalogues with downloaded chapters, also include ones that are currently being downloaded
         catalogues = catalogues.filter {
-            $0.downloadedChapterUrls.count > 0 || WNDownloadsManager.shared.currentTasks.keys.contains($0.url)
+            $0.hasDownloads || WNDownloadsManager.shared.currentTasks.keys.contains($0.url)
         }
         self.catalogues = catalogues
         let urls: [String] = catalogues.map {$0.url}
@@ -73,7 +72,7 @@ class DownloadsCollectionViewController: UICollectionViewController {
         let url = catalogue.url
         downloadsCell.coverImageView.image = coverImages[url]
         downloadsCell.titleLabel.text = webNovels[url]?.title
-        downloadsCell.numDownloadedLabel.text = "\(catalogue.downloadedChapterUrls.count) downloaded"
+        downloadsCell.numDownloadedLabel.text = "\(catalogue.downloadedChapters.count) downloaded"
     
         return cell
     }

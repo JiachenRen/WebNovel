@@ -63,7 +63,7 @@ func downloadImage(from url: URLConvertible, cachePolicy: WNCache.Policy = .uses
                 }
                 seal.fulfill(image)
             }
-        }.get(on: .main) { uiImage in
+        }.get { uiImage in
             guard let url = try? url.asURL().absoluteString,
                 let wnCoverImage = WNCoverImage(uiImage: uiImage, url) else {
                 throw WNError.decodingFailed

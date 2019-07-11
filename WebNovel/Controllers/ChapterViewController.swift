@@ -19,9 +19,6 @@ class ChapterViewController: UIViewController {
     
     enum Sanitization {
         
-        /// WNParser (which is host-specific)
-        case hostSpecific
-        
         /// Readability.js parser (uses contentText)
         case readability
         
@@ -96,7 +93,7 @@ class ChapterViewController: UIViewController {
         super.viewDidLoad()
 
         textView.textContainerInset = .init(top: 0, left: 20, bottom: 0, right: 20)
-        navigationItem.title = chapter.chapter
+        navigationItem.title = chapter.name
         navigationController?.setNavigationBarHidden(true, animated: true)
         loadChapter()
         
@@ -156,13 +153,13 @@ class ChapterViewController: UIViewController {
     
     private func presentChapter() {
         switch sanitization {
-        case .readability, .hostSpecific:
-            let supplier: SanitizedContentSupplier? = sanitization == .readability ? chapter.article : chapter
+        case .readability:
+            let article = chapter.article
             let attrStr = NSMutableAttributedString()
-            if let title = supplier?.title {
+            if let title = article?.title {
                 attrStr.append(titleAttributes.apply(to: "\(title)"))
             }
-            if let textContent = supplier?.textContent {
+            if let textContent = article?.textContent {
                 attrStr.append(attributes.apply(to: textContent))
             }
             textView.attributedText = attrStr
@@ -171,7 +168,7 @@ class ChapterViewController: UIViewController {
             if let title = chapter.article?.title {
                 attrStr.append(NSAttributedString(string: "\(title)\n"))
             }
-            if let html = chapter.article?.content {
+            if let html = chapter.article?.htmlContent {
                 let htmlData = NSString(string: html).data(using: String.Encoding.unicode.rawValue)
                 let options = [
                     NSAttributedString.DocumentReadingOptionKey.documentType: NSAttributedString.DocumentType.html
@@ -230,11 +227,3 @@ extension ChapterViewController: UIPopoverPresentationControllerDelegate {
         return .none
     }
 }
-
-fileprivate protocol SanitizedContentSupplier {
-    var title: String? {get}
-    var textContent: String? {get}
-}
-
-extension WNChapter: SanitizedContentSupplier {}
-extension Article: SanitizedContentSupplier {}

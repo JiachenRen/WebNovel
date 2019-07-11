@@ -18,13 +18,13 @@ struct Article: Codable, CustomStringConvertible {
     var textContent: String?
     
     /// Sanitized html content of the article
-    var content: String?
+    var htmlContent: String?
     
     var description: String {
         return """
         Title: \(title.losslessStr)
         Text Content: \(textContent.losslessStr)
-        Html Content: \(content.losslessStr)
+        Html Content: \(htmlContent.losslessStr)
         """
     }
 }

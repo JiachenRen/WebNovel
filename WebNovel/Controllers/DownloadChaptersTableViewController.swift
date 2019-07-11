@@ -46,7 +46,7 @@ class DownloadChaptersTableViewController: UITableViewController {
         // Remove pending or downloaded chapters from candidates
         self.chapters = catalogue.chapters.filter { ch in
             let pending = WNDownloadsManager.shared.currentTasks[webNovelUrl]?.pending.contains {$0.url == ch.url} ?? false
-            return !catalogue.downloadedChapterUrls.contains {$0 == ch.url} && !pending
+            return !ch.isDownloaded && !pending
         }
         
         DispatchQueue.main.async { [unowned self] in
@@ -91,7 +91,7 @@ class DownloadChaptersTableViewController: UITableViewController {
         guard let chapterCell = cell as? SelectableChapterTableViewCell else {
             return cell
         }
-        chapterCell.chapterLabel.text = chapters[indexPath.row].chapter
+        chapterCell.chapterLabel.text = chapters[indexPath.row].name
         chapterCell.deselectedStateButton.isHidden = selections[indexPath.row]
         chapterCell.selectedStateButton.isHidden = !selections[indexPath.row]
         

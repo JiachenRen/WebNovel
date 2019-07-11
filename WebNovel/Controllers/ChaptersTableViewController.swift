@@ -118,7 +118,7 @@ class ChaptersTableViewController: UITableViewController {
         guard let chapterCell = cell as? ChapterTableViewCell else {
             return cell
         }
-        chapterCell.chapterLabel.text = chapter(at: indexPath).chapter
+        chapterCell.chapterLabel.text = chapter(at: indexPath).name
         return cell
     }
     

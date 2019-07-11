@@ -60,7 +60,7 @@ class Readability {
         }
         var article = Article()
         article.title = dict["title"] as? String
-        article.content = dict["content"] as? String
+        article.htmlContent = dict["content"] as? String
         article.textContent = dict["textContent"] as? String
         return article
     }

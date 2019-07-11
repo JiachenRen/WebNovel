@@ -26,7 +26,7 @@ extension NovelUpdates {
                 let doc = try SwiftSoup.parse(html)
                 try self.parseDetails(doc, wn)
                 return wn
-            }.get(on: .main) { wn in
+            }.get { wn in
                 try WNCache.save(wn)
                 print("Saved details for wn at \(wn.url) to core data")
         }

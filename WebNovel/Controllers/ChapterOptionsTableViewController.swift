@@ -13,7 +13,6 @@ class ChapterOptionsTableViewController: UITableViewController {
 
     @IBOutlet var sanitizationCells: [UITableViewCell]!
     
-    @IBOutlet weak var hostSpecificCell: UITableViewCell!
     @IBOutlet weak var readabilityCell: UITableViewCell!
     @IBOutlet weak var sanitizedHtmlCell: UITableViewCell!
     @IBOutlet weak var webCell: UITableViewCell!
@@ -74,8 +73,6 @@ class ChapterOptionsTableViewController: UITableViewController {
         switch sanitization! {
         case .readability:
             readabilityCell.accessoryType = .checkmark
-        case .hostSpecific:
-            hostSpecificCell.accessoryType = .checkmark
         case .sanitizedHtml:
             sanitizedHtmlCell.accessoryType = .checkmark
         case .rawHtml:
@@ -89,8 +86,6 @@ class ChapterOptionsTableViewController: UITableViewController {
                 sanitization = .sanitizedHtml
             } else if cell === readabilityCell {
                 sanitization = .readability
-            } else if cell === hostSpecificCell {
-                sanitization = .hostSpecific
             } else if cell == webCell {
                 sanitization = .rawHtml
             }

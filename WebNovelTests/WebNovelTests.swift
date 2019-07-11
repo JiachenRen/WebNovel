@@ -43,7 +43,7 @@ class WebNovelTests: XCTestCase {
     func testWNChapterCache() throws {
         let chapter = WNChapter(url: "www.novelupdates.com/id/39243042", chapter: "CC 3", id: 2)
         try WNCache.save(chapter)
-        XCTAssert(try WNCache.fetchChapter("www.novelupdates.com/id/39243042")!.chapter == "CC 3")
+        XCTAssert(try WNCache.fetchChapter("www.novelupdates.com/id/39243042")!.name == "CC 3")
     }
     
     

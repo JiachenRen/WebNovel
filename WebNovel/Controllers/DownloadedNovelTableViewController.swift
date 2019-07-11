@@ -44,6 +44,7 @@ class DownloadedNovelTableViewController: UITableViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         loadDownloadedChapters()
+        updateHeaderView()
         tableView.reloadData()
     }
     
@@ -61,8 +62,8 @@ class DownloadedNovelTableViewController: UITableViewController {
             }
             DispatchQueue.main.async {
                 self.catalogue = try! WNCache.fetch(by: self.catalogue.url, object: WNChaptersCatalogue.self)
-                self.updateHeaderView()
                 self.loadDownloadedChapters()
+                self.updateHeaderView()
                 self.tableView.reloadData()
             }
         }
@@ -73,17 +74,18 @@ class DownloadedNovelTableViewController: UITableViewController {
     }
     
     private func loadDownloadedChapters() {
-        downloadedChapters = catalogue.retrieveDownloads()
+        downloadedChapters = catalogue.downloadedChapters.sorted {
+            $0.id < $1.id
+        }
     }
     
     private func updateHeaderView() {
         coverImageView.image = coverImage
-        numDownloadedLabel.text = "\(catalogue.downloadedChapterUrls.count) chapters downloaded"
+        numDownloadedLabel.text = "\(downloadedChapters.count) chapters downloaded"
         storageUsedLabel.text = "\(catalogue.storageSpaceUsed()) used"
         titleLabel.text = webNovel.title
     }
     
-
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -115,7 +117,7 @@ class DownloadedNovelTableViewController: UITableViewController {
             return nil
         }
         let headerCell = tableView.dequeueReusableCell(withIdentifier: "downloads.sectionHeader") as! DownloadedNovelSectionHeaderCell
-        headerCell.numChaptersLabel.text = "\(catalogue.downloadedChapterUrls.count) chapters"
+        headerCell.numChaptersLabel.text = "\(downloadedChapters.count) chapters"
         let view = headerCell.contentView
         view.backgroundColor = .white
         return view
@@ -123,6 +125,10 @@ class DownloadedNovelTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return downloadTask != nil && section == 0 ? 0 : 50
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return downloadTask != nil && indexPath.section == 0 ? 92 : 44
     }
     
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
