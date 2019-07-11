@@ -17,6 +17,7 @@ extension Notification.Name {
     static let downloadTaskInitiated = Notification.Name("download-task-initiated")
     static let downloadTaskStatusUpdated = Notification.Name("download-task-status-updated")
     static let downloadTaskCompleted = Notification.Name("download-task-completed")
+    static let chapterReadStatusUpdated = Notification.Name("chapter-read-status-updated")
 }
 
 func postNotification(_ name: Notification.Name, object: Any? = nil, userInfo: [AnyHashable : Any]? = nil) {

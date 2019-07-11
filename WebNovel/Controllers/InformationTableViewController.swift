@@ -36,8 +36,16 @@ class InformationTableViewController: UITableViewController {
     
     @IBOutlet weak var statusLabel: UILabel!
     
+    @IBOutlet weak var readResumeLabel: UILabel!
+    
+    @IBOutlet weak var readResumeButton: UIButton!
+    
     var mgr: WNServiceManager {
         return WNServiceManager.shared
+    }
+    
+    var lastReadChapter: WNChapter? {
+        return try? WNCache.fetch(by: webNovel.url, object: WNChaptersCatalogue.self)?.lastReadChapter
     }
     
     fileprivate var sections: [Section] {
@@ -82,6 +90,8 @@ class InformationTableViewController: UITableViewController {
     
     var webNovel: WebNovel!
     
+    var firstChapter: WNChapter?
+    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
@@ -90,15 +100,20 @@ class InformationTableViewController: UITableViewController {
         super.viewDidLoad()
 
         tableView.separatorColor = .clear
-        load()
+        tableView.backgroundColor = .white
+        loadWNInformation()
+        findFirstChapter()
     }
     
-    @IBAction func resumeButtonTapped(_ sender: Any) {
-        
+    override func viewDidAppear(_ animated: Bool) {
+        updateReadResumeStatus()
     }
     
-    @IBAction func chaptersButtonTapped(_ sender: Any) {
-        
+    private func updateReadResumeStatus() {
+        readResumeLabel.text = lastReadChapter == nil ? "Read" : "Resume"
+        let enabled = lastReadChapter != nil || firstChapter != nil
+        readResumeLabel.isEnabled = enabled
+        readResumeButton.isEnabled = enabled
     }
     
     @IBAction func favoriteButtonTapped(_ sender: Any) {
@@ -106,7 +121,7 @@ class InformationTableViewController: UITableViewController {
     }
     
     /// Load and present detailed information about the WN
-    func load() {
+    private func loadWNInformation() {
         presentWebNovel()
         mgr.serviceProvider.loadDetails(webNovel, cachePolicy: .usesCache)
             .done { wn in
@@ -116,7 +131,7 @@ class InformationTableViewController: UITableViewController {
             }.catch(presentError)
     }
     
-    func loadCoverImage() {
+    private func loadCoverImage() {
         if let url = webNovel.coverImageUrl {
             activityIndicatorView.startAnimating()
             downloadImage(from: url).done { image in
@@ -132,7 +147,15 @@ class InformationTableViewController: UITableViewController {
         }
     }
     
-    func presentWebNovel() {
+    private func findFirstChapter() {
+        mgr.serviceProvider.fetchChaptersCatagoue(for: webNovel, cachePolicy: .usesCache)
+            .done(on: .main) { catalogue in
+                self.firstChapter = catalogue.firstChapter
+                self.updateReadResumeStatus()
+            }.catch(presentError)
+    }
+    
+    private func presentWebNovel() {
         titleLabel.text = webNovel.title
         statusLabel.text = webNovel.status ?? "Status Unknown"
         tableView.reloadData()
@@ -251,10 +274,13 @@ class InformationTableViewController: UITableViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let chaptersController = segue.destination as? ChaptersTableViewController else {
-            return
+        if let chaptersController = segue.destination as? ChaptersTableViewController {
+            chaptersController.webNovel = webNovel
+        } else if let nav = segue.destination as? UINavigationController {
+            if let chapterController = nav.topViewController as? ChapterViewController {
+                chapterController.chapter = lastReadChapter ?? firstChapter
+            }
         }
-        chaptersController.webNovel = webNovel
     }
 }
 

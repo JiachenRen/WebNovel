@@ -24,12 +24,11 @@ class DownloadedNovelTableViewController: UITableViewController {
     var downloadedChapters: [WNChapter] = []
     var webNovel: WebNovel!
     var coverImage: UIImage?
+    var reloadTimer: Timer?
     
     var downloadTask: WNDownloadsManager.Task? {
         return WNDownloadsManager.shared.currentTasks[catalogue.url]
     }
-    
-    var reloadTimer: Timer?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,12 +39,20 @@ class DownloadedNovelTableViewController: UITableViewController {
         observe(.downloadTaskInitiated, #selector(downloadTaskStatusChanged(_:)))
         observe(.downloadTaskCompleted, #selector(downloadTaskStatusChanged(_:)))
         observe(.downloadTaskStatusUpdated, #selector(downloadTaskStatusChanged(_:)))
+        observe(.chapterReadStatusUpdated, #selector(chapterReadStatusUpdated))
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        loadDownloadedChapters()
+        reloadDownloadedChapters()
         updateHeaderView()
+        updateReadResumeButton()
         tableView.reloadData()
+    }
+    
+    @objc private func chapterReadStatusUpdated() {
+        reloadDownloadedChapters()
+        tableView.reloadData()
+        updateReadResumeButton()
     }
     
     /// Download task has started, ended, or updated its status
@@ -61,22 +68,23 @@ class DownloadedNovelTableViewController: UITableViewController {
                 return
             }
             DispatchQueue.main.async {
-                self.catalogue = try! WNCache.fetch(by: self.catalogue.url, object: WNChaptersCatalogue.self)
-                self.loadDownloadedChapters()
+                self.reloadDownloadedChapters()
                 self.updateHeaderView()
                 self.tableView.reloadData()
             }
         }
     }
     
-    @IBAction func readResumeButtonTapped(_ sender: Any) {
-        
-    }
-    
-    private func loadDownloadedChapters() {
+    private func reloadDownloadedChapters() {
+        self.catalogue = try! WNCache.fetch(by: self.catalogue.url, object: WNChaptersCatalogue.self)
         downloadedChapters = catalogue.downloadedChapters.sorted {
             $0.id < $1.id
         }
+    }
+    
+    private func updateReadResumeButton() {
+        let title = catalogue.lastReadChapter == nil ? "READ" : "RESUME"
+        readResumeButton.setTitle(title, for: .normal)
     }
     
     private func updateHeaderView() {
@@ -108,6 +116,7 @@ class DownloadedNovelTableViewController: UITableViewController {
             let cell = tableView.dequeueReusableCell(withIdentifier: "downloads.chapter", for: indexPath)
             let chapter = downloadedChapters[indexPath.row]
             cell.textLabel?.text = chapter.properTitle() ?? chapter.article?.title
+            cell.textLabel?.textColor = chapter.isRead ? .lightGray : .black
             return cell
         }
     }
@@ -132,14 +141,35 @@ class DownloadedNovelTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return true
+        return downloadTask == nil || indexPath.section != 0
     }
     
-    // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            tableView.deleteRows(at: [indexPath], with: .fade)
+            let chapter = downloadedChapters.remove(at: indexPath.row)
+            chapter.delete()
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+            reloadDownloadedChapters()
+            tableView.reloadData()
+            updateHeaderView()
         }
+    }
+    
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let ch = downloadedChapters[indexPath.row]
+        let mark = UITableViewRowAction(style: .default, title: "Mark as \(ch.isRead ? "Unread" : "Read")") {(_, indexPath) in
+            if ch.isRead {
+                ch.markAsUnread()
+            } else {
+                ch.markAsRead()
+            }
+            self.chapterReadStatusUpdated()
+        }
+        let delete = UITableViewRowAction(style: .destructive, title: "Delete") { [unowned self] (_, indexPath) in
+            self.tableView.dataSource?.tableView?(self.tableView, commit: .delete, forRowAt: indexPath)
+        }
+        mark.backgroundColor = #colorLiteral(red: 0.1229935065, green: 0.6172919869, blue: 0.9974135756, alpha: 1)
+        return [delete, mark]
     }
     
     // MARK: - Navigation
@@ -148,9 +178,12 @@ class DownloadedNovelTableViewController: UITableViewController {
         if let infoController = segue.destination as? InformationTableViewController {
             infoController.webNovel = webNovel
         } else if let nav = segue.destination as? UINavigationController,
-            let chapterController = nav.topViewController as? ChapterViewController,
-            let idx = tableView.indexPathForSelectedRow?.row {
-            chapterController.chapter = downloadedChapters[idx]
+            let chapterController = nav.topViewController as? ChapterViewController {
+            if let idx = tableView.indexPathForSelectedRow?.row {
+                chapterController.chapter = downloadedChapters[idx]
+            } else {
+                chapterController.chapter = catalogue.lastReadChapter ?? catalogue.firstChapter
+            }
         }
     }
 }

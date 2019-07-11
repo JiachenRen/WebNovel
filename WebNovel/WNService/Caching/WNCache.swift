@@ -54,6 +54,14 @@ class WNCache {
         return created ? .created : .overwritten
     }
     
+    /// Deletes the object from core data
+    static func delete<T: Serializable>(_ object: T) {
+        let request = fetchRequest(object.url, for: T.ManagedObject.self)
+        if let managedObj = try? ctx.fetch(request).first {
+            ctx.delete(managedObj)
+        }
+    }
+    
     /// Fetches all objects of specified type in core data
     static func fetchAll<T: Serializable>(_ object: T.Type) throws -> [T] {
         let request: NSFetchRequest<T.ManagedObject> = NSFetchRequest(entityName: T.ManagedObject.entityName)

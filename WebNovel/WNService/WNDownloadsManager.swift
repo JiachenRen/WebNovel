@@ -24,16 +24,17 @@ class WNDownloadsManager {
     
     var currentTasks: [String: Task] = [:]
     
-    private func register(_ task: Task) {
+    private func register(_ task: Task) -> Task {
         if let existing = currentTasks[task.url] {
             existing.pending.append(contentsOf: task.pending)
-        } else {
-            currentTasks[task.url] = task
+            return existing
         }
+        currentTasks[task.url] = task
+        return task
     }
     
     func download(_ task: Task, using provider: WNServiceProvider) {
-        register(task)
+        let task = register(task)
         postNotification(.downloadTaskInitiated, object: task)
         queue.async { [unowned self] in
             var chapters = task.pending.filter { ch in !task.completed.contains(where: {$0.url == ch.url})}

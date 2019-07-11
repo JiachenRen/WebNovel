@@ -30,7 +30,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vgd-Yu-vlj">
+                                        <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vgd-Yu-vlj">
                                             <rect key="frame" x="20" y="7" width="30" height="30"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" secondItem="vgd-Yu-vlj" secondAttribute="height" multiplier="1:1" id="MvY-fh-uVI"/>
@@ -45,7 +45,7 @@
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vqd-MG-yMM">
+                                        <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vqd-MG-yMM">
                                             <rect key="frame" x="20" y="7" width="30" height="30"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" secondItem="vqd-MG-yMM" secondAttribute="height" multiplier="1:1" id="NvQ-EZ-tOb"/>
@@ -137,4 +137,5 @@
         <image name="empty-circle" width="50" height="50"/>
         <image name="ok-filled" width="50" height="50"/>
     </resources>
+    <color key="tintColor" red="0.29711377620000001" green="0.60802680249999996" blue="0.97651046509999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
 </document>

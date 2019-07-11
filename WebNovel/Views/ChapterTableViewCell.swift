@@ -9,11 +9,8 @@
 import UIKit
 
 class ChapterTableViewCell: UITableViewCell {
-    @IBOutlet weak var chapterLabel: UILabel!
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-
+    @IBOutlet weak var titleLabel: UILabel!
+    
 }
+

@@ -53,7 +53,7 @@
                                                     </constraints>
                                                     <state key="normal" image="resume"/>
                                                     <connections>
-                                                        <action selector="resumeButtonTapped:" destination="jzi-B5-Bu4" eventType="touchUpInside" id="Xa2-A5-2gr"/>
+                                                        <segue destination="jRv-Qb-Bua" kind="presentation" id="0Uh-Qr-6MT"/>
                                                     </connections>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Resume" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Eo3-Rg-Oxz">
@@ -83,7 +83,6 @@
                                                     </constraints>
                                                     <state key="normal" image="read"/>
                                                     <connections>
-                                                        <action selector="chaptersButtonTapped:" destination="jzi-B5-Bu4" eventType="touchUpInside" id="NIA-q5-e8n"/>
                                                         <segue destination="6sE-xb-OaC" kind="show" id="CYm-88-2gr"/>
                                                     </connections>
                                                 </button>
@@ -498,6 +497,8 @@
                     <connections>
                         <outlet property="activityIndicatorView" destination="TgS-uo-8eD" id="FmZ-Su-9Sc"/>
                         <outlet property="coverImageView" destination="H3W-um-WSj" id="L5B-ee-lFC"/>
+                        <outlet property="readResumeButton" destination="rQV-V6-y4o" id="4rg-Tu-zvo"/>
+                        <outlet property="readResumeLabel" destination="Eo3-Rg-Oxz" id="Icr-AK-3i9"/>
                         <outlet property="statusLabel" destination="BJj-Jl-XOL" id="Wlu-3x-b1y"/>
                         <outlet property="titleLabel" destination="CXp-Fe-VKk" id="JSM-7Q-O9f"/>
                     </connections>
@@ -505,6 +506,14 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="C18-Us-JY8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3350.7246376811595" y="-773.4375"/>
+        </scene>
+        <!--ChapterReader-->
+        <scene sceneID="8rx-yG-hxI">
+            <objects>
+                <viewControllerPlaceholder storyboardName="ChapterReader" id="jRv-Qb-Bua" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="NhK-kY-mql" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3819" y="-1232"/>
         </scene>
         <!--Chapters-->
         <scene sceneID="L6a-if-FTl">
@@ -515,17 +524,17 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <view key="tableHeaderView" contentMode="scaleToFill" id="nty-3X-SCo">
-                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="62"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0 chapters" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qMH-kd-rcw">
-                                    <rect key="frame" x="20" y="14" width="65" height="16"/>
+                                    <rect key="frame" x="20" y="23" width="65" height="16"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XEe-Nx-KMJ">
-                                    <rect key="frame" x="226" y="7" width="168" height="30"/>
+                                    <rect key="frame" x="226" y="16" width="168" height="30"/>
                                     <state key="normal" title="Order By: Descending ↓"/>
                                     <connections>
                                         <action selector="orderButtonTapped:" destination="6sE-xb-OaC" eventType="touchUpInside" id="GNZ-gV-9Qg"/>
@@ -542,7 +551,7 @@
                             </constraints>
                         </view>
                         <view key="tableFooterView" contentMode="scaleToFill" id="3bj-DG-nZP">
-                            <rect key="frame" x="0.0" y="116" width="414" height="79"/>
+                            <rect key="frame" x="0.0" y="134" width="414" height="79"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="bjR-CI-q4p">
@@ -565,7 +574,7 @@
                         </view>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="chapters.chapter" id="PUg-ot-KOM" customClass="ChapterTableViewCell" customModule="WebNovel" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="72" width="414" height="44"/>
+                                <rect key="frame" x="0.0" y="90" width="414" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="PUg-ot-KOM" id="IrO-cK-qoE">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
@@ -585,7 +594,7 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="chapterLabel" destination="PnR-22-tZf" id="iu1-Ha-vsE"/>
+                                    <outlet property="titleLabel" destination="PnR-22-tZf" id="iu1-Ha-vsE"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -610,7 +619,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DxB-Gn-XGn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4257" y="-773"/>
+            <point key="canvasLocation" x="4256.521739130435" y="-773.4375"/>
         </scene>
         <!--AddToDownloads-->
         <scene sceneID="Tlp-3o-1uk">
@@ -638,4 +647,5 @@
         <image name="readers" width="50" height="50"/>
         <image name="resume" width="50" height="50"/>
     </resources>
+    <color key="tintColor" red="0.29711377620000001" green="0.60802680249999996" blue="0.97651046509999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
 </document>

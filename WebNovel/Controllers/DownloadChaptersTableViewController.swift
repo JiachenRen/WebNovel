@@ -44,9 +44,17 @@ class DownloadChaptersTableViewController: UITableViewController {
             return
         }
         // Remove pending or downloaded chapters from candidates
-        self.chapters = catalogue.chapters.filter { ch in
-            let pending = WNDownloadsManager.shared.currentTasks[webNovelUrl]?.pending.contains {$0.url == ch.url} ?? false
-            return !ch.isDownloaded && !pending
+        var candidates = Set(catalogue.chapters.keys)
+        if let pending = WNDownloadsManager.shared.currentTasks[webNovelUrl]?.pending {
+            candidates = candidates.symmetricDifference(pending.map {$0.url})
+        }
+        
+        self.chapters = candidates.compactMap {
+                catalogue.chapters[$0]
+            }.filter {
+                !$0.isDownloaded
+            }.sorted {
+                $0.id < $1.id
         }
         
         DispatchQueue.main.async { [unowned self] in
@@ -59,7 +67,7 @@ class DownloadChaptersTableViewController: UITableViewController {
     }
     
     @IBAction func selectAllButtonTapped(_ sender: Any) {
-        selectAllButton.title = selectedAll ? "Deselect All" : "Select All"
+        selectAllButton.title = selectedAll ? "Select All" : "Deselect All"
         selections = [Bool](repeating: !selectedAll, count: chapters.count)
         selectedAll = !selectedAll
         tableView.reloadData()
@@ -91,10 +99,11 @@ class DownloadChaptersTableViewController: UITableViewController {
         guard let chapterCell = cell as? SelectableChapterTableViewCell else {
             return cell
         }
-        chapterCell.chapterLabel.text = chapters[indexPath.row].name
+        let chapter = chapters[indexPath.row]
+        chapterCell.chapterLabel.text = chapter.name
         chapterCell.deselectedStateButton.isHidden = selections[indexPath.row]
         chapterCell.selectedStateButton.isHidden = !selections[indexPath.row]
-        
+        chapterCell.chapterLabel.textColor = chapter.isRead ? .lightGray : .black
         return cell
     }
     

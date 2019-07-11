@@ -110,8 +110,7 @@ class NovelUpdates: WNServiceProvider {
                         // Update chapters catalogue information
                         if let catalogue = try? WNCache.fetch(by: chapter.webNovelUrl, object: WNChaptersCatalogue.self) {
                             catalogue.lastModified = .now
-                            catalogue.chapters.removeAll(where: {$0.url == chapter.url})
-                            catalogue.chapters.append(chapter)
+                            catalogue.chapters[chapter.url] = chapter
                             try! WNCache.save(catalogue)
                         }
                         print("Saved chapter with url \(url) to core data")

@@ -35,6 +35,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="tintColor" red="0.29711377620000001" green="0.60802680249999996" blue="0.97651046509999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <color key="selectedImageTintColor" red="0.29711377620000001" green="0.60802680249999996" blue="0.97651046509999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     </tabBar>
                     <connections>
                         <segue destination="JWz-DY-Yav" kind="relationship" relationship="viewControllers" id="q1G-rc-7I1"/>
@@ -53,6 +55,12 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="8sy-gb-LO3">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <textAttributes key="titleTextAttributes">
+                            <color key="textColor" red="0.29711377620000001" green="0.60802680249999996" blue="0.97651046509999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        </textAttributes>
+                        <textAttributes key="largeTitleTextAttributes">
+                            <color key="textColor" red="0.29711377620000001" green="0.60802680249999996" blue="0.97651046509999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        </textAttributes>
                     </navigationBar>
                     <connections>
                         <segue destination="pkW-Tm-etv" kind="relationship" relationship="rootViewController" id="Olo-tc-Eww"/>
@@ -217,17 +225,17 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <view key="tableHeaderView" contentMode="scaleToFill" id="HC7-fj-Pqd">
-                            <rect key="frame" x="0.0" y="0.0" width="414" height="130"/>
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="138"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cover-placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="7N5-m8-70Y">
-                                    <rect key="frame" x="20" y="16" width="73.5" height="98"/>
+                                    <rect key="frame" x="20" y="16" width="79.5" height="106"/>
                                     <constraints>
                                         <constraint firstAttribute="width" secondItem="7N5-m8-70Y" secondAttribute="height" multiplier="3:4" id="wny-Mp-3oj"/>
                                     </constraints>
                                 </imageView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This is a Rather Long Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S9N-lX-Bij">
-                                    <rect key="frame" x="109.5" y="16" width="224.5" height="23"/>
+                                    <rect key="frame" x="115.5" y="16" width="224.5" height="23"/>
                                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="19"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
@@ -237,27 +245,30 @@
                                     <constraints>
                                         <constraint firstAttribute="width" secondItem="n9s-jq-tQq" secondAttribute="height" multiplier="1:1" id="0u4-qA-GGM"/>
                                     </constraints>
+                                    <color key="tintColor" red="0.29711377620000001" green="0.60802680249999996" blue="0.97651046509999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                     <connections>
                                         <segue destination="Kbb-H9-KMI" kind="show" id="A8E-ux-Ncl"/>
                                     </connections>
                                 </button>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="190.4 MB used" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mK6-vo-awd">
-                                    <rect key="frame" x="109.5" y="98" width="88.5" height="16"/>
-                                    <fontDescription key="fontDescription" type="system" weight="light" pointSize="13"/>
+                                    <rect key="frame" x="115.5" y="107.5" width="84" height="14.5"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="174 chapters downloaded" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BdV-Tc-8Go">
-                                    <rect key="frame" x="109.5" y="78" width="154" height="16"/>
-                                    <fontDescription key="fontDescription" type="system" weight="light" pointSize="13"/>
+                                    <rect key="frame" x="115.5" y="89" width="145" height="14.5"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fcR-mS-JDt">
-                                    <rect key="frame" x="338" y="84" width="56" height="30"/>
-                                    <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <rect key="frame" x="334" y="89" width="60" height="33"/>
+                                    <color key="backgroundColor" red="0.29711377620000001" green="0.60802680249999996" blue="0.97651046509999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
-                                    <state key="normal" title="  READ  ">
+                                    <color key="tintColor" red="0.29711377620697021" green="0.60802680253982544" blue="0.97651046514511108" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                    <inset key="contentEdgeInsets" minX="10" minY="5" maxX="10" maxY="5"/>
+                                    <state key="normal" title="READ">
                                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </state>
                                     <userDefinedRuntimeAttributes>
@@ -266,11 +277,11 @@
                                         </userDefinedRuntimeAttribute>
                                     </userDefinedRuntimeAttributes>
                                     <connections>
-                                        <action selector="readResumeButtonTapped:" destination="u8l-sR-mpb" eventType="touchUpInside" id="OMU-Eh-mWN"/>
+                                        <segue destination="KGx-d7-tI4" kind="presentation" id="Vfp-TR-Ica"/>
                                     </connections>
                                 </button>
                                 <view alpha="0.5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8Wz-PH-Zm9">
-                                    <rect key="frame" x="0.0" y="129.5" width="414" height="0.5"/>
+                                    <rect key="frame" x="0.0" y="137.5" width="414" height="0.5"/>
                                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="0.5" id="PL9-z3-HO7"/>
@@ -283,6 +294,7 @@
                                 <constraint firstItem="mK6-vo-awd" firstAttribute="leading" secondItem="7N5-m8-70Y" secondAttribute="trailing" constant="16" id="4oG-ao-1E7"/>
                                 <constraint firstItem="n9s-jq-tQq" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="S9N-lX-Bij" secondAttribute="trailing" constant="8" id="IQs-7X-N58"/>
                                 <constraint firstAttribute="trailing" secondItem="fcR-mS-JDt" secondAttribute="trailing" constant="20" id="KFO-8n-tlB"/>
+                                <constraint firstItem="fcR-mS-JDt" firstAttribute="top" secondItem="BdV-Tc-8Go" secondAttribute="top" id="MAF-nI-fAd"/>
                                 <constraint firstItem="mK6-vo-awd" firstAttribute="top" secondItem="BdV-Tc-8Go" secondAttribute="bottom" constant="4" id="SZX-uE-gNx"/>
                                 <constraint firstItem="S9N-lX-Bij" firstAttribute="leading" secondItem="7N5-m8-70Y" secondAttribute="trailing" constant="16" id="SzV-XH-08r"/>
                                 <constraint firstItem="S9N-lX-Bij" firstAttribute="top" secondItem="HC7-fj-Pqd" secondAttribute="top" constant="16" id="W5B-EJ-BJf"/>
@@ -297,17 +309,18 @@
                                 <constraint firstItem="fcR-mS-JDt" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="BdV-Tc-8Go" secondAttribute="trailing" constant="20" id="mpn-yN-hB0"/>
                                 <constraint firstAttribute="bottom" secondItem="8Wz-PH-Zm9" secondAttribute="bottom" id="nv6-wg-pao"/>
                                 <constraint firstItem="fcR-mS-JDt" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="mK6-vo-awd" secondAttribute="trailing" constant="20" id="o2D-DS-5ps"/>
+                                <constraint firstItem="fcR-mS-JDt" firstAttribute="bottom" secondItem="mK6-vo-awd" secondAttribute="bottom" id="usO-32-qx5"/>
                                 <constraint firstAttribute="bottom" secondItem="fcR-mS-JDt" secondAttribute="bottom" constant="16" id="whG-bV-MpZ"/>
                             </constraints>
                         </view>
                         <view key="tableFooterView" contentMode="scaleToFill" id="0DQ-fm-rSl">
-                            <rect key="frame" x="0.0" y="360" width="414" height="44"/>
+                            <rect key="frame" x="0.0" y="368" width="414" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </view>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="downloads.sectionHeader" rowHeight="60" id="UGS-0P-ciK" customClass="DownloadedNovelSectionHeaderCell" customModule="WebNovel" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="158" width="414" height="60"/>
+                                <rect key="frame" x="0.0" y="166" width="414" height="60"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="UGS-0P-ciK" id="V5L-Jn-eZr">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="59.5"/>
@@ -330,8 +343,8 @@
                                     <outlet property="numChaptersLabel" destination="9wg-Vh-Zsx" id="bsc-ES-Bnv"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="downloads.progress" rowHeight="98" id="J26-lG-7mq" customClass="DownloadedNovelProgressTableViewCell" customModule="WebNovel" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="218" width="414" height="98"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="downloads.progress" rowHeight="98" id="J26-lG-7mq" customClass="DownloadedNovelProgressTableViewCell" customModule="WebNovel" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="226" width="414" height="98"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="J26-lG-7mq" id="tqT-9b-wch">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="97.5"/>
@@ -346,6 +359,7 @@
                                                         <constraint firstAttribute="width" constant="30" id="2VG-Wu-V1J"/>
                                                         <constraint firstAttribute="width" secondItem="w0C-jj-HzF" secondAttribute="height" multiplier="1:1" id="aoa-8W-oxE"/>
                                                     </constraints>
+                                                    <color key="tintColor" red="0.29711377620000001" green="0.60802680249999996" blue="0.97651046509999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                     <state key="normal" image="circled-pause"/>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="20 chapter(s) remaining" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3zS-Gv-YpF">
@@ -362,6 +376,7 @@
                                                 </label>
                                                 <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.20000000000000001" translatesAutoresizingMaskIntoConstraints="NO" id="aqN-eK-Tiv">
                                                     <rect key="frame" x="16" y="42" width="296" height="2"/>
+                                                    <color key="tintColor" red="0.29711377620000001" green="0.60802680249999996" blue="0.97651046509999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="number" keyPath="barHeight">
                                                             <real key="value" value="2"/>
@@ -410,7 +425,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="downloads.chapter" textLabel="FyH-Qg-PTX" style="IBUITableViewCellStyleDefault" id="ib9-9C-xGn">
-                                <rect key="frame" x="0.0" y="316" width="414" height="44"/>
+                                <rect key="frame" x="0.0" y="324" width="414" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ib9-9C-xGn" id="goP-OD-deV">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
@@ -439,8 +454,12 @@
                     </tableView>
                     <navigationItem key="navigationItem" id="Z4U-fG-cHb">
                         <rightBarButtonItems>
-                            <barButtonItem image="settings" id="mJf-Nc-dym"/>
-                            <barButtonItem systemItem="edit" id="IPh-dU-fni"/>
+                            <barButtonItem image="settings" id="mJf-Nc-dym">
+                                <color key="tintColor" red="0.29711377620000001" green="0.60802680249999996" blue="0.97651046509999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                            </barButtonItem>
+                            <barButtonItem systemItem="edit" id="IPh-dU-fni">
+                                <color key="tintColor" red="0.29711377620000001" green="0.60802680249999996" blue="0.97651046509999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                            </barButtonItem>
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
@@ -471,7 +490,7 @@
                 <viewControllerPlaceholder storyboardName="ChapterReader" id="KGx-d7-tI4" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Szs-Jr-35K" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3765" y="92"/>
+            <point key="canvasLocation" x="3765" y="226"/>
         </scene>
         <!--NovelDetails-->
         <scene sceneID="mc8-ul-RcY">
@@ -535,11 +554,13 @@
                     </view>
                     <navigationItem key="navigationItem" title="Select Listing" id="bPv-1P-5Ei">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="2CZ-Iw-avX">
+                            <color key="tintColor" red="0.29711377620000001" green="0.60802680249999996" blue="0.97651046509999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             <connections>
                                 <action selector="cancel:" destination="2ao-L0-0Yk" id="H2k-gM-ogn"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="done" id="707-rm-QcA">
+                            <color key="tintColor" red="0.29711377620000001" green="0.60802680249999996" blue="0.97651046509999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             <connections>
                                 <action selector="done:" destination="2ao-L0-0Yk" id="1KB-Et-P1V"/>
                             </connections>
@@ -574,6 +595,7 @@
                                 </label>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="detailDisclosure" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hmh-ES-NB5">
                                     <rect key="frame" x="372" y="13.5" width="22" height="22"/>
+                                    <color key="tintColor" red="0.29711377620000001" green="0.60802680249999996" blue="0.97651046509999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                     <connections>
                                         <segue destination="IRi-gN-xqa" kind="popoverPresentation" popoverAnchorView="hmh-ES-NB5" id="HUs-PL-9lR">
                                             <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
@@ -592,11 +614,12 @@
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TQK-4M-Bqg">
                                     <rect key="frame" x="58" y="49" width="336" height="30"/>
-                                    <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="0.75315136119631898" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="backgroundColor" red="0.29711377620000001" green="0.60802680249999996" blue="0.97651046509999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="30" id="HLU-iG-PYV"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" type="system" weight="light" pointSize="15"/>
+                                    <color key="tintColor" red="0.29711377620000001" green="0.60802680249999996" blue="0.97651046509999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                     <state key="normal" title="  N. Releases  ">
                                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </state>
@@ -737,8 +760,11 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Discover" id="qPW-vE-ZgM">
-                        <barButtonItem key="leftBarButtonItem" title="Sources" id="K4C-pB-cEX"/>
+                        <barButtonItem key="leftBarButtonItem" title="Sources" id="K4C-pB-cEX">
+                            <color key="tintColor" red="0.29711377620000001" green="0.60802680249999996" blue="0.97651046509999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="search" id="1Pa-yK-YPi">
+                            <color key="tintColor" red="0.29711377620000001" green="0.60802680249999996" blue="0.97651046509999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             <connections>
                                 <action selector="searchButtonTouched:" destination="Cg5-3X-4YY" id="IBl-1t-aBu"/>
                             </connections>
@@ -775,4 +801,8 @@
         <image name="settings" width="30" height="30"/>
         <image name="sort-desc-icon" width="50" height="50"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="ez8-FV-ao4"/>
+    </inferredMetricsTieBreakers>
+    <color key="tintColor" red="0.29711377620000001" green="0.60802680249999996" blue="0.97651046509999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
 </document>

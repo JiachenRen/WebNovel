@@ -146,6 +146,8 @@ class ChapterViewController: UIViewController {
             .done { chapter in
                 self.chapter = chapter
                 self.presentChapter()
+                chapter.markAsRead()
+                postNotification(.chapterReadStatusUpdated)
                 // Prevent the top from being clipped by the annoying face ID camera
                 self.textView.setContentOffset(.init(x: 0, y: -40), animated: true)
             }.catch(self.presentError)

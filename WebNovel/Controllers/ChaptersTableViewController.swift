@@ -37,9 +37,12 @@ class ChaptersTableViewController: UITableViewController {
         super.viewDidLoad()
         
         tableView.sectionIndexMinimumDisplayRowCount = 100
-        loadChapters()
         
         observe(.downloadTaskInitiated, #selector(chaptersAddedToDownloads))
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        loadChapters()
     }
     
     @IBAction func orderButtonTapped(_ sender: Any) {
@@ -78,7 +81,7 @@ class ChaptersTableViewController: UITableViewController {
         isLoadingChapters = true
         WNServiceManager.shared.serviceProvider.fetchChaptersCatagoue(for: webNovel, cachePolicy: .usesCache)
             .done(on: .main) { catalogue in
-                self.chapters = catalogue.chapters
+                self.chapters = [WNChapter](catalogue.chapters.values)
                 self.chapters.sort(by: {self.sortDescending ? $0.id > $1.id : $0.id < $1.id})
                 self.chaptersCountLabel.text = "\(self.chapters.count) chapters"
                 self.tableView.reloadData()
@@ -118,7 +121,9 @@ class ChaptersTableViewController: UITableViewController {
         guard let chapterCell = cell as? ChapterTableViewCell else {
             return cell
         }
-        chapterCell.chapterLabel.text = chapter(at: indexPath).name
+        let ch = chapter(at: indexPath)
+        chapterCell.titleLabel.text = ch.name
+        chapterCell.titleLabel.textColor = ch.isRead ? .lightGray : .black
         return cell
     }
     
@@ -134,6 +139,24 @@ class ChaptersTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         performSegue(withIdentifier: "chapters->chapter", sender: self)
+    }
+    
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let ch = chapter(at: indexPath)
+        let action = UITableViewRowAction(style: .default, title: "Mark as \(ch.isRead ? "Unread" : "Read")") { [weak self] (_, indexPath) in
+            if ch.isRead {
+                ch.markAsUnread()
+            } else {
+                ch.markAsRead()
+            }
+            self?.tableView.reloadData()
+        }
+        action.backgroundColor = #colorLiteral(red: 0.1229935065, green: 0.6172919869, blue: 0.9974135756, alpha: 1)
+        return [action]
     }
     
     // MARK: - Navigation
