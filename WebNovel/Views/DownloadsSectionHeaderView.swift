@@ -12,9 +12,13 @@ class DownloadsSectionHeaderView: UICollectionReusableView {
         
     @IBOutlet weak var sortByButton: UIButton!
     @IBOutlet weak var numNovelsLabel: UILabel!
-    
+    weak var delegate: DownloadsSectionHeaderViewDelegate?
     
     @IBAction func sortByButtonTapped(_ sender: Any) {
-        
+        delegate?.sortByButtonTapped()
     }
+}
+
+protocol DownloadsSectionHeaderViewDelegate: AnyObject {
+    func sortByButtonTapped()
 }

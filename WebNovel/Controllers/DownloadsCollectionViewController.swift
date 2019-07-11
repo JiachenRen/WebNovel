@@ -11,19 +11,57 @@ import UIKit
 private let reuseIdentifier = "downloads.webNovel"
 
 class DownloadsCollectionViewController: UICollectionViewController {
+    var sortingCriterion: CatalogueSortingCriterion = .name
     var catalogues: [WNChaptersCatalogue] = []
     var coverImages: [String: UIImage] = [:]
     var webNovels: [String: WebNovel] = [:]
+    var headerView: DownloadsSectionHeaderView?
+    var reloadTimer: Timer?
     var loaded = false
+    
+    enum CatalogueSortingCriterion: String, CaseIterable {
+        case name = "Name"
+        case lastModified = "Last Modified"
+        case lastRead = "Last Read"
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         collectionView.allowsMultipleSelection = false
+        observe(.downloadTaskStatusUpdated, #selector(downloadTaskUpdated))
+        observe(.downloadTaskInitiated, #selector(downloadTaskUpdated))
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        reload()
+    }
+    
+    @objc private func downloadTaskUpdated() {
+        reloadTimer?.invalidate()
+        reloadTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) {
+            [weak self] _ in
+            self?.reload()
+        }
+    }
+    
+    private func reload() {
         loadAvailableWebNovels()
+        sortCatalogue()
+        collectionView.reloadData()
+    }
+    
+    /// Sort the WN catalogues according to specified sorting criterion
+    private func sortCatalogue() {
+        catalogues.sort { a, b in
+            switch sortingCriterion {
+            case .lastModified:
+                return a.lastModified > b.lastModified
+            case .lastRead:
+                return a.lastReadChapter?.lastRead ?? 0 > b.lastReadChapter?.lastRead ?? 0
+            case .name:
+                return webNovels[a.url]?.title ?? "" < webNovels[b.url]?.title ?? ""
+            }
+        }
     }
     
     /// Load web novels with available downloads or ones that are being downloaded
@@ -49,7 +87,6 @@ class DownloadsCollectionViewController: UICollectionViewController {
         }
         
         loaded = true
-        collectionView.reloadData()
     }
 
     // MARK: UICollectionViewDataSource
@@ -83,6 +120,9 @@ class DownloadsCollectionViewController: UICollectionViewController {
         case UICollectionView.elementKindSectionHeader:
             let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "downloads.sectionHeader", for: indexPath) as! DownloadsSectionHeaderView
             header.numNovelsLabel.text = "\(catalogues.count) novel(s)"
+            header.delegate = self
+            self.headerView = header
+            updateSortByButton()
             reusableView = header
         case UICollectionView.elementKindSectionFooter:
             let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "downloads.sectionFooter", for: indexPath) as! DownloadsSectionFooterView
@@ -105,4 +145,27 @@ class DownloadsCollectionViewController: UICollectionViewController {
         }
     }
 
+}
+
+extension DownloadsCollectionViewController: DownloadsSectionHeaderViewDelegate {
+    
+    func sortByButtonTapped() {
+        let alert = UIAlertController(title: "Sort by", message: nil, preferredStyle: .actionSheet)
+        CatalogueSortingCriterion.allCases.forEach { criterion in
+            alert.addAction(UIAlertAction(title: criterion.rawValue, style: .default) {
+                [weak self] _ in
+                self?.sortingCriterion = criterion
+                self?.sortCatalogue()
+                self?.updateSortByButton()
+                self?.collectionView.reloadData()
+            })
+        }
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        self.present(alert, animated: true)
+    }
+    
+    private func updateSortByButton() {
+        headerView?.sortByButton.setTitle("Sort By: \(sortingCriterion.rawValue)", for: .normal)
+    }
+    
 }
