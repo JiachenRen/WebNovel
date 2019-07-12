@@ -11,6 +11,7 @@
 		1F091BF122D83C0C00E799D2 /* TextToSpeechTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F091BF022D83C0C00E799D2 /* TextToSpeechTableViewController.swift */; };
 		1F091BF322D83DFA00E799D2 /* UIColor+colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F091BF222D83DFA00E799D2 /* UIColor+colors.swift */; };
 		1F091BF522D84CB900E799D2 /* String+sentences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F091BF422D84CB900E799D2 /* String+sentences.swift */; };
+		1F091BF922D8D07600E799D2 /* SpeechVoicesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F091BF822D8D07600E799D2 /* SpeechVoicesTableViewController.swift */; };
 		1F0E2EB122B73E5500CD77A9 /* DiscoverTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F0E2EB022B73E5500CD77A9 /* DiscoverTableViewController.swift */; };
 		1F0E2EB322B73F7500CD77A9 /* DiscoverTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F0E2EB222B73F7500CD77A9 /* DiscoverTableViewCell.swift */; };
 		1F21978222C5F10900AC435A /* TimeInterval+now.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F21978122C5F10900AC435A /* TimeInterval+now.swift */; };
@@ -119,6 +120,7 @@
 		1F091BF022D83C0C00E799D2 /* TextToSpeechTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextToSpeechTableViewController.swift; sourceTree = "<group>"; };
 		1F091BF222D83DFA00E799D2 /* UIColor+colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+colors.swift"; sourceTree = "<group>"; };
 		1F091BF422D84CB900E799D2 /* String+sentences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+sentences.swift"; sourceTree = "<group>"; };
+		1F091BF822D8D07600E799D2 /* SpeechVoicesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechVoicesTableViewController.swift; sourceTree = "<group>"; };
 		1F0E2EB022B73E5500CD77A9 /* DiscoverTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverTableViewController.swift; sourceTree = "<group>"; };
 		1F0E2EB222B73F7500CD77A9 /* DiscoverTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverTableViewCell.swift; sourceTree = "<group>"; };
 		1F21978122C5F10900AC435A /* TimeInterval+now.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeInterval+now.swift"; sourceTree = "<group>"; };
@@ -393,6 +395,7 @@
 				1FCD420422C1D5D00050ECEC /* ChapterOptionsTableViewController.swift */,
 				1FCD420622C25AF60050ECEC /* FontFamilyTableViewController.swift */,
 				1F091BF022D83C0C00E799D2 /* TextToSpeechTableViewController.swift */,
+				1F091BF822D8D07600E799D2 /* SpeechVoicesTableViewController.swift */,
 				1F52AAE622B8DC7100D4FB6C /* ListingServiceViewController.swift */,
 				1FCD420A22C381A60050ECEC /* DownloadChaptersTableViewController.swift */,
 				1FCD421422C5033F0050ECEC /* DownloadsCollectionViewController.swift */,
@@ -588,6 +591,7 @@
 				1FCD41FB22C1B7BE0050ECEC /* Optional+losslessStr.swift in Sources */,
 				1FED6EAE22B6FB57002F9317 /* WNChaptersCatalogue.swift in Sources */,
 				1FCD420122C1C5B70050ECEC /* ChapterViewController.swift in Sources */,
+				1F091BF922D8D07600E799D2 /* SpeechVoicesTableViewController.swift in Sources */,
 				1F21978222C5F10900AC435A /* TimeInterval+now.swift in Sources */,
 				1F52AAEE22B901A300D4FB6C /* WNGenre.swift in Sources */,
 				1FCD421722C505750050ECEC /* DownloadsCollectionViewCell.swift in Sources */,

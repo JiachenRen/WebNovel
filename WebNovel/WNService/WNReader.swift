@@ -34,6 +34,9 @@ class WNReader : NSObject, AVSpeechSynthesizerDelegate {
     /// Rate at which utterances are spoken, default is 0.5 while max is 1
     var rate: Float = 0.5
     
+    /// Voice for the speech synthesizer
+    var voice: AVSpeechSynthesisVoice = AVSpeechSynthesisVoice(language: "en-US")!
+    
     /// Pitch for the syntehsized speech.
     /// Default is 1, possible values are from 0.5 to 2
     var pitchMultiplier: Float = 1
@@ -58,7 +61,7 @@ class WNReader : NSObject, AVSpeechSynthesizerDelegate {
         utterance.rate = rate
         utterance.pitchMultiplier = pitchMultiplier
         utterance.postUtteranceDelay = postUtteranceDelay
-        utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
+        utterance.voice = voice
         return utterance
     }
     
@@ -79,8 +82,8 @@ class WNReader : NSObject, AVSpeechSynthesizerDelegate {
     func reset() {
         isReading = false
         isPaused = false
-        speechSynthesizer.stopSpeaking(at: .immediate)
         sentences = []
+        speechSynthesizer.stopSpeaking(at: .immediate)
     }
     
     func pause() {
@@ -126,7 +129,7 @@ class WNReader : NSObject, AVSpeechSynthesizerDelegate {
         utterance.rate = 0.5
         utterance.pitchMultiplier = 1
         utterance.postUtteranceDelay = 0
-        utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
+        utterance.voice = voice
         announcer.speak(utterance)
     }
     
@@ -137,12 +140,17 @@ class WNReader : NSObject, AVSpeechSynthesizerDelegate {
     /// - MARK: AVSpeechSynthesizerDelegate
     
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
-        guard !synthesizer.isPaused && sentences.count > 0 else {
-            announce("End of chapter.")
-            reset()
-            postNotification(.finishedReadingChapter)
-            if autoNext && sentences.count == 0 {
-                readNextChapter()
+        guard sentences.count > 0 else {
+            if isReading {
+                reset()
+                postNotification(.finishedReadingChapter)
+                announce("End of chapter.")
+                if autoNext  {
+                    Timer.scheduledTimer(withTimeInterval: 1, repeats: false) {
+                        [weak self] _ in
+                        self?.readNextChapter()
+                    }
+                }
             }
             return
         }

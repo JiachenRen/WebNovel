@@ -743,6 +743,30 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
+                            <tableViewSection headerTitle="Advanced" footerTitle="You can add voices in Settings → General → Accessibility → Speech → Voices. " id="Dn8-t7-cCN">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="Oip-bq-mNp" style="IBUITableViewCellStyleDefault" id="cNv-hY-HZL">
+                                        <rect key="frame" x="0.0" y="806.5" width="300" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="cNv-hY-HZL" id="mZ2-js-6le">
+                                            <rect key="frame" x="0.0" y="0.0" width="266" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Voice" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Oip-bq-mNp">
+                                                    <rect key="frame" x="16" y="0.0" width="249" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="g22-W3-xDy" kind="show" id="L02-br-9n9"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
                         </sections>
                         <connections>
                             <outlet property="dataSource" destination="3f3-Qq-pNf" id="Ohq-j7-bv7"/>
@@ -771,6 +795,51 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gFS-Io-cIx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="8533.3333333333339" y="-1161.1607142857142"/>
+        </scene>
+        <!--Voices-->
+        <scene sceneID="SZm-Qq-0T6">
+            <objects>
+                <tableViewController title="Voices" id="g22-W3-xDy" customClass="SpeechVoicesTableViewController" customModule="WebNovel" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="Jf4-dm-MiJ">
+                        <rect key="frame" x="0.0" y="0.0" width="300" height="300"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="speechVoices.voice" textLabel="7ea-MW-fGg" detailTextLabel="iXs-gC-RGQ" style="IBUITableViewCellStyleSubtitle" id="Yyh-WA-4Ld">
+                                <rect key="frame" x="0.0" y="28" width="300" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Yyh-WA-4Ld" id="fL0-fB-iA7">
+                                    <rect key="frame" x="0.0" y="0.0" width="300" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Samantha - Enhanced" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="7ea-MW-fGg">
+                                            <rect key="frame" x="16" y="5" width="169.5" height="20.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="en-US" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="iXs-gC-RGQ">
+                                            <rect key="frame" x="16" y="25.5" width="36.5" height="14.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="g22-W3-xDy" id="v4u-ro-UDa"/>
+                            <outlet property="delegate" destination="g22-W3-xDy" id="lDs-Xa-CIB"/>
+                        </connections>
+                    </tableView>
+                    <size key="freeformSize" width="300" height="300"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="buk-h1-043" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="9207" y="-1075"/>
         </scene>
         <!--Fonts-->
         <scene sceneID="oDy-Nb-YHk">
