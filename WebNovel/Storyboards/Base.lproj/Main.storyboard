@@ -55,9 +55,6 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="8sy-gb-LO3">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <textAttributes key="titleTextAttributes">
-                            <color key="textColor" red="0.29711377620000001" green="0.60802680249999996" blue="0.97651046509999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                        </textAttributes>
                         <textAttributes key="largeTitleTextAttributes">
                             <color key="textColor" red="0.29711377620000001" green="0.60802680249999996" blue="0.97651046509999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         </textAttributes>
@@ -96,7 +93,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="90" height="180"/>
                                             <subviews>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cover-placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="ZDY-0K-PYB">
-                                                    <rect key="frame" x="0.0" y="0.0" width="90" height="120"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="90" height="120.00000000000045"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" secondItem="ZDY-0K-PYB" secondAttribute="height" multiplier="3:4" id="gte-xH-ZfM"/>
                                                     </constraints>
@@ -214,7 +211,7 @@
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UAm-qC-orh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2202.898550724638" y="371.65178571428572"/>
+            <point key="canvasLocation" x="2148" y="360"/>
         </scene>
         <!--Downloaded Novel Table View Controller-->
         <scene sceneID="i8v-zd-M8o">
@@ -229,7 +226,7 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cover-placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="7N5-m8-70Y">
-                                    <rect key="frame" x="20" y="16" width="79.5" height="106"/>
+                                    <rect key="frame" x="20" y="16" width="79.5" height="106.00000000000045"/>
                                     <constraints>
                                         <constraint firstAttribute="width" secondItem="7N5-m8-70Y" secondAttribute="height" multiplier="3:4" id="wny-Mp-3oj"/>
                                     </constraints>
@@ -472,7 +469,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SKB-y5-kud" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3128.985507246377" y="239.73214285714283"/>
+            <point key="canvasLocation" x="3061" y="185"/>
         </scene>
         <!--NovelDetails-->
         <scene sceneID="sUy-YV-hkW">
@@ -681,7 +678,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cover-placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="RDq-gs-5Pv">
-                                            <rect key="frame" x="20" y="16" width="115" height="153"/>
+                                            <rect key="frame" x="20" y="16" width="115" height="153.00000000000045"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" secondItem="RDq-gs-5Pv" secondAttribute="height" multiplier="3:4" id="GQT-gF-5yF"/>
                                             </constraints>

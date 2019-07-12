@@ -168,7 +168,7 @@ class DownloadedNovelTableViewController: UITableViewController {
         let delete = UITableViewRowAction(style: .destructive, title: "Delete") { [unowned self] (_, indexPath) in
             self.tableView.dataSource?.tableView?(self.tableView, commit: .delete, forRowAt: indexPath)
         }
-        mark.backgroundColor = #colorLiteral(red: 0.1229935065, green: 0.6172919869, blue: 0.9974135756, alpha: 1)
+        mark.backgroundColor = .globalTint
         return [delete, mark]
     }
     

@@ -81,6 +81,17 @@ class WNChaptersCatalogue: Serializable {
             .sorted {$0.lastRead! > $1.lastRead!}
             .first
     }
+    
+    /// - Returns: The chapter after the given chapter
+    func chapter(after ch: WNChapter) -> WNChapter? {
+        return chapters.values.filter {$0.id == ch.id + 1}.first
+    }
+    
+    /// - Returns: The chapter brefore the given chapter
+    func chapter(before ch: WNChapter) -> WNChapter? {
+        return chapters.values.filter {$0.id == ch.id - 1}.first
+    }
+    
 }
 
 extension WNChaptersCatalogue: CustomStringConvertible {

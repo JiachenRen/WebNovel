@@ -18,6 +18,10 @@ extension Notification.Name {
     static let downloadTaskStatusUpdated = Notification.Name("download-task-status-updated")
     static let downloadTaskCompleted = Notification.Name("download-task-completed")
     static let chapterReadStatusUpdated = Notification.Name("chapter-read-status-updated")
+    static let finishedReadingChapter = Notification.Name("finished-reading-chapter")
+    static let startedReadingNextChapter = Notification.Name("started-reading-next-chapter")
+    static let startedReadingChapter = Notification.Name("started-reading-chapter")
+    static let requestShowChapter = Notification.Name("request-show-chapter")
 }
 
 func postNotification(_ name: Notification.Name, object: Any? = nil, userInfo: [AnyHashable : Any]? = nil) {

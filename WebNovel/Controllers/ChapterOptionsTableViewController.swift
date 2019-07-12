@@ -8,6 +8,7 @@
 
 import UIKit
 import SafariServices
+import AVFoundation
 
 class ChapterOptionsTableViewController: UITableViewController {
 
@@ -33,10 +34,9 @@ class ChapterOptionsTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        tableView.backgroundColor = .lightGrayBackground
         updateSanitizationCells()
         updateAttributesUI()
-        
         observe(.fontFamilyUpdated, #selector(updateFontFamily(_:)))
     }
     
@@ -144,6 +144,8 @@ class ChapterOptionsTableViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let fontFamilyController = segue.destination as? FontFamilyTableViewController {
             fontFamilyController.currentFontFamily = attributes.fontFamily
+        } else if let textToSpeechController = segue.destination as? TextToSpeechTableViewController {
+            textToSpeechController.chapterToRead = chapter
         }
     }
 

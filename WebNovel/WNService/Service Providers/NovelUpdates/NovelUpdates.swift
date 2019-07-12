@@ -13,6 +13,7 @@ import SwiftSoup
 
 class NovelUpdates: WNServiceProvider {
     static var baseUrl = URL(string: "https://www.novelupdates.com")!
+    static var identifier = "Novel Updates"
     var serviceEndpoint = URL(string: "https://www.novelupdates.com/wp-admin/admin-ajax.php")!
     var listingService: WNListingService?
     

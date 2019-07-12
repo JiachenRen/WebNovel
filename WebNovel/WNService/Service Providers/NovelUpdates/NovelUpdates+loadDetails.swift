@@ -84,7 +84,7 @@ extension NovelUpdates {
             default: break
             }
             if child.id().starts(with: "sid") {
-                let wn1 = WebNovel(try child.attr("href"))
+                let wn1 = WebNovel(try child.attr("href"), NovelUpdates.identifier)
                 wn1.title = txt
                 if status == 1 {
                     related.append(wn1)

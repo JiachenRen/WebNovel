@@ -22,6 +22,7 @@ class WebNovel: Serializable {
     var title: String?
     var authors: [String]?
     var url: String
+    var serviceProviderIdentifier: String
     var genres: [String]?
     var tags: [String]?
     var language: String?
@@ -40,7 +41,8 @@ class WebNovel: Serializable {
     var relatedSeries: [WebNovel]?
     var recommendations: [WebNovel]?
     
-    init(_ url: String) {
+    init(_ url: String, _ identifer: String) {
+        self.serviceProviderIdentifier = identifer
         self.url = url
     }
     

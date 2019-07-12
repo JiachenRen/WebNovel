@@ -14,5 +14,11 @@ class WNServiceManager {
         return WNServiceManager()
     }()
     
-    var serviceProvider: WNServiceProvider = NovelUpdates()
+    /// List of available service providers.
+    /// SPI -> service provider
+    static var availableServiceProviders: [String: WNServiceProvider] = [
+        NovelUpdates.identifier: NovelUpdates()
+    ]
+    
+    var serviceProvider: WNServiceProvider = availableServiceProviders[NovelUpdates.identifier]!
 }

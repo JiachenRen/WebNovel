@@ -7,6 +7,15 @@
 //
 
 import Foundation
+import PromiseKit
+
+fileprivate let updateQueue = DispatchQueue(
+    label: "com.jiachenren.WebNovel.asyncUpdate",
+    qos: .utility,
+    attributes: .concurrent,
+    autoreleaseFrequency: .workItem,
+    target: nil
+)
 
 class WNChapter: Serializable, CustomStringConvertible {
     
@@ -115,11 +124,42 @@ class WNChapter: Serializable, CustomStringConvertible {
     /// Synchronizes chapters catalogue with this chapter, make sure that
     /// modifications made to the chapter can be refelected on both ends
     private func sync(_ body: @escaping (WNChaptersCatalogue) -> Void) {
-        if let cat = try? WNCache.fetch(by: webNovelUrl, object: WNChaptersCatalogue.self) {
-            cat.chapters[url] = self
-            body(cat)
-            try! WNCache.save(cat)
+        let cat = retrieveCatalogue()
+        cat.chapters[url] = self
+        body(cat)
+        try! WNCache.save(cat)
+    }
+    
+    /// Perfrom updates & synchronization asynchronously
+    func asyncUpdate(_ body: @escaping (WNChapter, WNChaptersCatalogue) -> Void) -> Guarantee<Void> {
+        let chapter = self
+        return Guarantee { fulfill in
+            updateQueue.async {
+                let cat = chapter.retrieveCatalogue()
+                body(chapter, cat)
+                cat.chapters[chapter.url] = chapter
+                try! WNCache.save(cat)
+                try! WNCache.save(chapter)
+                fulfill(())
+            }
         }
+    }
+    
+    /// Retrieves the catalogue that this chapter belongs to
+    func retrieveCatalogue() -> WNChaptersCatalogue {
+        return try! WNCache.fetch(by: webNovelUrl, object: WNChaptersCatalogue.self)!
+    }
+    
+    func retrieveWebNovel() -> WebNovel {
+        return try! WNCache.fetch(by: webNovelUrl, object: WebNovel.self)!
+    }
+    
+    func nextChapter() -> WNChapter? {
+        return retrieveCatalogue().chapter(after: self)
+    }
+    
+    func prevChapter() -> WNChapter? {
+        return retrieveCatalogue().chapter(before: self)
     }
     
     var description: String {

@@ -49,7 +49,7 @@ extension NovelUpdates {
             guard let url = try entry.getElementsByTag("a").first()?.attr("href") else {
                 throw WNError.urlNotFound
             }
-            let wn = WebNovel(url)
+            let wn = WebNovel(url, NovelUpdates.identifier)
             if let title = try entry.getElementsByTag("span").first()?.text() {
                 wn.title = title
             }

@@ -17,6 +17,216 @@ class ChapterViewController: UIViewController {
     
     @IBOutlet weak var webView: WKWebView!
     
+    @IBOutlet weak var nextChapterButton: UIBarButtonItem!
+    
+    @IBOutlet weak var previousChapterButton: UIBarButtonItem!
+    
+    @IBOutlet weak var chapterNumberBarItem: UIBarButtonItem!
+    
+    var chapter: WNChapter!
+    var catalogue: WNChaptersCatalogue?
+    var sanitization: Sanitization = .readability
+    var attributes: Attributes = Attributes()
+    var titleAttributes: Attributes {
+        var titleAttrs = attributes
+        titleAttrs.fontSize *= 1.2
+        titleAttrs.fontWeight = .semiBold
+        return titleAttrs
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        textView.textContainerInset = .init(top: 0, left: 20, bottom: 0, right: 20)
+        navigationController?.setNavigationBarHidden(true, animated: true)
+        navigationController?.setToolbarHidden(true, animated: true)
+        loadChapter()
+        
+        // Setup tap gesture recognizers
+        textView.addGestureRecognizer(makeTapGestureRecognizer())
+        view.addGestureRecognizer(makeTapGestureRecognizer())
+        
+        // Observe notifications
+        observe(.sanitizationUpdated, #selector(sanitizationUpdated(_:)))
+        observe(.reloadChapter, #selector(reloadChapter))
+        observe(.attributesUpdated, #selector(attributesUpdated(_:)))
+        observe(.requestShowChapter, #selector(processShowChapterRequest(_:)))
+    }
+    
+    private func updateUI() {
+        navigationItem.title = chapter.name
+        guard let cat = catalogue else {
+            chapterNumberBarItem.title = "\(chapter.id) of _"
+            previousChapterButton.isEnabled = false
+            nextChapterButton.isEnabled = false
+            return
+        }
+        chapterNumberBarItem.title = "\(chapter.id) of \(cat.chapters.count)"
+        previousChapterButton.isEnabled = chapter.id != 1
+        nextChapterButton.isEnabled = cat.chapter(after: chapter) != nil
+    }
+    
+    /// Instantiates a tap gesture recognizer that recognizes a single touch by one finger
+    private func makeTapGestureRecognizer() -> UITapGestureRecognizer {
+        let recognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+        recognizer.numberOfTapsRequired = 1
+        recognizer.numberOfTouchesRequired = 1
+        return recognizer
+    }
+    
+    @objc private func processShowChapterRequest(_ notif: Notification) {
+        guard let chapter = notif.object as? WNChapter else {
+            return
+        }
+        self.chapter = chapter
+        loadChapter()
+    }
+    
+    @objc private func handleTap(_ sender: UIGestureRecognizer? = nil) {
+        guard let nav = navigationController else {
+            return
+        }
+        nav.setNavigationBarHidden(!nav.isNavigationBarHidden, animated: true)
+        nav.setToolbarHidden(!nav.isToolbarHidden, animated: true)
+        textView.selectedTextRange = nil
+    }
+    
+    @objc private func attributesUpdated(_ notif: Notification) {
+        guard let attrs = notif.object as? Attributes else {
+            return
+        }
+        self.attributes = attrs
+        presentChapter()
+    }
+    
+    @objc private func reloadChapter() {
+        loadChapter(cachePolicy: .overwritesCache)
+    }
+    
+    @objc private func sanitizationUpdated(_ notif: Notification) {
+        sanitization = notif.object as! Sanitization
+        presentChapter()
+    }
+    
+    private func loadChapter(cachePolicy policy: WNCache.Policy = .usesCache) {
+        textView.isHidden = true
+        webView.isHidden = true
+        WNServiceManager.shared.serviceProvider.loadChapter(chapter, cachePolicy: policy)
+            .done {[weak self] chapter in
+                guard let self = self, chapter.id == self.chapter.id else {
+                    // Make sure that the task is relevant!
+                    return
+                }
+                self.chapter = chapter
+                self.presentChapter()
+                chapter.markAsRead()
+                postNotification(.chapterReadStatusUpdated)
+            }.catch(presentError)
+        catalogue = chapter.retrieveCatalogue()
+        updateUI()
+    }
+    
+    private func presentChapter() {
+        switch sanitization {
+        case .readability:
+            let article = chapter.article
+            let attrStr = NSMutableAttributedString()
+            if let title = article?.title {
+                attrStr.append(titleAttributes.apply(to: "\n\(title)\n"))
+            }
+            if let textContent = article?.textContent {
+                attrStr.append(attributes.apply(to: textContent))
+            }
+            textView.attributedText = attrStr
+        case .sanitizedHtml:
+            let attrStr = NSMutableAttributedString()
+            if let title = chapter.article?.title {
+                attrStr.append(NSAttributedString(string: "\(title)\n"))
+            }
+            if let html = chapter.article?.htmlContent {
+                let htmlData = NSString(string: html).data(using: String.Encoding.unicode.rawValue)
+                let options = [
+                    NSAttributedString.DocumentReadingOptionKey.documentType: NSAttributedString.DocumentType.html
+                ]
+                if let attrContent = try? NSMutableAttributedString(
+                    data: htmlData ?? Data(),
+                    options: options,
+                    documentAttributes: nil
+                    ) {
+                    attrStr.append(attrContent)
+                }
+            }
+            textView.attributedText = attrStr
+        case .rawHtml:
+            if let html = chapter.rawHtml, let url = URL(string: chapter.url) {
+                webView.loadHTMLString(html, baseURL: url)
+            }
+        }
+        textView.scrollRangeToVisible(NSRange(location: 0, length: 0))
+        webView.isHidden = sanitization != .rawHtml
+        textView.isHidden = sanitization == .rawHtml
+    }
+    
+    @IBAction func shareButtonTapped(_ sender: Any) {
+        
+    }
+    
+    @IBAction func moreButtonTapped(_ sender: Any) {
+        let storyBoard = UIStoryboard(name: "ChapterReader", bundle: .main)
+        let vc = storyBoard.instantiateViewController(withIdentifier: "chapter.options.nav") as! UINavigationController
+        vc.modalPresentationStyle = .popover
+        vc.popoverPresentationController?.delegate = self
+        vc.popoverPresentationController?.barButtonItem = moreButton
+        let optionsController = vc.topViewController as! ChapterOptionsTableViewController
+        optionsController.sanitization = sanitization
+        optionsController.attributes = attributes
+        optionsController.chapter = chapter
+        self.present(vc, animated: true)
+    }
+    
+    @IBAction func closeButtonTapped(_ sender: Any) {
+        self.dismiss(animated: true)
+    }
+    
+    @IBAction func previousChapterButtonTapped(_ sender: Any) {
+        guard let cat = catalogue,
+            let ch = cat.chapter(before: chapter) else {
+            return
+        }
+        chapter = ch
+        loadChapter()
+    }
+    
+    @IBAction func nextChapterButtonTapped(_ sender: Any) {
+        guard let cat = catalogue,
+            let ch = cat.chapter(after: chapter) else {
+            return
+        }
+        chapter = ch
+        loadChapter()
+    }
+    
+    override var prefersStatusBarHidden: Bool {
+        return navigationController?.isNavigationBarHidden == true
+    }
+    
+    override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
+        return .fade
+    }
+}
+
+// - MARK: PopoverPresentationControllerDelegate
+
+extension ChapterViewController: UIPopoverPresentationControllerDelegate {
+    /// Ensure that the presentation controller is NOT fullscreen
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return .none
+    }
+}
+
+// - MARK: Chapter Sanitization Type
+
+extension ChapterViewController {
     enum Sanitization {
         
         /// Readability.js parser (uses contentText)
@@ -28,7 +238,11 @@ class ChapterViewController: UIViewController {
         /// WebView loaded with raw html.
         case rawHtml
     }
-    
+}
+
+// - MARK: Text Attributes
+
+extension ChapterViewController {
     struct Attributes {
         var fontFamily = "Gill Sans"
         var fontSize: CGFloat = 21
@@ -41,7 +255,7 @@ class ChapterViewController: UIViewController {
             let regularFont = UIFont(name: fontFamily, size: fontSize)!
             guard var regularFontName = UIFont.fontNames(forFamilyName: fontFamily)
                 .sorted(by: {$0.count < $1.count}).first else {
-                return regularFont
+                    return regularFont
             }
             switch fontWeight {
             case .regular:
@@ -77,155 +291,5 @@ class ChapterViewController: UIViewController {
             attributedStr.addAttributes(attrs, range: range)
             return attributedStr
         }
-    }
-    
-    var chapter: WNChapter!
-    var sanitization: Sanitization = .readability
-    var attributes: Attributes = Attributes()
-    var titleAttributes: Attributes {
-        var titleAttrs = attributes
-        titleAttrs.fontSize *= 1.2
-        titleAttrs.fontWeight = .semiBold
-        return titleAttrs
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        textView.textContainerInset = .init(top: 0, left: 20, bottom: 0, right: 20)
-        navigationItem.title = chapter.name
-        navigationController?.setNavigationBarHidden(true, animated: true)
-        loadChapter()
-        
-        // Setup tap gesture recognizers
-        textView.addGestureRecognizer(makeTapGestureRecognizer())
-        
-        // Observe notifications
-        observe(.sanitizationUpdated, #selector(sanitizationUpdated(_:)))
-        observe(.reloadChapter, #selector(reloadChapter))
-        observe(.attributesUpdated, #selector(attributesUpdated(_:)))
-    }
-    
-    /// Instantiates a tap gesture recognizer that recognizes a single touch by one finger
-    private func makeTapGestureRecognizer() -> UITapGestureRecognizer {
-        let recognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
-        recognizer.numberOfTapsRequired = 1
-        recognizer.numberOfTouchesRequired = 1
-        return recognizer
-    }
-    
-    @objc private func handleTap(_ sender: UIGestureRecognizer? = nil) {
-        guard let nav = navigationController else {
-            return
-        }
-        nav.setNavigationBarHidden(!nav.isNavigationBarHidden, animated: true)
-        textView.selectedTextRange = nil
-    }
-    
-    @objc private func attributesUpdated(_ notif: Notification) {
-        guard let attrs = notif.object as? Attributes else {
-            return
-        }
-        self.attributes = attrs
-        presentChapter()
-    }
-    
-    @objc private func reloadChapter() {
-        loadChapter(cachePolicy: .overwritesCache)
-    }
-    
-    @objc private func sanitizationUpdated(_ notif: Notification) {
-        sanitization = notif.object as! Sanitization
-        presentChapter()
-    }
-    
-    private func loadChapter(cachePolicy policy: WNCache.Policy = .usesCache) {
-        textView.isHidden = true
-        webView.isHidden = true
-        WNServiceManager.shared.serviceProvider.loadChapter(chapter, cachePolicy: policy)
-            .done { chapter in
-                self.chapter = chapter
-                self.presentChapter()
-                chapter.markAsRead()
-                postNotification(.chapterReadStatusUpdated)
-                // Prevent the top from being clipped by the annoying face ID camera
-                self.textView.setContentOffset(.init(x: 0, y: -40), animated: true)
-            }.catch(self.presentError)
-    }
-    
-    private func presentChapter() {
-        switch sanitization {
-        case .readability:
-            let article = chapter.article
-            let attrStr = NSMutableAttributedString()
-            if let title = article?.title {
-                attrStr.append(titleAttributes.apply(to: "\(title)"))
-            }
-            if let textContent = article?.textContent {
-                attrStr.append(attributes.apply(to: textContent))
-            }
-            textView.attributedText = attrStr
-        case .sanitizedHtml:
-            let attrStr = NSMutableAttributedString()
-            if let title = chapter.article?.title {
-                attrStr.append(NSAttributedString(string: "\(title)\n"))
-            }
-            if let html = chapter.article?.htmlContent {
-                let htmlData = NSString(string: html).data(using: String.Encoding.unicode.rawValue)
-                let options = [
-                    NSAttributedString.DocumentReadingOptionKey.documentType: NSAttributedString.DocumentType.html
-                ]
-                if let attrContent = try? NSMutableAttributedString(
-                    data: htmlData ?? Data(),
-                    options: options,
-                    documentAttributes: nil
-                    ) {
-                    attrStr.append(attrContent)
-                }
-            }
-            textView.attributedText = attrStr
-        case .rawHtml:
-            if let html = chapter.rawHtml, let url = URL(string: chapter.url) {
-                webView.loadHTMLString(html, baseURL: url)
-            }
-        }
-        webView.isHidden = sanitization != .rawHtml
-        textView.isHidden = sanitization == .rawHtml
-    }
-    
-    @IBAction func shareButtonTapped(_ sender: Any) {
-        
-    }
-    
-    @IBAction func moreButtonTapped(_ sender: Any) {
-        let storyBoard = UIStoryboard(name: "ChapterReader", bundle: .main)
-        let vc = storyBoard.instantiateViewController(withIdentifier: "chapter.options.nav") as! UINavigationController
-        vc.modalPresentationStyle = .popover
-        vc.popoverPresentationController?.delegate = self
-        vc.popoverPresentationController?.barButtonItem = moreButton
-        let optionsController = vc.topViewController as! ChapterOptionsTableViewController
-        optionsController.sanitization = sanitization
-        optionsController.attributes = attributes
-        optionsController.chapter = chapter
-        self.present(vc, animated: true)
-    }
-    
-    @IBAction func closeButtonTapped(_ sender: Any) {
-        self.dismiss(animated: true)
-    }
-    
-    override var prefersStatusBarHidden: Bool {
-        return navigationController?.isNavigationBarHidden == true
-    }
-    
-    override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
-        return .fade
-    }
-}
-
-extension ChapterViewController: UIPopoverPresentationControllerDelegate {
-    /// Ensure that the presentation controller is NOT fullscreen
-    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
-        return .none
     }
 }

@@ -174,7 +174,7 @@ extension NUListingService: WNListingService {
             let url = link.getAttributes()?.filter({$0.getKey() == "href"}).first?.getValue() else {
             throw WNError.urlNotFound
         }
-        let wn = WebNovel(url)
+        let wn = WebNovel(url, NovelUpdates.identifier)
         wn.title = try link.text()
         if let main = try element.getElementsByClass("search_body_nu").first() {
             if let genresContainer = try main.getElementsByClass("search_genre").first() {

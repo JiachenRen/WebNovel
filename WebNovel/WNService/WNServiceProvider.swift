@@ -12,6 +12,7 @@ import Alamofire
 
 protocol WNServiceProvider {
     var listingService: WNListingService? {get set}
+    static var identifier: String {get}
     func availableListingServices() -> [WNListingService]
     func search(byName query: String) -> Promise<[WebNovel]>
     func fetchChaptersCatagoue(for wn: WebNovel, cachePolicy: WNCache.Policy) -> Promise<WNChaptersCatalogue>

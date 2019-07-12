@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1F091BED22D829C400E799D2 /* WNReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F091BEC22D829C400E799D2 /* WNReader.swift */; };
+		1F091BF122D83C0C00E799D2 /* TextToSpeechTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F091BF022D83C0C00E799D2 /* TextToSpeechTableViewController.swift */; };
+		1F091BF322D83DFA00E799D2 /* UIColor+colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F091BF222D83DFA00E799D2 /* UIColor+colors.swift */; };
+		1F091BF522D84CB900E799D2 /* String+sentences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F091BF422D84CB900E799D2 /* String+sentences.swift */; };
 		1F0E2EB122B73E5500CD77A9 /* DiscoverTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F0E2EB022B73E5500CD77A9 /* DiscoverTableViewController.swift */; };
 		1F0E2EB322B73F7500CD77A9 /* DiscoverTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F0E2EB222B73F7500CD77A9 /* DiscoverTableViewCell.swift */; };
 		1F21978222C5F10900AC435A /* TimeInterval+now.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F21978122C5F10900AC435A /* TimeInterval+now.swift */; };
@@ -111,6 +115,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1F091BEC22D829C400E799D2 /* WNReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WNReader.swift; sourceTree = "<group>"; };
+		1F091BF022D83C0C00E799D2 /* TextToSpeechTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextToSpeechTableViewController.swift; sourceTree = "<group>"; };
+		1F091BF222D83DFA00E799D2 /* UIColor+colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+colors.swift"; sourceTree = "<group>"; };
+		1F091BF422D84CB900E799D2 /* String+sentences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+sentences.swift"; sourceTree = "<group>"; };
 		1F0E2EB022B73E5500CD77A9 /* DiscoverTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverTableViewController.swift; sourceTree = "<group>"; };
 		1F0E2EB222B73F7500CD77A9 /* DiscoverTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverTableViewCell.swift; sourceTree = "<group>"; };
 		1F21978122C5F10900AC435A /* TimeInterval+now.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeInterval+now.swift"; sourceTree = "<group>"; };
@@ -219,11 +227,13 @@
 				1F9890AA22BCDEE800A09F3F /* UIViewController+presentError.swift */,
 				1F9890AC22BCDF5B00A09F3F /* UIImage.swift */,
 				1FCD41EC22C0CA480050ECEC /* String+save.swift */,
+				1F091BF422D84CB900E799D2 /* String+sentences.swift */,
 				1FCD41FA22C1B7BE0050ECEC /* Optional+losslessStr.swift */,
 				1F21978122C5F10900AC435A /* TimeInterval+now.swift */,
 				1F8FBB4F22C73E1000B23F8D /* Data+size.swift */,
 				1F3F106022D5896100BCD32B /* UIProgressView+barHeight.swift */,
 				1F3F106822D62D6700BCD32B /* TimeInterval+formattedString.swift */,
+				1F091BF222D83DFA00E799D2 /* UIColor+colors.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -337,6 +347,7 @@
 				1F3F106222D5913500BCD32B /* WNDownloadsManager.swift */,
 				1F52AAE422B8D3F500D4FB6C /* WNServiceManager.swift */,
 				1FED6EB822B72557002F9317 /* WNListingService.swift */,
+				1F091BEC22D829C400E799D2 /* WNReader.swift */,
 				1FED6E7522B42C69002F9317 /* WNError.swift */,
 				1FED6E9222B58C7A002F9317 /* NetworkUtils.swift */,
 			);
@@ -376,11 +387,12 @@
 			isa = PBXGroup;
 			children = (
 				1F0E2EB022B73E5500CD77A9 /* DiscoverTableViewController.swift */,
-				1FCD420622C25AF60050ECEC /* FontFamilyTableViewController.swift */,
 				1F9890A822BCCBAB00A09F3F /* InformationTableViewController.swift */,
 				1FCD41E822C06E4C0050ECEC /* ChaptersTableViewController.swift */,
 				1FCD420022C1C5B70050ECEC /* ChapterViewController.swift */,
 				1FCD420422C1D5D00050ECEC /* ChapterOptionsTableViewController.swift */,
+				1FCD420622C25AF60050ECEC /* FontFamilyTableViewController.swift */,
+				1F091BF022D83C0C00E799D2 /* TextToSpeechTableViewController.swift */,
 				1F52AAE622B8DC7100D4FB6C /* ListingServiceViewController.swift */,
 				1FCD420A22C381A60050ECEC /* DownloadChaptersTableViewController.swift */,
 				1FCD421422C5033F0050ECEC /* DownloadsCollectionViewController.swift */,
@@ -527,6 +539,8 @@
 				1FED6EB422B6FDB7002F9317 /* WNManagedObject.swift in Sources */,
 				1F9890B322BCF6D400A09F3F /* SummaryTableViewCell.swift in Sources */,
 				1F52AAF022B9B96300D4FB6C /* NUListingService.swift in Sources */,
+				1F091BF522D84CB900E799D2 /* String+sentences.swift in Sources */,
+				1F091BF322D83DFA00E799D2 /* UIColor+colors.swift in Sources */,
 				1F9890AB22BCDEE800A09F3F /* UIViewController+presentError.swift in Sources */,
 				1FED6E9822B5E16B002F9317 /* WNChapter.swift in Sources */,
 				1F9890A922BCCBAB00A09F3F /* InformationTableViewController.swift in Sources */,
@@ -544,6 +558,7 @@
 				1FED6E7C22B56EA6002F9317 /* WebNovel.swift in Sources */,
 				1F3F106122D5896100BCD32B /* UIProgressView+barHeight.swift in Sources */,
 				1FED6EB522B6FDB7002F9317 /* Serializable.swift in Sources */,
+				1F091BF122D83C0C00E799D2 /* TextToSpeechTableViewController.swift in Sources */,
 				1FED6E3422B34C92002F9317 /* AppDelegate.swift in Sources */,
 				1F52AAE522B8D3F500D4FB6C /* WNServiceManager.swift in Sources */,
 				1F9890BB22BDB24300A09F3F /* StatsTableViewCell.swift in Sources */,
@@ -553,6 +568,7 @@
 				1F9890AD22BCDF5B00A09F3F /* UIImage.swift in Sources */,
 				1FED6EA622B627A1002F9317 /* NovelUpdates.swift in Sources */,
 				1F52AAE922B8E88800D4FB6C /* Notification.swift in Sources */,
+				1F091BED22D829C400E799D2 /* WNReader.swift in Sources */,
 				1FCD420522C1D5D00050ECEC /* ChapterOptionsTableViewController.swift in Sources */,
 				1F3F106922D62D6700BCD32B /* TimeInterval+formattedString.swift in Sources */,
 				1F9890BD22BDDCFD00A09F3F /* FactTableViewCell.swift in Sources */,
