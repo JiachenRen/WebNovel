@@ -25,6 +25,8 @@ enum WNError: Error, Equatable {
     case managedContextNotFound
     case cancelled
     case coverImageUrlNotFound
+    case instanceDeallocated
+    case loadingFailed
     
     var localizedDescription: String {
         switch self {
@@ -60,6 +62,10 @@ enum WNError: Error, Equatable {
             return "The url for the cover image is not found"
         case .invalidUrl:
             return "The url is invalid"
+        case .instanceDeallocated:
+            return "The instance has been deallocated"
+        case .loadingFailed:
+            return "Failed to load content"
         }
     }
 }

@@ -8,6 +8,8 @@
 
 import UIKit
 import CoreData
+import AVFoundation
+import MediaPlayer
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,7 +18,47 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+
+        try! AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback)
+        try! AVAudioSession.sharedInstance().setActive(true)
+        debugPrint("AVAudioSession is Active and Category Playback is set")
+        UIApplication.shared.beginReceivingRemoteControlEvents()
+        setupCommandCenter()
         return true
+    }
+    
+    private func setupCommandCenter() {
+        let commandCenter = MPRemoteCommandCenter.shared()
+        commandCenter.playCommand.isEnabled = true
+        commandCenter.pauseCommand.isEnabled = true
+        commandCenter.nextTrackCommand.isEnabled = true
+        commandCenter.previousTrackCommand.isEnabled = true
+        commandCenter.changePlaybackPositionCommand.isEnabled = true
+        commandCenter.changePlaybackPositionCommand.addTarget { event in
+            guard let event = event as? MPChangePlaybackPositionCommandEvent,
+                let duration = MPNowPlayingInfoCenter.default().nowPlayingInfo?[MPMediaItemPropertyPlaybackDuration] as? TimeInterval else {
+                return .commandFailed
+            }
+            let progress = event.positionTime / duration
+            WNReader.shared.setPlaybackProgress(progress)
+            return .success
+        }
+        commandCenter.playCommand.addTarget { _ in
+            WNReader.shared.resume()
+            return .success
+        }
+        commandCenter.pauseCommand.addTarget { _ in
+            WNReader.shared.pause()
+            return .success
+        }
+        commandCenter.nextTrackCommand.addTarget { _ in
+            WNReader.shared.readChapter(.next)
+            return .success
+        }
+        commandCenter.previousTrackCommand.addTarget { _ in
+            WNReader.shared.readChapter(.previous)
+            return .success
+        }
     }
 
     func applicationWillResignActive(_ application: UIApplication) {

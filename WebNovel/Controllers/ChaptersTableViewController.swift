@@ -148,12 +148,9 @@ class ChaptersTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let ch = chapter(at: indexPath)
         let action = UITableViewRowAction(style: .default, title: "Mark as \(ch.isRead ? "Unread" : "Read")") { [weak self] (_, indexPath) in
-            if ch.isRead {
-                ch.markAsUnread()
-            } else {
-                ch.markAsRead()
+            ch.toggleReadStatus().done {
+                self?.tableView.reloadData()
             }
-            self?.tableView.reloadData()
         }
         action.backgroundColor = #colorLiteral(red: 0.1229935065, green: 0.6172919869, blue: 0.9974135756, alpha: 1)
         return [action]

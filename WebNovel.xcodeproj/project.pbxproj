@@ -87,6 +87,7 @@
 		1FED6EB422B6FDB7002F9317 /* WNManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FED6EB122B6FDB7002F9317 /* WNManagedObject.swift */; };
 		1FED6EB522B6FDB7002F9317 /* Serializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FED6EB222B6FDB7002F9317 /* Serializable.swift */; };
 		1FED6EB922B72557002F9317 /* WNListingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FED6EB822B72557002F9317 /* WNListingService.swift */; };
+		1FFDDD1722D8F667000CAC17 /* String+words.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFDDD1622D8F667000CAC17 /* String+words.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -197,6 +198,7 @@
 		1FED6EB122B6FDB7002F9317 /* WNManagedObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WNManagedObject.swift; sourceTree = "<group>"; };
 		1FED6EB222B6FDB7002F9317 /* Serializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Serializable.swift; sourceTree = "<group>"; };
 		1FED6EB822B72557002F9317 /* WNListingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WNListingService.swift; sourceTree = "<group>"; };
+		1FFDDD1622D8F667000CAC17 /* String+words.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+words.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -230,6 +232,7 @@
 				1F9890AC22BCDF5B00A09F3F /* UIImage.swift */,
 				1FCD41EC22C0CA480050ECEC /* String+save.swift */,
 				1F091BF422D84CB900E799D2 /* String+sentences.swift */,
+				1FFDDD1622D8F667000CAC17 /* String+words.swift */,
 				1FCD41FA22C1B7BE0050ECEC /* Optional+losslessStr.swift */,
 				1F21978122C5F10900AC435A /* TimeInterval+now.swift */,
 				1F8FBB4F22C73E1000B23F8D /* Data+size.swift */,
@@ -587,6 +590,7 @@
 				1FCD421922C5E54E0050ECEC /* DownloadsSectionHeaderView.swift in Sources */,
 				1FCD420722C25AF60050ECEC /* FontFamilyTableViewController.swift in Sources */,
 				1FCD420B22C381A60050ECEC /* DownloadChaptersTableViewController.swift in Sources */,
+				1FFDDD1722D8F667000CAC17 /* String+words.swift in Sources */,
 				1F52AAEC22B8EAFA00D4FB6C /* NSObject+observe.swift in Sources */,
 				1FCD41FB22C1B7BE0050ECEC /* Optional+losslessStr.swift in Sources */,
 				1FED6EAE22B6FB57002F9317 /* WNChaptersCatalogue.swift in Sources */,

@@ -7,8 +7,7 @@
 //
 
 import UIKit
-
-private let reuseIdentifier = "downloads.webNovel"
+import PromiseKit
 
 class DownloadsCollectionViewController: UICollectionViewController {
     var sortingCriterion: CatalogueSortingCriterion = .name
@@ -17,7 +16,9 @@ class DownloadsCollectionViewController: UICollectionViewController {
     var webNovels: [String: WebNovel] = [:]
     var headerView: DownloadsSectionHeaderView?
     var reloadTimer: Timer?
-    var loaded = false
+    var loading = true
+    
+    private let queue = DispatchQueue(label: "com.jiachenren.WebNovel.downloads.load", qos: .userInitiated, attributes: .concurrent, autoreleaseFrequency: .workItem, target: nil)
     
     enum CatalogueSortingCriterion: String, CaseIterable {
         case name = "Name"
@@ -28,12 +29,9 @@ class DownloadsCollectionViewController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.allowsMultipleSelection = false
+        reload()
         observe(.downloadTaskStatusUpdated, #selector(downloadTaskUpdated))
         observe(.downloadTaskInitiated, #selector(downloadTaskUpdated))
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        reload()
     }
     
     @objc private func downloadTaskUpdated() {
@@ -44,10 +42,12 @@ class DownloadsCollectionViewController: UICollectionViewController {
         }
     }
     
+    /// Reload available downloads
     private func reload() {
-        loadAvailableWebNovels()
-        sortCatalogue()
-        collectionView.reloadData()
+        loadAvailableWebNovels().done(on: .main) {
+            self.sortCatalogue()
+            self.collectionView.reloadData()
+        }.catch(presentError)
     }
     
     /// Sort the WN catalogues according to specified sorting criterion
@@ -65,42 +65,56 @@ class DownloadsCollectionViewController: UICollectionViewController {
     }
     
     /// Load web novels with available downloads or ones that are being downloaded
-    private func loadAvailableWebNovels() {
-        guard var catalogues = try? WNCache.fetchAll(WNChaptersCatalogue.self) else {
-            self.alert(title: "Error", msg: "Failed to load chapter catalogues")
-            return
-        }
-        // Only present catalogues with downloaded chapters, also include ones that are currently being downloaded
-        catalogues = catalogues.filter {
-            $0.hasDownloads || WNDownloadsManager.shared.currentTasks.keys.contains($0.url)
-        }
-        self.catalogues = catalogues
-        let urls: [String] = catalogues.map {$0.url}
-        urls.forEach { [unowned self] url in
-            if let wn = try? WNCache.fetch(by: url, object: WebNovel.self) {
-                self.webNovels[url] = wn
-                if let imageUrl = wn.coverImageUrl,
-                    let coverImage = try? WNCache.fetch(by: imageUrl, object: WNCoverImage.self) {
-                    self.coverImages[url] = UIImage(data: coverImage.imageData)
+    private func loadAvailableWebNovels() -> Promise<Void> {
+        loading = true
+        return Promise { seal in
+                queue.async { [weak self] in
+                    guard let self = self else {
+                        seal.reject(WNError.instanceDeallocated)
+                        return
+                    }
+                    guard var catalogues = try? WNCache.fetchAll(WNChaptersCatalogue.self) else {
+                        seal.reject(WNError.loadingFailed)
+                        return
+                    }
+                    // Only present catalogues with downloaded chapters, also include ones that are currently being downloaded
+                    catalogues = catalogues.filter {
+                        $0.hasDownloads || WNDownloadsManager.shared.currentTasks.keys.contains($0.url)
+                    }
+                    self.catalogues = catalogues
+                    let urls: [String] = catalogues.map {$0.url}
+                    urls.forEach { url in
+                        if let wn = try? WNCache.fetch(by: url, object: WebNovel.self) {
+                            self.webNovels[url] = wn
+                            if let imageUrl = wn.coverImageUrl,
+                                let coverImage = try? WNCache.fetch(by: imageUrl, object: WNCoverImage.self) {
+                                self.coverImages[url] = UIImage(data: coverImage.imageData)
+                            }
+                        }
+                    }
+                    seal.fulfill(())
                 }
-            }
+            }.ensure { [weak self] in
+                self?.loading = false
         }
-        
-        loaded = true
     }
+    
+}
 
-    // MARK: UICollectionViewDataSource
+// MARK: - Collection view data source
 
+extension DownloadsCollectionViewController {
+    
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
-
+    
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return catalogues.count
     }
-
+    
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "downloads.webNovel", for: indexPath)
         let catalogue = catalogues[indexPath.row]
         guard let downloadsCell = cell as? DownloadsCollectionViewCell else {
             return cell
@@ -110,7 +124,7 @@ class DownloadsCollectionViewController: UICollectionViewController {
         downloadsCell.coverImageView.image = coverImages[url]
         downloadsCell.titleLabel.text = webNovels[url]?.title
         downloadsCell.numDownloadedLabel.text = "\(catalogue.downloadedChapters.count) downloaded"
-    
+        
         return cell
     }
     
@@ -126,7 +140,7 @@ class DownloadsCollectionViewController: UICollectionViewController {
             reusableView = header
         case UICollectionView.elementKindSectionFooter:
             let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "downloads.sectionFooter", for: indexPath) as! DownloadsSectionFooterView
-            footer.isHidden = loaded
+            footer.isHidden = !loading
             reusableView = footer
         default:
             break
@@ -134,7 +148,11 @@ class DownloadsCollectionViewController: UICollectionViewController {
         return reusableView
     }
     
-    // MARK: - Navigation
+}
+
+// MARK: - Navigation
+
+extension DownloadsCollectionViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let controller = segue.destination as? DownloadedNovelTableViewController, let idx = collectionView.indexPathsForSelectedItems?.first?.row {
@@ -144,7 +162,7 @@ class DownloadsCollectionViewController: UICollectionViewController {
             controller.webNovel = webNovels[cat.url]
         }
     }
-
+    
 }
 
 extension DownloadsCollectionViewController: DownloadsSectionHeaderViewDelegate {

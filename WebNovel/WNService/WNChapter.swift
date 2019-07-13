@@ -91,34 +91,55 @@ class WNChapter: Serializable, CustomStringConvertible {
         return "Chapter \(ch): \(t)"
     }
     
+    func toggleReadStatus() -> Guarantee<Void> {
+        return isRead ? markAsUnread() : markAsRead()
+    }
+    
     /// Mark the chapter as read and record the current time
-    func markAsRead() {
-        isRead = true
-        lastRead = .now
-        try! WNCache.save(self)
-        sync {
-            $0.lastReadChapter = self
+    func markAsRead() -> Guarantee<Void> {
+        return Guarantee { fulfill in
+            updateQueue.async {
+                self.isRead = true
+                self.lastRead = .now
+                try! WNCache.save(self)
+                self.sync {
+                    $0.lastReadChapter = self
+                }
+                postNotification(.chapterReadStatusUpdated)
+                fulfill(())
+            }
         }
     }
     
     /// Unmark the chapter as read
-    func markAsUnread() {
-        isRead = false
-        lastRead = nil
-        try! WNCache.save(self)
-        sync {
-            $0.findLastReadChapter()
+    func markAsUnread() -> Guarantee<Void> {
+        return Guarantee { fulfill in
+            updateQueue.async {
+                self.isRead = false
+                self.lastRead = nil
+                try! WNCache.save(self)
+                self.sync {
+                    $0.findLastReadChapter()
+                }
+                postNotification(.chapterReadStatusUpdated)
+                fulfill(())
+            }
         }
     }
     
     /// Deletes the downloaded content for this chapter from core data
-    func delete() {
-        self.isDownloaded = false
-        self.rawHtml = nil
-        self.article = nil
-        self.byteCount = nil
-        WNCache.delete(self)
-        sync {_ in}
+    func delete() -> Guarantee<Void> {
+        return Guarantee { fulfill in
+            updateQueue.async {
+                self.isDownloaded = false
+                self.rawHtml = nil
+                self.article = nil
+                self.byteCount = nil
+                WNCache.delete(self)
+                self.sync {_ in}
+                fulfill(())
+            }
+        }
     }
     
     /// Synchronizes chapters catalogue with this chapter, make sure that

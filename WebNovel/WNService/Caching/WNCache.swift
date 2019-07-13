@@ -18,7 +18,7 @@ class WNCache {
     /// Perform fetch and save on a concurrent MOC that is thread-safe
     private static let ctx: NSManagedObjectContext = {
         let moc = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
-        moc.parent = parentContext
+        moc.persistentStoreCoordinator = parentContext?.persistentStoreCoordinator
         return moc
     }()
     

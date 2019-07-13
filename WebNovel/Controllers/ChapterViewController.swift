@@ -119,8 +119,7 @@ class ChapterViewController: UIViewController {
                 }
                 self.chapter = chapter
                 self.presentChapter()
-                chapter.markAsRead()
-                postNotification(.chapterReadStatusUpdated)
+                chapter.markAsRead().done {}
             }.catch(presentError)
         catalogue = chapter.retrieveCatalogue()
         updateUI()
