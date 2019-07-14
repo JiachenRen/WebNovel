@@ -94,7 +94,7 @@ class DownloadedNovelTableViewController: UITableViewController {
                 guard let self = self else {
                     return
                 }
-                self.catalogue = try! WNCache.fetch(by: self.catalogue.url, object: WNChaptersCatalogue.self)
+                self.catalogue = WNCache.fetch(by: self.catalogue.url, object: WNChaptersCatalogue.self)
                 self.downloadedChapters = self.catalogue.downloadedChapters.sorted {
                     $0.id < $1.id
                 }

@@ -225,7 +225,7 @@ class WNReader : NSObject, AVSpeechSynthesizerDelegate {
                 MPMediaItemPropertyArtist: chapter.properTitle() ?? "Entry \(chapter.id) - \(chapter.name)",
                 MPMediaItemPropertyArtwork: MPMediaItemArtwork(boundsSize: UIImage.coverPlaceholder.size) { _ in
                     if let url = wn.coverImageUrl,
-                        let wnImage = try? WNCache.fetch(by: url, object: WNCoverImage.self),
+                        let wnImage = WNCache.fetch(by: url, object: WNCoverImage.self),
                         let image = UIImage(data: wnImage.imageData) {
                         return image
                     }

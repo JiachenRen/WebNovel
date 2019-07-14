@@ -15,7 +15,7 @@ extension NovelUpdates {
     /// Get the details of the web novel from its summary page.
     func loadDetails(_ wn: WebNovel, cachePolicy: WNCache.Policy) -> Promise<WebNovel> {
         if cachePolicy == .usesCache {
-            if let wn = try! WNCache.fetch(by: wn.url, object: WebNovel.self) {
+            if let wn = WNCache.fetch(by: wn.url, object: WebNovel.self) {
                 return Promise { seal in
                     print("Loaded details for WN at URL \(wn.url) from cache")
                     seal.fulfill(wn)
@@ -27,7 +27,7 @@ extension NovelUpdates {
                 try self.parseDetails(doc, wn)
                 return wn
             }.get { wn in
-                try WNCache.save(wn)
+                WNCache.save(wn)
                 print("Saved details for wn at \(wn.url) to core data")
         }
     }

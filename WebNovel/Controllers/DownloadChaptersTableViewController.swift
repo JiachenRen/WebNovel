@@ -40,7 +40,7 @@ class DownloadChaptersTableViewController: UITableViewController {
     }
     
     @objc private func reloadDownloadableChapters() {
-        guard let catalogue = try? WNCache.fetch(by: webNovelUrl, object: WNChaptersCatalogue.self) else {
+        guard let catalogue = WNCache.fetch(by: webNovelUrl, object: WNChaptersCatalogue.self) else {
             return
         }
         // Remove pending or downloaded chapters from candidates

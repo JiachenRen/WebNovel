@@ -45,7 +45,7 @@ class InformationTableViewController: UITableViewController {
     }
     
     var lastReadChapter: WNChapter? {
-        return try? WNCache.fetch(by: webNovel.url, object: WNChaptersCatalogue.self)?.lastReadChapter
+        return WNCache.fetch(by: webNovel.url, object: WNChaptersCatalogue.self)?.lastReadChapter
     }
     
     fileprivate var sections: [Section] {
@@ -148,7 +148,7 @@ class InformationTableViewController: UITableViewController {
     }
     
     private func findFirstChapter() {
-        mgr.serviceProvider.fetchChaptersCatagoue(for: webNovel, cachePolicy: .usesCache)
+        mgr.serviceProvider.loadChaptersCatagoue(from: webNovel.url, cachePolicy: .usesCache)
             .done(on: .main) { catalogue in
                 self.firstChapter = catalogue.firstChapter
                 self.updateReadResumeStatus()
@@ -275,7 +275,7 @@ class InformationTableViewController: UITableViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let chaptersController = segue.destination as? ChaptersTableViewController {
-            chaptersController.webNovel = webNovel
+            chaptersController.catalogueUrl = webNovel.url
         } else if let nav = segue.destination as? UINavigationController {
             if let chapterController = nav.topViewController as? ChapterViewController {
                 chapterController.chapter = lastReadChapter ?? firstChapter

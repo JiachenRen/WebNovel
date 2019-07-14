@@ -19,7 +19,12 @@ class ChaptersTableViewController: UITableViewController {
     
     @IBOutlet weak var loadingView: UIView!
     
-    var webNovel: WebNovel!
+    @IBOutlet weak var filterButton: UIBarButtonItem!
+    
+    var catalogueUrl: String!
+    var catalogue: WNChaptersCatalogue? {
+        didSet {filterButton.isEnabled = catalogue != nil}
+    }
     var chapters: [WNChapter] = [] {
         didSet {groupChaptersIntoSections()}
     }
@@ -37,8 +42,10 @@ class ChaptersTableViewController: UITableViewController {
         super.viewDidLoad()
         
         tableView.sectionIndexMinimumDisplayRowCount = 100
+        filterButton.isEnabled = catalogue != nil
         
         observe(.downloadTaskInitiated, #selector(chaptersAddedToDownloads))
+        observe(.groupsFilterUpdated, #selector(loadChapters))
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -51,6 +58,18 @@ class ChaptersTableViewController: UITableViewController {
         let title = sortDescending ? "Sort By: Descending ↓" : "Sort By: Ascending ↑"
         orderButton.setTitle(title, for: .normal)
         self.tableView.reloadData()
+    }
+    
+    @IBAction func filterButtonTapped(_ sender: Any) {
+        let storyBoard = UIStoryboard(name: "GroupsFilter", bundle: .main)
+        let nav = storyBoard.instantiateViewController(withIdentifier: "groupsFilter.nav") as! UINavigationController
+        nav.modalPresentationStyle = .popover
+        nav.popoverPresentationController?.delegate = self
+        nav.popoverPresentationController?.barButtonItem = filterButton
+        if let groupsFilterController = nav.topViewController as? GroupsFilterTableViewController {
+            groupsFilterController.catalogue = catalogue
+            present(nav, animated: true)
+        }
     }
     
     @objc private func chaptersAddedToDownloads() {
@@ -77,11 +96,12 @@ class ChaptersTableViewController: UITableViewController {
         }
     }
     
-    private func loadChapters() {
+    @objc private func loadChapters() {
         isLoadingChapters = true
-        WNServiceManager.shared.serviceProvider.fetchChaptersCatagoue(for: webNovel, cachePolicy: .usesCache)
+        WNServiceManager.shared.serviceProvider.loadChaptersCatagoue(from: catalogueUrl, cachePolicy: .usesCache)
             .done(on: .main) { catalogue in
-                self.chapters = [WNChapter](catalogue.chapters.values)
+                self.catalogue = catalogue
+                self.chapters = catalogue.chaptersForEnabledGroups()
                 self.chapters.sort(by: {self.sortDescending ? $0.id > $1.id : $0.id < $1.id})
                 self.chaptersCountLabel.text = "\(self.chapters.count) chapters"
                 self.tableView.reloadData()
@@ -106,7 +126,11 @@ class ChaptersTableViewController: UITableViewController {
         return sections[indexPath.section][indexPath.row]
     }
     
-    // MARK: - Table view data source
+}
+
+// MARK: - Table view data source & delegate
+
+extension ChaptersTableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         return sections.count
@@ -156,7 +180,11 @@ class ChaptersTableViewController: UITableViewController {
         return [action]
     }
     
-    // MARK: - Navigation
+}
+
+// MARK: - Navigation
+
+extension ChaptersTableViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let nav = segue.destination as? UINavigationController {
@@ -164,8 +192,22 @@ class ChaptersTableViewController: UITableViewController {
                 let indexPath = tableView.indexPathForSelectedRow {
                 chapterController.chapter = chapter(at: indexPath)
             } else if let downloadController = nav.topViewController as? DownloadChaptersTableViewController {
-                downloadController.webNovelUrl = webNovel.url
+                downloadController.webNovelUrl = catalogueUrl
             }
+        } else if let groupsFilterController = segue.destination as? GroupsFilterTableViewController {
+            groupsFilterController.catalogue = self.catalogue
         }
     }
+    
+}
+
+// MARK: - Popover presentation controller delegate
+
+extension ChaptersTableViewController: UIPopoverPresentationControllerDelegate {
+    
+    /// Ensure that the presentation controller is NOT fullscreen
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return .none
+    }
+    
 }

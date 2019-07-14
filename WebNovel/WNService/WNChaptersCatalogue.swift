@@ -11,9 +11,18 @@ import Foundation
 class WNChaptersCatalogue: Serializable {
     typealias ManagedObject = ChaptersCatalogue
     
+    /// WN translation groups
+    struct Group: Codable {
+        var name: String
+        var isEnabled: Bool
+    }
+    
     /// - Key: Chapter URL string;
     /// - Value: Chapter
     var chapters: [String: WNChapter]
+    
+    /// All available translation groups
+    var groups: [Group] = []
     
     /// Url for the WN that this catalogue belongs
     var url: String
@@ -71,7 +80,7 @@ class WNChaptersCatalogue: Serializable {
     /// - Warning: This is very expensive
     func reloadChapters() {
         chapters.keys.forEach {
-            self.chapters[$0] = try? WNCache.fetch(by: $0, object: WNChapter.self)
+            self.chapters[$0] = WNCache.fetch(by: $0, object: WNChapter.self)
         }
     }
     
@@ -84,12 +93,37 @@ class WNChaptersCatalogue: Serializable {
     
     /// - Returns: The chapter after the given chapter
     func chapter(after ch: WNChapter) -> WNChapter? {
-        return chapters.values.filter {$0.id == ch.id + 1}.first
+        for cand in chaptersForEnabledGroups().sorted(by: {$0.id < $1.id}) {
+            if cand.id > ch.id {
+                return cand
+            }
+        }
+        return nil
     }
     
     /// - Returns: The chapter brefore the given chapter
     func chapter(before ch: WNChapter) -> WNChapter? {
-        return chapters.values.filter {$0.id == ch.id - 1}.first
+        for cand in chaptersForEnabledGroups().sorted(by: {$0.id > $1.id}) {
+            if cand.id < ch.id {
+                return cand
+            }
+        }
+        return nil
+    }
+    
+    /// - Returns: Chapters for enabled translation groups
+    func chaptersForEnabledGroups() -> [WNChapter] {
+        let enabledGroups = groups.filter {$0.isEnabled}
+        return chapters.values.filter { ch in
+            enabledGroups.contains(where: {ch.group ==  $0.name})
+        }
+    }
+    
+    /// - Returns: Index for the chapter in enabled groups.
+    func index(for chapter: WNChapter) -> Int {
+        return chaptersForEnabledGroups()
+            .sorted {$0.id < $1.id}
+            .binarySearch(for: chapter) {$0.id}!
     }
     
 }

@@ -22,6 +22,7 @@ extension Notification.Name {
     static let startedReadingNextChapter = Notification.Name("started-reading-next-chapter")
     static let startedReadingChapter = Notification.Name("started-reading-chapter")
     static let requestShowChapter = Notification.Name("request-show-chapter")
+    static let groupsFilterUpdated = Notification.Name("groups-filter-updated")
 }
 
 func postNotification(_ name: Notification.Name, object: Any? = nil, userInfo: [AnyHashable : Any]? = nil) {

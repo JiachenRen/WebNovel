@@ -88,6 +88,9 @@
 		1FED6EB522B6FDB7002F9317 /* Serializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FED6EB222B6FDB7002F9317 /* Serializable.swift */; };
 		1FED6EB922B72557002F9317 /* WNListingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FED6EB822B72557002F9317 /* WNListingService.swift */; };
 		1FFDDD1722D8F667000CAC17 /* String+words.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFDDD1622D8F667000CAC17 /* String+words.swift */; };
+		1FFDDD1922DAD8B3000CAC17 /* GroupsFilter.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1FFDDD1822DAD8B3000CAC17 /* GroupsFilter.storyboard */; };
+		1FFDDD1B22DAD92B000CAC17 /* GroupsFilterTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFDDD1A22DAD92B000CAC17 /* GroupsFilterTableViewController.swift */; };
+		1FFDDD1D22DAFEE5000CAC17 /* Array+binarySearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFDDD1C22DAFEE5000CAC17 /* Array+binarySearch.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -199,6 +202,9 @@
 		1FED6EB222B6FDB7002F9317 /* Serializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Serializable.swift; sourceTree = "<group>"; };
 		1FED6EB822B72557002F9317 /* WNListingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WNListingService.swift; sourceTree = "<group>"; };
 		1FFDDD1622D8F667000CAC17 /* String+words.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+words.swift"; sourceTree = "<group>"; };
+		1FFDDD1822DAD8B3000CAC17 /* GroupsFilter.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = GroupsFilter.storyboard; sourceTree = "<group>"; };
+		1FFDDD1A22DAD92B000CAC17 /* GroupsFilterTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsFilterTableViewController.swift; sourceTree = "<group>"; };
+		1FFDDD1C22DAFEE5000CAC17 /* Array+binarySearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+binarySearch.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -239,6 +245,7 @@
 				1F3F106022D5896100BCD32B /* UIProgressView+barHeight.swift */,
 				1F3F106822D62D6700BCD32B /* TimeInterval+formattedString.swift */,
 				1F091BF222D83DFA00E799D2 /* UIColor+colors.swift */,
+				1FFDDD1C22DAFEE5000CAC17 /* Array+binarySearch.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -322,6 +329,7 @@
 				1F8FBB4322C7176200B23F8D /* AddToDownloads.storyboard */,
 				1F8FBB4522C718C200B23F8D /* ChapterReader.storyboard */,
 				1F8FBB4922C71CE400B23F8D /* NovelDetails.storyboard */,
+				1FFDDD1822DAD8B3000CAC17 /* GroupsFilter.storyboard */,
 				1FED6E3F22B34C93002F9317 /* LaunchScreen.storyboard */,
 			);
 			path = Storyboards;
@@ -394,6 +402,7 @@
 				1F0E2EB022B73E5500CD77A9 /* DiscoverTableViewController.swift */,
 				1F9890A822BCCBAB00A09F3F /* InformationTableViewController.swift */,
 				1FCD41E822C06E4C0050ECEC /* ChaptersTableViewController.swift */,
+				1FFDDD1A22DAD92B000CAC17 /* GroupsFilterTableViewController.swift */,
 				1FCD420022C1C5B70050ECEC /* ChapterViewController.swift */,
 				1FCD420422C1D5D00050ECEC /* ChapterOptionsTableViewController.swift */,
 				1FCD420622C25AF60050ECEC /* FontFamilyTableViewController.swift */,
@@ -516,6 +525,7 @@
 				1F8FBB4422C7176200B23F8D /* AddToDownloads.storyboard in Resources */,
 				1FED6E3E22B34C93002F9317 /* Assets.xcassets in Resources */,
 				1F8FBB4622C718C200B23F8D /* ChapterReader.storyboard in Resources */,
+				1FFDDD1922DAD8B3000CAC17 /* GroupsFilter.storyboard in Resources */,
 				1FCD41FF22C1C2850050ECEC /* bundle.js in Resources */,
 				1FED6E3922B34C92002F9317 /* Main.storyboard in Resources */,
 				1F8FBB4A22C71CE400B23F8D /* NovelDetails.storyboard in Resources */,
@@ -563,6 +573,7 @@
 				1FED6E3C22B34C92002F9317 /* WebNovel.xcdatamodeld in Sources */,
 				1FED6E7C22B56EA6002F9317 /* WebNovel.swift in Sources */,
 				1F3F106122D5896100BCD32B /* UIProgressView+barHeight.swift in Sources */,
+				1FFDDD1D22DAFEE5000CAC17 /* Array+binarySearch.swift in Sources */,
 				1FED6EB522B6FDB7002F9317 /* Serializable.swift in Sources */,
 				1F091BF122D83C0C00E799D2 /* TextToSpeechTableViewController.swift in Sources */,
 				1FED6E3422B34C92002F9317 /* AppDelegate.swift in Sources */,
@@ -585,6 +596,7 @@
 				1F8FBB5022C73E1000B23F8D /* Data+size.swift in Sources */,
 				1F9890B922BD219700A09F3F /* GenreLabel.swift in Sources */,
 				1FCD41E922C06E4C0050ECEC /* ChaptersTableViewController.swift in Sources */,
+				1FFDDD1B22DAD92B000CAC17 /* GroupsFilterTableViewController.swift in Sources */,
 				1FCD421B22C5E57E0050ECEC /* DownloadsSectionFooterView.swift in Sources */,
 				1FED6E6D22B403F6002F9317 /* WNServiceProvider.swift in Sources */,
 				1FCD421922C5E54E0050ECEC /* DownloadsSectionHeaderView.swift in Sources */,

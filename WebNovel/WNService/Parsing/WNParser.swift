@@ -13,7 +13,7 @@ import JavaScriptCore
 class WNParser {
     
     /// Readability parser
-    private static var reader: Readability = Readability()
+    private static var readability: Readability = Readability()
     private static let queue = DispatchQueue(label: "com.jiachenren.WebNovel.parsing", qos: .utility, attributes: .concurrent, autoreleaseFrequency: .workItem, target: nil)
     
     /// Parses WN chapter from given raw html
@@ -29,9 +29,14 @@ class WNParser {
                 // Since there are countless websites for WN out there, it is not possible
                 // to have a host specific parser for every one of them.
                 // Therefore, Readability is used as a generic parser. (It is used by Fire Fox for its reader's view)
-                chapter.article = reader.parse(html)
+                chapter.article = readability.parse(html)
                 fulfill(chapter)
             }
         }
+    }
+    
+    /// Extracts possible chapter links from raw HTML
+    static func extractPossibleChapterLinks() {
+        
     }
 }

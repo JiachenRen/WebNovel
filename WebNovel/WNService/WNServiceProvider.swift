@@ -15,7 +15,7 @@ protocol WNServiceProvider {
     static var identifier: String {get}
     func availableListingServices() -> [WNListingService]
     func search(byName query: String) -> Promise<[WebNovel]>
-    func fetchChaptersCatagoue(for wn: WebNovel, cachePolicy: WNCache.Policy) -> Promise<WNChaptersCatalogue>
+    func loadChaptersCatagoue(from url: String, cachePolicy: WNCache.Policy) -> Promise<WNChaptersCatalogue>
     func loadChapter(_ chapter: WNChapter, cachePolicy: WNCache.Policy) -> Promise<WNChapter>
     func loadDetails(_ wn: WebNovel, cachePolicy: WNCache.Policy) -> Promise<WebNovel>
 }

@@ -73,10 +73,7 @@ class DownloadsCollectionViewController: UICollectionViewController {
                         seal.reject(WNError.instanceDeallocated)
                         return
                     }
-                    guard var catalogues = try? WNCache.fetchAll(WNChaptersCatalogue.self) else {
-                        seal.reject(WNError.loadingFailed)
-                        return
-                    }
+                    var catalogues = WNCache.fetchAll(WNChaptersCatalogue.self)
                     // Only present catalogues with downloaded chapters, also include ones that are currently being downloaded
                     catalogues = catalogues.filter {
                         $0.hasDownloads || WNDownloadsManager.shared.currentTasks.keys.contains($0.url)
@@ -84,10 +81,10 @@ class DownloadsCollectionViewController: UICollectionViewController {
                     self.catalogues = catalogues
                     let urls: [String] = catalogues.map {$0.url}
                     urls.forEach { url in
-                        if let wn = try? WNCache.fetch(by: url, object: WebNovel.self) {
+                        if let wn = WNCache.fetch(by: url, object: WebNovel.self) {
                             self.webNovels[url] = wn
                             if let imageUrl = wn.coverImageUrl,
-                                let coverImage = try? WNCache.fetch(by: imageUrl, object: WNCoverImage.self) {
+                                let coverImage = WNCache.fetch(by: imageUrl, object: WNCoverImage.self) {
                                 self.coverImages[url] = UIImage(data: coverImage.imageData)
                             }
                         }

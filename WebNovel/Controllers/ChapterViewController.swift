@@ -61,8 +61,8 @@ class ChapterViewController: UIViewController {
             nextChapterButton.isEnabled = false
             return
         }
-        chapterNumberBarItem.title = "\(chapter.id) of \(cat.chapters.count)"
-        previousChapterButton.isEnabled = chapter.id != 1
+        chapterNumberBarItem.title = "\(cat.index(for: chapter) + 1) of \(cat.chaptersForEnabledGroups().count)"
+        previousChapterButton.isEnabled = cat.chapter(before: chapter) != nil
         nextChapterButton.isEnabled = cat.chapter(after: chapter) != nil
     }
     
@@ -214,7 +214,7 @@ class ChapterViewController: UIViewController {
     }
 }
 
-// - MARK: PopoverPresentationControllerDelegate
+// MARK: - Popover presentation controller delegate
 
 extension ChapterViewController: UIPopoverPresentationControllerDelegate {
     /// Ensure that the presentation controller is NOT fullscreen
@@ -223,7 +223,7 @@ extension ChapterViewController: UIPopoverPresentationControllerDelegate {
     }
 }
 
-// - MARK: Chapter Sanitization Type
+// MARK: - Chapter Sanitization Type
 
 extension ChapterViewController {
     enum Sanitization {
@@ -239,7 +239,7 @@ extension ChapterViewController {
     }
 }
 
-// - MARK: Text Attributes
+// MARK: - Text Attributes
 
 extension ChapterViewController {
     struct Attributes {
