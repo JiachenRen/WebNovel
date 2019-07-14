@@ -209,6 +209,7 @@ class WNReader : NSObject, AVSpeechSynthesizerDelegate {
         sentences = Array(allSentences.suffix(from: idx))
         if sentences.count > 0 {
             speak(sentences.removeFirst())
+        } else {
             readChapter(.next)
         }
     }

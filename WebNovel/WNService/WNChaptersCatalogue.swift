@@ -43,11 +43,6 @@ class WNChaptersCatalogue: Serializable {
         return false
     }
     
-    /// Only returns chapters that are downloaded
-    var downloadedChapters: [WNChapter] {
-        return chapters.values.filter {$0.isDownloaded}
-    }
-    
     /// First chapter of the WN, chronologically
     var firstChapter: WNChapter? {
         return chapters.values.sorted(by: {$0.id < $1.id}).first

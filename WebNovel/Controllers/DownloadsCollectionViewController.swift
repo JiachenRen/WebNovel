@@ -120,7 +120,7 @@ extension DownloadsCollectionViewController {
         let url = catalogue.url
         downloadsCell.coverImageView.image = coverImages[url]
         downloadsCell.titleLabel.text = webNovels[url]?.title
-        downloadsCell.numDownloadedLabel.text = "\(catalogue.downloadedChapters.count) downloaded"
+        downloadsCell.numDownloadedLabel.text = "\(catalogue.chapters.values.filter {$0.isDownloaded}.count) downloaded"
         
         return cell
     }

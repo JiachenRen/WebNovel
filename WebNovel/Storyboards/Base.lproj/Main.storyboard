@@ -316,7 +316,7 @@
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </view>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="downloads.sectionHeader" rowHeight="60" id="UGS-0P-ciK" customClass="DownloadedNovelSectionHeaderCell" customModule="WebNovel" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="downloads.sectionHeader" rowHeight="60" id="UGS-0P-ciK" customClass="DownloadedNovelSectionHeaderCell" customModule="WebNovel" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="166" width="414" height="60"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="UGS-0P-ciK" id="V5L-Jn-eZr">
@@ -324,19 +324,33 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="18 chapters" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9wg-Vh-Zsx">
-                                            <rect key="frame" x="20" y="19.5" width="374" height="21"/>
+                                            <rect key="frame" x="20" y="19.5" width="92.5" height="21"/>
                                             <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kdc-No-mYV">
+                                            <rect key="frame" x="368" y="17" width="26" height="26"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" secondItem="kdc-No-mYV" secondAttribute="height" multiplier="1:1" id="Dhe-eZ-gzl"/>
+                                                <constraint firstAttribute="width" constant="26" id="aRU-WD-3Pu"/>
+                                            </constraints>
+                                            <state key="normal" image="filter"/>
+                                            <connections>
+                                                <action selector="filterButtonTapped:" destination="UGS-0P-ciK" eventType="touchUpInside" id="GtJ-cn-3A5"/>
+                                            </connections>
+                                        </button>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstItem="kdc-No-mYV" firstAttribute="centerY" secondItem="9wg-Vh-Zsx" secondAttribute="centerY" id="Ihc-Al-Asf"/>
                                         <constraint firstItem="9wg-Vh-Zsx" firstAttribute="centerY" secondItem="V5L-Jn-eZr" secondAttribute="centerY" id="LnG-lH-C3g"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="9wg-Vh-Zsx" secondAttribute="trailing" id="V2I-bl-aRF"/>
+                                        <constraint firstItem="kdc-No-mYV" firstAttribute="trailing" secondItem="V5L-Jn-eZr" secondAttribute="trailingMargin" id="XDQ-MM-YQQ"/>
                                         <constraint firstItem="9wg-Vh-Zsx" firstAttribute="leading" secondItem="V5L-Jn-eZr" secondAttribute="leadingMargin" id="ZYb-xP-JLg"/>
+                                        <constraint firstItem="kdc-No-mYV" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="9wg-Vh-Zsx" secondAttribute="trailing" constant="8" id="k1M-2w-d7P"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="filterButton" destination="kdc-No-mYV" id="ikN-H3-npl"/>
                                     <outlet property="numChaptersLabel" destination="9wg-Vh-Zsx" id="bsc-ES-Bnv"/>
                                 </connections>
                             </tableViewCell>
@@ -795,6 +809,7 @@
         <image name="cover-placeholder" width="1412" height="1882"/>
         <image name="discover-icon" width="30" height="30"/>
         <image name="download-icon" width="30" height="30"/>
+        <image name="filter" width="30" height="30"/>
         <image name="settings" width="30" height="30"/>
         <image name="sort-desc-icon" width="50" height="50"/>
     </resources>

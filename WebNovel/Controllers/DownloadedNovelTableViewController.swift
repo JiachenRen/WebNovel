@@ -21,6 +21,8 @@ class DownloadedNovelTableViewController: UITableViewController {
     
     @IBOutlet weak var readResumeButton: UIButton!
     
+    weak var headerCell: DownloadedNovelSectionHeaderCell?
+    
     private let queue = DispatchQueue(
         label: "com.jiachenren.webNovel.downloadedNovel.loadChapters",
         qos: .utility,
@@ -50,6 +52,7 @@ class DownloadedNovelTableViewController: UITableViewController {
         observe(.downloadTaskCompleted, #selector(downloadTaskStatusChanged(_:)))
         observe(.downloadTaskStatusUpdated, #selector(downloadTaskStatusChanged(_:)))
         observe(.chapterReadStatusUpdated, #selector(chapterReadStatusUpdated))
+        observe(.groupsFilterUpdated, #selector(groupsFilterUpdated))
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -58,6 +61,14 @@ class DownloadedNovelTableViewController: UITableViewController {
             self?.updateHeaderView()
             self?.updateReadResumeButton()
             self?.tableView.reloadData()
+        }
+    }
+    
+    @objc private func groupsFilterUpdated() {
+        reloadDownloadedChapters().done(on: .main) {
+            [weak self] in
+            self?.tableView.reloadData()
+            self?.updateHeaderView()
         }
     }
     
@@ -95,9 +106,11 @@ class DownloadedNovelTableViewController: UITableViewController {
                     return
                 }
                 self.catalogue = WNCache.fetch(by: self.catalogue.url, object: WNChaptersCatalogue.self)
-                self.downloadedChapters = self.catalogue.downloadedChapters.sorted {
-                    $0.id < $1.id
-                }
+                self.downloadedChapters = self.catalogue
+                    .chaptersForEnabledGroups()
+                    .sorted {
+                        $0.id < $1.id
+                    }.filter {$0.isDownloaded}
                 self.loading = false
                 fulfill(())
             }
@@ -119,51 +132,67 @@ class DownloadedNovelTableViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return downloadTask == nil ? 1 : 2
+        return 3
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return downloadTask == nil ? downloadedChapters.count :
-            section == 0 ? 1 : downloadedChapters.count
+        switch section {
+        case 0:
+            return downloadTask == nil ? 0 : 1
+        case 1:
+            return 1
+        case 2:
+            return downloadedChapters.count
+        default:
+            fatalError()
+        }
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if let task = downloadTask, indexPath.section == 0 {
+        switch indexPath.section {
+        case 0:
             let cell = tableView.dequeueReusableCell(withIdentifier: "downloads.progress", for: indexPath)
                 as! DownloadedNovelProgressTableViewCell
-            cell.url = task.url
-            cell.update(task)
+            cell.url = downloadTask!.url
+            cell.update(downloadTask!)
             return cell
-        } else {
+        case 1:
+            let headerCell = tableView.dequeueReusableCell(withIdentifier: "downloads.sectionHeader") as! DownloadedNovelSectionHeaderCell
+            headerCell.numChaptersLabel.text = "\(downloadedChapters.count) chapters"
+            headerCell.filterButton.isEnabled = !loading
+            headerCell.delegate = self
+            self.headerCell = headerCell
+            return headerCell
+        case 2:
             let cell = tableView.dequeueReusableCell(withIdentifier: "downloads.chapter", for: indexPath)
             let chapter = downloadedChapters[indexPath.row]
             cell.textLabel?.text = chapter.properTitle() ?? chapter.article?.title
             cell.textLabel?.textColor = chapter.isRead ? .lightGray : .black
             return cell
+        default:
+            fatalError()
         }
-    }
-    
-    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard downloadTask == nil && section == 0 || downloadTask != nil && section == 1 else {
-            return nil
-        }
-        let headerCell = tableView.dequeueReusableCell(withIdentifier: "downloads.sectionHeader") as! DownloadedNovelSectionHeaderCell
-        headerCell.numChaptersLabel.text = "\(downloadedChapters.count) chapters"
-        let view = headerCell.contentView
-        view.backgroundColor = .white
-        return view
     }
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return downloadTask != nil && section == 0 ? 0 : 50
+        return 0
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return downloadTask != nil && indexPath.section == 0 ? 92 : 44
+        switch indexPath.section {
+        case 0:
+            return 92
+        case 1:
+            return 50
+        case 2:
+            return 44
+        default:
+            fatalError()
+        }
     }
     
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return downloadTask == nil || indexPath.section != 0
+        return indexPath.section == 2
     }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
@@ -213,4 +242,29 @@ class DownloadedNovelTableViewController: UITableViewController {
             }
         }
     }
+}
+
+extension DownloadedNovelTableViewController: DownloadedNovelSectionHeaderCellDelegate {
+    func filterButtonTapped() {
+        let storyBoard = UIStoryboard(name: "GroupsFilter", bundle: .main)
+        let nav = storyBoard.instantiateViewController(withIdentifier: "groupsFilter.nav") as! UINavigationController
+        nav.modalPresentationStyle = .popover
+        nav.popoverPresentationController?.delegate = self
+        nav.popoverPresentationController?.sourceView = headerCell?.filterButton
+        nav.popoverPresentationController?.sourceRect = headerCell?.filterButton.bounds ?? .zero
+        nav.popoverPresentationController?.permittedArrowDirections = [.up]
+        if let groupsFilterController = nav.topViewController as? GroupsFilterTableViewController {
+            groupsFilterController.catalogue = catalogue
+            present(nav, animated: true)
+        }
+    }
+}
+
+extension DownloadedNovelTableViewController: UIPopoverPresentationControllerDelegate {
+    
+    /// Ensure that the presentation controller is NOT fullscreen
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return .none
+    }
+    
 }

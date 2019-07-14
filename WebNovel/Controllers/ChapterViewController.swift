@@ -119,6 +119,7 @@ class ChapterViewController: UIViewController {
                 }
                 self.chapter = chapter
                 self.presentChapter()
+                self.textView.scrollRangeToVisible(NSRange(location: 0, length: 0))
                 chapter.markAsRead().done {}
             }.catch(presentError)
         catalogue = chapter.retrieveCatalogue()
@@ -161,7 +162,6 @@ class ChapterViewController: UIViewController {
                 webView.loadHTMLString(html, baseURL: url)
             }
         }
-        textView.scrollRangeToVisible(NSRange(location: 0, length: 0))
         webView.isHidden = sanitization != .rawHtml
         textView.isHidden = sanitization == .rawHtml
     }

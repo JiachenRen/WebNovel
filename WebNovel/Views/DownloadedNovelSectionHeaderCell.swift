@@ -12,15 +12,23 @@ class DownloadedNovelSectionHeaderCell: UITableViewCell {
     
     @IBOutlet weak var numChaptersLabel: UILabel!
     
+    @IBOutlet weak var filterButton: UIButton!
+    
+    weak var delegate: DownloadedNovelSectionHeaderCellDelegate?
+    
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        
+        // Remove separator
+        separatorInset = .init(top: 0, left: 10000, bottom: 0, right: 0)
     }
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
+    @IBAction func filterButtonTapped(_ sender: Any) {
+        delegate?.filterButtonTapped()
     }
+    
+}
 
+protocol DownloadedNovelSectionHeaderCellDelegate: AnyObject {
+    func filterButtonTapped()
 }
