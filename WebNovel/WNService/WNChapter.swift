@@ -40,7 +40,11 @@ class WNChapter: Serializable, CustomStringConvertible {
     var isDownloaded = false
     
     /// Wether the chapter has been read at least once.
-    private(set) var isRead = false
+    private(set) var isRead = false {
+        didSet {
+            lastRead = isRead ? .now : nil
+        }
+    }
     
     /// When the chapter is last read
     private(set) var lastRead: TimeInterval?
@@ -96,74 +100,35 @@ class WNChapter: Serializable, CustomStringConvertible {
         return "Chapter \(ch): \(t)"
     }
     
-    func toggleReadStatus() -> Guarantee<Void> {
-        return isRead ? markAsUnread() : markAsRead()
-    }
-    
-    /// Mark the chapter as read and record the current time
-    func markAsRead() -> Guarantee<Void> {
-        return Guarantee { fulfill in
-            updateQueue.async {
-                self.isRead = true
-                self.lastRead = .now
-                WNCache.save(self)
-                self.sync {
-                    $0.lastReadChapter = self
-                }
-                postNotification(.chapterReadStatusUpdated)
-                fulfill(())
-            }
-        }
-    }
-    
-    /// Unmark the chapter as read
-    func markAsUnread() -> Guarantee<Void> {
-        return Guarantee { fulfill in
-            updateQueue.async {
-                self.isRead = false
-                self.lastRead = nil
-                WNCache.save(self)
-                self.sync {
-                    $0.findLastReadChapter()
-                }
-                postNotification(.chapterReadStatusUpdated)
-                fulfill(())
-            }
-        }
+    func markAs(isRead: Bool, _ cat: WNChaptersCatalogue? = nil) {
+        self.isRead = isRead
+        WNCache.save(self)
+        let cat = cat ?? retrieveCatalogue()
+        cat.lastReadChapter = isRead ? self.url : nil
+        WNCache.save(cat)
     }
     
     /// Deletes the downloaded content for this chapter from core data
-    func delete() -> Guarantee<Void> {
-        return Guarantee { fulfill in
-            updateQueue.async {
-                self.isDownloaded = false
-                self.rawHtml = nil
-                self.article = nil
-                self.byteCount = nil
-                WNCache.delete(self)
-                self.sync {_ in}
-                fulfill(())
-            }
-        }
-    }
-    
-    /// Synchronizes chapters catalogue with this chapter, make sure that
-    /// modifications made to the chapter can be refelected on both ends
-    private func sync(_ body: @escaping (WNChaptersCatalogue) -> Void) {
-        let cat = retrieveCatalogue()
-        cat.chapters[url] = self
-        body(cat)
+    func delete(from cat: WNChaptersCatalogue? = nil) {
+        isDownloaded = false
+        rawHtml = nil
+        article = nil
+        byteCount = nil
+        WNCache.save(self)
+        let cat = cat ?? retrieveCatalogue()
+        cat.downloadedChaptersDict[url] = nil
+        cat.numDownloads -= 1
+        cat.lastModified = .now
         WNCache.save(cat)
     }
     
     /// Perfrom updates & synchronization asynchronously
-    func asyncUpdate(_ body: @escaping (WNChapter, WNChaptersCatalogue) -> Void) -> Guarantee<Void> {
+    func asyncUpdate(_ cat: WNChaptersCatalogue? = nil, _ body: @escaping (WNChapter, WNChaptersCatalogue) -> Void) -> Guarantee<Void> {
         let chapter = self
         return Guarantee { fulfill in
             updateQueue.async {
-                let cat = chapter.retrieveCatalogue()
+                let cat = cat ?? chapter.retrieveCatalogue()
                 body(chapter, cat)
-                cat.chapters[chapter.url] = chapter
                 WNCache.save(cat)
                 WNCache.save(chapter)
                 fulfill(())
@@ -181,11 +146,17 @@ class WNChapter: Serializable, CustomStringConvertible {
     }
     
     func nextChapter() -> WNChapter? {
-        return retrieveCatalogue().chapter(after: self)
+        guard let url = retrieveCatalogue().chapter(after: self.url) else {
+            return nil
+        }
+        return WNCache.fetch(by: url, object: WNChapter.self)
     }
     
     func prevChapter() -> WNChapter? {
-        return retrieveCatalogue().chapter(before: self)
+        guard let url = retrieveCatalogue().chapter(before: self.url) else {
+            return nil
+        }
+        return WNCache.fetch(by: url, object: WNChapter.self)
     }
     
     var description: String {

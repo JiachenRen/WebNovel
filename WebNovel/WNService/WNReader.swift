@@ -132,7 +132,7 @@ class WNReader : NSObject, AVSpeechSynthesizerDelegate {
                 guard ch.id == self.chapter?.id else {
                     return
                 }
-                ch.markAsRead().done {}
+                ch.markAs(isRead: true)
                 postNotification(.startedReadingNextChapter)
                 read(chapterToRead)
             }
@@ -142,7 +142,7 @@ class WNReader : NSObject, AVSpeechSynthesizerDelegate {
                 announce("Continuing to chapter \(chapterToRead.name). Downloading chapter, please wait...")
                 let spid = chapterToRead.retrieveWebNovel().serviceProviderIdentifier
                 if let provider = WNServiceManager.availableServiceProviders[spid] {
-                    provider.loadChapter(chapterToRead, cachePolicy: .overwritesCache)
+                    provider.downloadChapter(chapterToRead)
                         .done(loadedChapter)
                         .catch { e in
                             print(e)

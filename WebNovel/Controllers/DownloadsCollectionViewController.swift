@@ -29,9 +29,13 @@ class DownloadsCollectionViewController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.allowsMultipleSelection = false
-        reload()
+        
         observe(.downloadTaskStatusUpdated, #selector(downloadTaskUpdated))
         observe(.downloadTaskInitiated, #selector(downloadTaskUpdated))
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        reload()
     }
     
     @objc private func downloadTaskUpdated() {
@@ -57,7 +61,7 @@ class DownloadsCollectionViewController: UICollectionViewController {
             case .lastModified:
                 return a.lastModified > b.lastModified
             case .lastRead:
-                return a.lastReadChapter?.lastRead ?? 0 > b.lastReadChapter?.lastRead ?? 0
+                return a.lastRead ?? 0 > b.lastRead ?? 0
             case .name:
                 return webNovels[a.url]?.title ?? "" < webNovels[b.url]?.title ?? ""
             }
@@ -76,7 +80,7 @@ class DownloadsCollectionViewController: UICollectionViewController {
                     var catalogues = WNCache.fetchAll(WNChaptersCatalogue.self)
                     // Only present catalogues with downloaded chapters, also include ones that are currently being downloaded
                     catalogues = catalogues.filter {
-                        $0.hasDownloads || WNDownloadsManager.shared.currentTasks.keys.contains($0.url)
+                        $0.numDownloads > 0 || WNDownloadsManager.shared.currentTasks.keys.contains($0.url)
                     }
                     self.catalogues = catalogues
                     let urls: [String] = catalogues.map {$0.url}
@@ -120,7 +124,7 @@ extension DownloadsCollectionViewController {
         let url = catalogue.url
         downloadsCell.coverImageView.image = coverImages[url]
         downloadsCell.titleLabel.text = webNovels[url]?.title
-        downloadsCell.numDownloadedLabel.text = "\(catalogue.chapters.values.filter {$0.isDownloaded}.count) downloaded"
+        downloadsCell.numDownloadedLabel.text = "\(catalogue.numDownloads) downloaded"
         
         return cell
     }

@@ -32,7 +32,7 @@ class DownloadedNovelTableViewController: UITableViewController {
     )
     
     var catalogue: WNChaptersCatalogue!
-    var downloadedChapters: [WNChapter] = []
+    var downloadedChapters: [String] = []
     var webNovel: WebNovel!
     var coverImage: UIImage?
     var reloadTimer: Timer?
@@ -89,11 +89,9 @@ class DownloadedNovelTableViewController: UITableViewController {
         
         reloadTimer?.invalidate()
         reloadTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { _ in
-            DispatchQueue.main.async { [weak self] in
-                self?.reloadDownloadedChapters().done(on: .main) {
-                    self?.updateHeaderView()
-                    self?.tableView.reloadData()
-                }
+            self.reloadDownloadedChapters().done(on: .main) {
+                self.updateHeaderView()
+                self.tableView.reloadData()
             }
         }
     }
@@ -106,11 +104,7 @@ class DownloadedNovelTableViewController: UITableViewController {
                     return
                 }
                 self.catalogue = WNCache.fetch(by: self.catalogue.url, object: WNChaptersCatalogue.self)
-                self.downloadedChapters = self.catalogue
-                    .chaptersForEnabledGroups()
-                    .sorted {
-                        $0.id < $1.id
-                    }.filter {$0.isDownloaded}
+                self.downloadedChapters = self.catalogue.downloadedChapterUrls
                 self.loading = false
                 fulfill(())
             }
@@ -125,10 +119,17 @@ class DownloadedNovelTableViewController: UITableViewController {
     private func updateHeaderView() {
         coverImageView.image = coverImage
         numDownloadedLabel.text = "\(downloadedChapters.count) chapters downloaded"
-        storageUsedLabel.text = "\(catalogue.storageSpaceUsed()) used"
+        storageUsedLabel.text = "calculating..."
+        catalogue.loadChapters(.downloaded).done { [weak self] in
+            let space = WNChaptersCatalogue.calculateStorageSpaceUsed($0)
+            self?.storageUsedLabel.text = "\(space) used"
+        }
         titleLabel.text = webNovel.title
     }
     
+    private func loadChapter(for indexPath: IndexPath) -> WNChapter {
+        return WNCache.fetch(by: downloadedChapters[indexPath.row], object: WNChapter.self)!
+    }
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -165,7 +166,7 @@ class DownloadedNovelTableViewController: UITableViewController {
             return headerCell
         case 2:
             let cell = tableView.dequeueReusableCell(withIdentifier: "downloads.chapter", for: indexPath)
-            let chapter = downloadedChapters[indexPath.row]
+            let chapter = loadChapter(for: indexPath)
             cell.textLabel?.text = chapter.properTitle() ?? chapter.article?.title
             cell.textLabel?.textColor = chapter.isRead ? .lightGray : .black
             return cell
@@ -197,11 +198,13 @@ class DownloadedNovelTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            let chapter = downloadedChapters.remove(at: indexPath.row)
+            downloadedChapters.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .automatic)
-            chapter.delete().then {
-                self.reloadDownloadedChapters()
-            }.done { [weak self] in
+            let chapter = loadChapter(for: indexPath)
+            chapter.delete()
+            
+            self.reloadDownloadedChapters()
+                .done { [weak self] in
                 self?.tableView.reloadData()
                 self?.updateHeaderView()
             }
@@ -209,13 +212,12 @@ class DownloadedNovelTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let ch = downloadedChapters[indexPath.row]
+        let ch = loadChapter(for: indexPath)
         let title = "Mark as \(ch.isRead ? "Unread" : "Read")"
         let mark = UITableViewRowAction(style: .default, title: title) {
             [weak self] (_, indexPath) in
-            ch.toggleReadStatus().done {
-                self?.chapterReadStatusUpdated()
-            }
+            ch.markAs(isRead: !ch.isRead, self?.catalogue)
+            self?.chapterReadStatusUpdated()
         }
         let delete = UITableViewRowAction(style: .destructive, title: "Delete") {
             [weak self] (_, indexPath) in
@@ -235,10 +237,10 @@ class DownloadedNovelTableViewController: UITableViewController {
             infoController.webNovel = webNovel
         } else if let nav = segue.destination as? UINavigationController,
             let chapterController = nav.topViewController as? ChapterViewController {
-            if let idx = tableView.indexPathForSelectedRow?.row {
-                chapterController.chapter = downloadedChapters[idx]
-            } else {
-                chapterController.chapter = catalogue.lastReadChapter ?? catalogue.firstChapter
+            if let ip = tableView.indexPathForSelectedRow {
+                chapterController.chapter = loadChapter(for: ip)
+            } else if let url = catalogue.lastReadChapter ?? catalogue.firstChapter {
+                chapterController.chapter = WNCache.fetch(by: url, object: WNChapter.self)
             }
         }
     }

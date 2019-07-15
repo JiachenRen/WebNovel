@@ -37,28 +37,23 @@ class WNCache {
     
     /// Saves the WN chapter, cover image, information, or chapters catalogue to core data
     /// If an existing WN chapter with the same url exists, it is overwritten.
-    @discardableResult
-    static func save<T: Serializable>(_ object: T) -> OperationStatus {
+    static func save<T: Serializable>(_ object: T) {
         let url = object.url
         let request = fetchRequest(url, for: T.ManagedObject.self)
-        let (managedObj, created) = try! fetchOrCreate(request)
-        
+        let managedObj = try! fetchOrCreate(request)
         // Update the object's properties
         managedObj.url = url
         managedObj.data = try! jsonEncoder.encode(object) as NSObject
-        
-        // Apply changes
         try? ctx.save()
-        
-        // Return the appropriate status
-        return created ? .created : .overwritten
     }
     
     /// Deletes the object from core data
     static func delete<T: Serializable>(_ object: T) {
-        let request = fetchRequest(object.url, for: T.ManagedObject.self)
-        if let managedObj = try? ctx.fetch(request).first {
-            ctx.delete(managedObj)
+        ctx.perform {
+            let request = fetchRequest(object.url, for: T.ManagedObject.self)
+            if let managedObj = try? ctx.fetch(request).first {
+                ctx.delete(managedObj)
+            }
         }
     }
     
@@ -97,12 +92,12 @@ class WNCache {
     /// - Parameter request: A NSFetchRequest for retrieving object
     /// - Parameter entityName: The entity name for the object
     /// - Returns: Retrieved or newly created WNManagedObject
-    private static func fetchOrCreate<T: WNManagedObject>(_ request: NSFetchRequest<T>) throws -> (T, created: Bool) {
+    private static func fetchOrCreate<T: WNManagedObject>(_ request: NSFetchRequest<T>) throws -> T {
         if let retrieved = try ctx.fetch(request).first {
-            return (retrieved, false)
+            return retrieved
         } else {
             let entity = NSEntityDescription.entity(forEntityName: T.entityName, in: ctx)!
-            return (NSManagedObject(entity: entity, insertInto: ctx) as! T, true)
+            return NSManagedObject(entity: entity, insertInto: ctx) as! T
         }
     }
 }

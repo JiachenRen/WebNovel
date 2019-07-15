@@ -40,7 +40,7 @@ class WNDownloadsManager {
             var chapters = task.pending.filter { ch in !task.completed.contains(where: {$0.url == ch.url})}
             
             func recursiveDownload(_ chapter: WNChapter) {
-                provider.loadChapter(chapter, cachePolicy: .overwritesCache)
+                provider.downloadChapter(chapter)
                     .done { chapter in
                         task.completed.append(chapter)
                     }.ensure {

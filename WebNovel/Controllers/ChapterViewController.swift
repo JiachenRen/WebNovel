@@ -61,9 +61,9 @@ class ChapterViewController: UIViewController {
             nextChapterButton.isEnabled = false
             return
         }
-        chapterNumberBarItem.title = "\(cat.index(for: chapter) + 1) of \(cat.chaptersForEnabledGroups().count)"
-        previousChapterButton.isEnabled = cat.chapter(before: chapter) != nil
-        nextChapterButton.isEnabled = cat.chapter(after: chapter) != nil
+        chapterNumberBarItem.title = "\(cat.index(for: chapter.url) + 1) of \(cat.enabledChapterUrls.count)"
+        previousChapterButton.isEnabled = cat.chapter(before: chapter.url) != nil
+        nextChapterButton.isEnabled = cat.chapter(after: chapter.url) != nil
     }
     
     /// Instantiates a tap gesture recognizer that recognizes a single touch by one finger
@@ -100,7 +100,7 @@ class ChapterViewController: UIViewController {
     }
     
     @objc private func reloadChapter() {
-        loadChapter(cachePolicy: .overwritesCache)
+        loadChapter(enforceDownload: true)
     }
     
     @objc private func sanitizationUpdated(_ notif: Notification) {
@@ -108,21 +108,30 @@ class ChapterViewController: UIViewController {
         presentChapter()
     }
     
-    private func loadChapter(cachePolicy policy: WNCache.Policy = .usesCache) {
+    private func loadChapter(enforceDownload: Bool = false) {
         textView.isHidden = true
         webView.isHidden = true
-        WNServiceManager.shared.serviceProvider.loadChapter(chapter, cachePolicy: policy)
-            .done {[weak self] chapter in
-                guard let self = self, chapter.id == self.chapter.id else {
-                    // Make sure that the task is relevant!
-                    return
-                }
-                self.chapter = chapter
-                self.presentChapter()
-                self.textView.scrollRangeToVisible(NSRange(location: 0, length: 0))
-                chapter.markAsRead().done {}
-            }.catch(presentError)
         catalogue = chapter.retrieveCatalogue()
+        
+        func handler(_ chapter: WNChapter) {
+            self.chapter = chapter
+            self.presentChapter()
+            self.textView.scrollRangeToVisible(NSRange(location: 0, length: 0))
+            chapter.markAs(isRead: true)
+        }
+        
+        if chapter.isDownloaded && !enforceDownload {
+            handler(chapter)
+        } else {
+            WNServiceManager.shared.serviceProvider.downloadChapter(chapter)
+                .done {[weak self] chapter in
+                    guard let self = self, chapter.id == self.chapter.id else {
+                        return
+                    }
+                    handler(chapter)
+                }.catch(presentError)
+        }
+        
         updateUI()
     }
     
@@ -189,7 +198,8 @@ class ChapterViewController: UIViewController {
     
     @IBAction func previousChapterButtonTapped(_ sender: Any) {
         guard let cat = catalogue,
-            let ch = cat.chapter(before: chapter) else {
+            let url = cat.chapter(before: chapter.url),
+            let ch = WNCache.fetch(by: url, object: WNChapter.self) else {
             return
         }
         chapter = ch
@@ -198,8 +208,9 @@ class ChapterViewController: UIViewController {
     
     @IBAction func nextChapterButtonTapped(_ sender: Any) {
         guard let cat = catalogue,
-            let ch = cat.chapter(after: chapter) else {
-            return
+            let url = cat.chapter(after: chapter.url),
+            let ch = WNCache.fetch(by: url, object: WNChapter.self) else {
+                return
         }
         chapter = ch
         loadChapter()

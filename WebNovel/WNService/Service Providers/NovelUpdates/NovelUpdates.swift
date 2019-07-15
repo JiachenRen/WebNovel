@@ -17,6 +17,8 @@ class NovelUpdates: WNServiceProvider {
     var serviceEndpoint = URL(string: "https://www.novelupdates.com/wp-admin/admin-ajax.php")!
     var listingService: WNListingService?
     
+    private let queue = DispatchQueue(label: "com.jiachenren.WebNovel.download", qos: .utility, attributes: .concurrent, autoreleaseFrequency: .workItem, target: nil)
+    
     init() {
         // Default the listing service to the first available
         listingService = availableListingServices().first
@@ -86,8 +88,8 @@ class NovelUpdates: WNServiceProvider {
                         let groups = try self.parseGroups(html)
                         return (groups, postId)
                 }
-            }.then { (groups, postId) -> Promise<[[WNChapter]]> in
-                let promises: [Promise<[WNChapter]>] = groups.map { grp in
+            }.then { (groups, postId) -> Promise<(groups: [WNChaptersCatalogue.Group], postId: String)> in
+                let promises: [Promise<WNChaptersCatalogue.Group>] = groups.map { grp in
                     let parameters: Parameters = [
                         "action": "nd_getchapters",
                         "mygrpfilter": grp.id,
@@ -95,19 +97,32 @@ class NovelUpdates: WNServiceProvider {
                     ]
                     return htmlRequestResponse(self.serviceEndpoint, method: .post, parameters: parameters, encoding: .ascii)
                         .map { rawHtml in
-                            try self.parseChapters(url, SwiftSoup.parse(rawHtml)).map {
+                            let urls: [String] = try self.parseChapters(url, SwiftSoup.parse(rawHtml)).map {
                                 $0.group = grp.name
-                                return $0
+                                WNCache.save($0)
+                                return $0.url
                             }
+                            return WNChaptersCatalogue.Group(name: grp.name, isEnabled: true, chapterUrls: urls)
                     }
                 }
-                return when(fulfilled: promises)
-            }.map { groupedChapters in
-                let chapters = groupedChapters.flatMap {$0}
-                let catalogue = WNChaptersCatalogue(url, chapters)
-                catalogue.groups = groupedChapters.compactMap {$0.first?.group}
-                    .map {WNChaptersCatalogue.Group(name: $0, isEnabled: true)}
-                return catalogue
+                return when(fulfilled: promises).map {
+                    return (groups: $0, postId: postId)
+                }
+            }.then { (groups, postId) -> Promise<WNChaptersCatalogue> in
+                let parameters: Parameters = [
+                    "action": "nd_getchapters",
+                    "mypostid": postId,
+                ]
+                
+                return htmlRequestResponse(self.serviceEndpoint, method: .post, parameters: parameters, encoding: .ascii)
+                    .map { rawHtml in
+                        let chapterOrder = try self.parseChapters(url, SwiftSoup.parse(rawHtml))
+                            .enumerated()
+                            .reduce(into: [:]) {
+                                $0[$1.element.url] = $1.offset
+                        }
+                        return WNChaptersCatalogue(url, groups, chapterOrder)
+                }
             }.get { catalogue in
                 WNCache.save(catalogue)
                 print("Saved chapters for \(url) to core data")
@@ -115,15 +130,7 @@ class NovelUpdates: WNServiceProvider {
     }
     
     /// Loads chapter content including title, story, etc.
-    func loadChapter(_ chapter: WNChapter, cachePolicy: WNCache.Policy) -> Promise<WNChapter> {
-        if cachePolicy == .usesCache {
-            if let chapter = WNCache.fetch(by: chapter.url, object: WNChapter.self) {
-                print("Loaded chapter with url \(chapter.url) from core data")
-                return Promise { seal in
-                    seal.fulfill(chapter)
-                }
-            }
-        }
+    func downloadChapter(_ chapter: WNChapter) -> Promise<WNChapter> {
         return Promise { seal in
             Alamofire.request(chapter.url).response { dataResponse in
                 guard let data = dataResponse.data else {
@@ -138,21 +145,22 @@ class NovelUpdates: WNServiceProvider {
                     seal.reject(WNError.urlNotFound)
                     return
                 }
-                chapter.isDownloaded = true
+                
                 WNParser.parse(html, url, mergeInto: chapter)
-                    .get { chapter in
+                    .done(on: self.queue, flags: .barrier) { chapter in
+                        chapter.isDownloaded = true
                         chapter.byteCount = chapter.serializedByteCount()
-                        seal.fulfill(chapter)
-                    }.done { chapter in
                         WNCache.save(chapter)
                         
                         // Update chapters catalogue information
-                        if let catalogue = WNCache.fetch(by: chapter.webNovelUrl, object: WNChaptersCatalogue.self) {
-                            catalogue.lastModified = .now
-                            catalogue.chapters[chapter.url] = chapter
-                            WNCache.save(catalogue)
-                        }
+                        let catalogue = chapter.retrieveCatalogue()
+                        catalogue.lastModified = .now
+                        catalogue.numDownloads += 1
+                        catalogue.downloadedChaptersDict[chapter.url] = true
+                        WNCache.save(catalogue)
+                        
                         print("Saved chapter with url \(url) to core data")
+                        seal.fulfill(chapter)
                 }
             }
         }

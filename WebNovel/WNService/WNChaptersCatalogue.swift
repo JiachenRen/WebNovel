@@ -7,6 +7,9 @@
 //
 
 import Foundation
+import PromiseKit
+
+fileprivate let queue = DispatchQueue(label: "com.jiachenren.WebNovel.catalogueOperation", qos: .utility, attributes: .concurrent, autoreleaseFrequency: .workItem, target: nil)
 
 class WNChaptersCatalogue: Serializable {
     typealias ManagedObject = ChaptersCatalogue
@@ -15,51 +18,74 @@ class WNChaptersCatalogue: Serializable {
     struct Group: Codable {
         var name: String
         var isEnabled: Bool
+        var chapterUrls: [String]
     }
     
-    /// - Key: Chapter URL string;
-    /// - Value: Chapter
-    var chapters: [String: WNChapter]
-    
     /// All available translation groups
-    var groups: [Group] = []
+    var groups: [String: Group] {
+        didSet {updateEnabledChapterUrls()}
+    }
+    
+    let chapterOrder: [String: Int]
+    var enabledChapterUrls: [String] = []
+    var downloadedChaptersDict: [String: Bool] = [:]
+    var downloadedChapterUrls: [String] {
+        return enabledChapterUrls.filter {downloadedChaptersDict[$0] == true}
+    }
     
     /// Url for the WN that this catalogue belongs
-    var url: String
+    let url: String
     
     /// Last time the catalogue is updated
     var lastModified: TimeInterval
     
     /// Chapter that has most recently been read
-    var lastReadChapter: WNChapter?
+    var lastReadChapter: String? {
+        didSet {
+            lastRead = lastReadChapter == nil ? nil : .now
+        }
+    }
+    
+    var lastRead: TimeInterval?
     
     /// Whether any of the chapters in the catalogue is downloaded
-    var hasDownloads: Bool {
-        for chapter in chapters.values {
-            if chapter.isDownloaded {
-                return true
-            }
-        }
-        return false
-    }
+    var numDownloads: Int = 0
     
     /// First chapter of the WN, chronologically
-    var firstChapter: WNChapter? {
-        return chapters.values.sorted(by: {$0.id < $1.id}).first
+    var firstChapter: String? {
+        return enabledChapterUrls.first
     }
     
-    init(_ url: String, _ chapters: [WNChapter]) {
+    init(_ url: String, _ groups: [Group], _ chapterOrder: [String: Int]) {
         self.url = url
-        self.chapters = chapters.reduce(into: [:]) {
-            $0[$1.url] = $1
+        self.chapterOrder = chapterOrder
+        self.groups = groups.reduce(into: [:]) {
+            $0[$1.name] = $1
         }
         lastModified = .now
+        updateEnabledChapterUrls()
+    }
+    
+    private func updateEnabledChapterUrls() {
+        enabledChapterUrls = groups.values.filter {$0.isEnabled}
+            .flatMap {$0.chapterUrls}
+            .sorted {
+                chapterOrder[$0]! < chapterOrder[$1]!
+        }
+    }
+    
+    func async<T>(_ body: @escaping (WNChaptersCatalogue) -> T) -> Guarantee<T> {
+        return Guarantee { fulfill in
+            queue.async {
+                fulfill(body(self))
+            }
+        }
     }
     
     /// Calculates storage space used in KB
     /// - Returns: The total storage space used by the downloaded chapters
-    func storageSpaceUsed() -> String {
-        let totalBytes = chapters.values.filter {
+    static func calculateStorageSpaceUsed(_ chapters: [WNChapter]) -> String {
+        let totalBytes = chapters.filter {
                 $0.isDownloaded
             }.compactMap {
                 $0.byteCount
@@ -70,65 +96,60 @@ class WNChaptersCatalogue: Serializable {
         return Data.size(format: [.useKB, .useMB], bytesCount: totalBytes)
     }
     
-    /// Reload all chapters from core data
-    /// - Returns: Downloaded chapters sorted by ascending ID number
-    /// - Warning: This is very expensive
-    func reloadChapters() {
-        chapters.keys.forEach {
-            self.chapters[$0] = WNCache.fetch(by: $0, object: WNChapter.self)
-        }
+    enum Criterion {
+        case downloaded
+        case enabled
+        case all
     }
     
-    /// Finds the chapter that's been most recently read
-    func findLastReadChapter() {
-        lastReadChapter = chapters.values.filter {$0.isRead && $0.lastRead != nil}
-            .sorted {$0.lastRead! > $1.lastRead!}
-            .first
+    /// Load all enabled chapters
+    /// - Returns: Downloaded chapters sorted by ascending ID number
+    /// - Warning: This is very expensive
+    func loadChapters(_ criterion: Criterion = .enabled) -> Guarantee<[WNChapter]> {
+        return async { cat in
+            var urls: [String]
+            switch criterion {
+            case .downloaded:
+                urls = cat.downloadedChapterUrls
+            case .enabled:
+                urls = cat.enabledChapterUrls
+            case .all:
+                urls = cat.chapterOrder.sorted {$0.value < $1.value}.map {$0.key}
+            }
+            return urls.compactMap {
+                WNCache.fetch(by: $0, object: WNChapter.self)
+            }
+        }
     }
     
     /// - Returns: The chapter after the given chapter
-    func chapter(after ch: WNChapter) -> WNChapter? {
-        for cand in chaptersForEnabledGroups().sorted(by: {$0.id < $1.id}) {
-            if cand.id > ch.id {
-                return cand
-            }
+    func chapter(after chapterUrl: String) -> String? {
+        let urls = enabledChapterUrls
+        let idx = index(for: chapterUrl) + 1
+        if idx < urls.count && idx >= 0 {
+            return urls[idx]
         }
         return nil
     }
     
-    /// - Returns: The chapter brefore the given chapter
-    func chapter(before ch: WNChapter) -> WNChapter? {
-        for cand in chaptersForEnabledGroups().sorted(by: {$0.id > $1.id}) {
-            if cand.id < ch.id {
-                return cand
-            }
+    /// - Returns: The chapter url brefore the given chapter url
+    func chapter(before chapterUrl: String) -> String? {
+        let urls = enabledChapterUrls
+        let idx = index(for: chapterUrl) - 1
+        if idx < urls.count && idx >= 0 {
+            return urls[idx]
         }
         return nil
-    }
-    
-    /// - Returns: Chapters for enabled translation groups
-    func chaptersForEnabledGroups() -> [WNChapter] {
-        let enabledGroups = groups.filter {$0.isEnabled}
-        return chapters.values.filter { ch in
-            enabledGroups.contains(where: {ch.group ==  $0.name})
-        }
     }
     
     /// - Returns: Index for the chapter in enabled groups.
-    func index(for chapter: WNChapter) -> Int {
-        return chaptersForEnabledGroups()
-            .sorted {$0.id < $1.id}
-            .binarySearch(for: chapter) {$0.id}!
+    func index(for chapterUrl: String) -> Int {
+        for (idx, url) in enabledChapterUrls.enumerated() {
+            if url == chapterUrl {
+                return idx
+            }
+        }
+        fatalError()
     }
     
-}
-
-extension WNChaptersCatalogue: CustomStringConvertible {
-    var description: String {
-        return """
-        Web Novel URL: \(url)
-        Chapters:
-        \(chapters.keys.map {"\($0)"}.joined(separator: "\n"))
-        """
-    }
 }

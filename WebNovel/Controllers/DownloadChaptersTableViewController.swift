@@ -43,15 +43,15 @@ class DownloadChaptersTableViewController: UITableViewController {
             return
         }
         // Remove pending or downloaded chapters from candidates
-        var candidates = Set(catalogue.chapters.keys)
+        var candidates = Set(catalogue.enabledChapterUrls)
         if let pending = WNDownloadsManager.shared.currentTasks[webNovelUrl]?.pending {
             candidates = candidates.symmetricDifference(pending.map {$0.url})
         }
-        let enabledGroups = catalogue.groups.filter {$0.isEnabled}.map {$0.name}
+        
         self.chapters = candidates.compactMap {
-                catalogue.chapters[$0]
+                WNCache.fetch(by: $0, object: WNChapter.self)
             }.filter {
-                !$0.isDownloaded && enabledGroups.contains($0.group)
+                !$0.isDownloaded
             }.sorted {
                 $0.id < $1.id
         }

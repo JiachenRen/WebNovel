@@ -8,6 +8,7 @@
 
 import UIKit
 import SafariServices
+import PromiseKit
 
 private let reuseIdentifier = "chapters.chapter"
 
@@ -25,10 +26,10 @@ class ChaptersTableViewController: UITableViewController {
     var catalogue: WNChaptersCatalogue? {
         didSet {filterButton.isEnabled = catalogue != nil}
     }
-    var chapters: [WNChapter] = [] {
+    var chapters: [String] = [] {
         didSet {groupChaptersIntoSections()}
     }
-    var sections: [[WNChapter]] = []
+    var sections: [[String]] = []
     var desiredSections = 20
     var chaptersInSection: Int {
         return chapters.count / desiredSections
@@ -101,8 +102,8 @@ class ChaptersTableViewController: UITableViewController {
         WNServiceManager.shared.serviceProvider.loadChaptersCatagoue(from: catalogueUrl, cachePolicy: .usesCache)
             .done(on: .main) { catalogue in
                 self.catalogue = catalogue
-                self.chapters = catalogue.chaptersForEnabledGroups()
-                self.chapters.sort(by: {self.sortDescending ? $0.id > $1.id : $0.id < $1.id})
+                self.chapters = catalogue.enabledChapterUrls
+                self.chapters = self.sortDescending ? Array(self.chapters.reversed()) : self.chapters
                 self.chaptersCountLabel.text = "\(self.chapters.count) chapters"
                 self.tableView.reloadData()
             }.ensure {
@@ -123,7 +124,7 @@ class ChaptersTableViewController: UITableViewController {
     }
     
     private func chapter(at indexPath: IndexPath) -> WNChapter {
-        return sections[indexPath.section][indexPath.row]
+        return WNCache.fetch(by: sections[indexPath.section][indexPath.row], object: WNChapter.self)!
     }
     
 }
@@ -172,9 +173,8 @@ extension ChaptersTableViewController {
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let ch = chapter(at: indexPath)
         let action = UITableViewRowAction(style: .default, title: "Mark as \(ch.isRead ? "Unread" : "Read")") { [weak self] (_, indexPath) in
-            ch.toggleReadStatus().done {
-                self?.tableView.reloadData()
-            }
+            ch.markAs(isRead: !ch.isRead, self?.catalogue)
+            self?.tableView.reloadData()
         }
         action.backgroundColor = #colorLiteral(red: 0.1229935065, green: 0.6172919869, blue: 0.9974135756, alpha: 1)
         return [action]
