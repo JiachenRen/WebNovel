@@ -50,6 +50,13 @@ class WebNovel: Serializable {
     func html() -> Promise<String> {
         return htmlRequestResponse(url)
     }
+    
+    func loadCoverImage() -> WNCoverImage? {
+        guard let url = coverImageUrl else {
+            return nil
+        }
+        return WNCache.fetch(by: url, object: WNCoverImage.self)
+    }
 }
 
 fileprivate func str(_ arr: [CustomStringConvertible]?) -> String {

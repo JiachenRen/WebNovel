@@ -41,14 +41,10 @@ func htmlRequestResponse(
 /// - Returns: A promise wrapping a UIImage object
 func downloadImage(from url: URLConvertible, cachePolicy: WNCache.Policy = .usesCache) -> Promise<UIImage> {
     if cachePolicy == .usesCache, let url = try? url.asURL().absoluteString {
-        if let coverImage = WNCache.fetch(by: url, object: WNCoverImage.self) {
+        if let image = WNCache.fetch(by: url, object: WNCoverImage.self)?.uiImage {
             print("Loaded image at url \(url) from core data")
             return Promise { seal in
-                guard let uiImage = UIImage(data: coverImage.imageData) else {
-                    seal.reject(WNError.decodingFailed)
-                    return
-                }
-                seal.fulfill(uiImage)
+                seal.fulfill(image)
             }
         }
     }

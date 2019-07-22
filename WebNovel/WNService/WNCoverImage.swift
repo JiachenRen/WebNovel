@@ -15,6 +15,9 @@ class WNCoverImage: Serializable {
     
     var url: String
     var imageData: Data
+    var uiImage: UIImage? {
+        return UIImage(data: imageData)
+    }
     
     init?(uiImage: UIImage , _ url: String) {
         guard let data = uiImage.pngData() else {

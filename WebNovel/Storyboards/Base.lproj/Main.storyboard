@@ -67,6 +67,14 @@
             </objects>
             <point key="canvasLocation" x="1254" y="186"/>
         </scene>
+        <!--EditWebNovels-->
+        <scene sceneID="a2W-4b-5pM">
+            <objects>
+                <viewControllerPlaceholder storyboardName="EditWebNovels" id="wGx-BQ-OII" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="HoN-EG-nqf" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2849" y="622"/>
+        </scene>
         <!--Downloads-->
         <scene sceneID="wrS-AP-dHp">
             <objects>
@@ -205,9 +213,16 @@
                         </connections>
                     </collectionView>
                     <navigationItem key="navigationItem" title="Downloads" id="Hla-tA-sci">
-                        <barButtonItem key="leftBarButtonItem" systemItem="edit" id="Uwl-0m-y22"/>
+                        <barButtonItem key="leftBarButtonItem" systemItem="edit" id="Uwl-0m-y22">
+                            <connections>
+                                <segue destination="wGx-BQ-OII" kind="presentation" id="isT-Or-xVa"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="search" id="b8B-9n-HO3"/>
                     </navigationItem>
+                    <connections>
+                        <outlet property="editButton" destination="Uwl-0m-y22" id="JPq-BM-FBc"/>
+                    </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UAm-qC-orh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

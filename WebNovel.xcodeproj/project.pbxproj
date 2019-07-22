@@ -61,6 +61,10 @@
 		1FCD421722C505750050ECEC /* DownloadsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCD421622C505750050ECEC /* DownloadsCollectionViewCell.swift */; };
 		1FCD421922C5E54E0050ECEC /* DownloadsSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCD421822C5E54E0050ECEC /* DownloadsSectionHeaderView.swift */; };
 		1FCD421B22C5E57E0050ECEC /* DownloadsSectionFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCD421A22C5E57E0050ECEC /* DownloadsSectionFooterView.swift */; };
+		1FEBCBDF22E5B92E004F38B0 /* EditWebNovels.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1FEBCBDE22E5B92E004F38B0 /* EditWebNovels.storyboard */; };
+		1FEBCBE122E5BB95004F38B0 /* EditWebNovelsCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FEBCBE022E5BB95004F38B0 /* EditWebNovelsCollectionViewController.swift */; };
+		1FEBCBE322E5BC0F004F38B0 /* EditWebNovelsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FEBCBE222E5BC0F004F38B0 /* EditWebNovelsCollectionViewCell.swift */; };
+		1FEBCBE522E5C4B8004F38B0 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FEBCBE422E5C4B8004F38B0 /* GradientView.swift */; };
 		1FED6E3422B34C92002F9317 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FED6E3322B34C92002F9317 /* AppDelegate.swift */; };
 		1FED6E3922B34C92002F9317 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1FED6E3722B34C92002F9317 /* Main.storyboard */; };
 		1FED6E3C22B34C92002F9317 /* WebNovel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1FED6E3A22B34C92002F9317 /* WebNovel.xcdatamodeld */; };
@@ -174,6 +178,10 @@
 		1FCD421622C505750050ECEC /* DownloadsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadsCollectionViewCell.swift; sourceTree = "<group>"; };
 		1FCD421822C5E54E0050ECEC /* DownloadsSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadsSectionHeaderView.swift; sourceTree = "<group>"; };
 		1FCD421A22C5E57E0050ECEC /* DownloadsSectionFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadsSectionFooterView.swift; sourceTree = "<group>"; };
+		1FEBCBDE22E5B92E004F38B0 /* EditWebNovels.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = EditWebNovels.storyboard; sourceTree = "<group>"; };
+		1FEBCBE022E5BB95004F38B0 /* EditWebNovelsCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditWebNovelsCollectionViewController.swift; sourceTree = "<group>"; };
+		1FEBCBE222E5BC0F004F38B0 /* EditWebNovelsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditWebNovelsCollectionViewCell.swift; sourceTree = "<group>"; };
+		1FEBCBE422E5C4B8004F38B0 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		1FED6E3022B34C92002F9317 /* WebNovel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WebNovel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FED6E3322B34C92002F9317 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1FED6E3822B34C92002F9317 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -326,6 +334,7 @@
 			isa = PBXGroup;
 			children = (
 				1FED6E3722B34C92002F9317 /* Main.storyboard */,
+				1FEBCBDE22E5B92E004F38B0 /* EditWebNovels.storyboard */,
 				1F8FBB4322C7176200B23F8D /* AddToDownloads.storyboard */,
 				1F8FBB4522C718C200B23F8D /* ChapterReader.storyboard */,
 				1F8FBB4922C71CE400B23F8D /* NovelDetails.storyboard */,
@@ -412,6 +421,7 @@
 				1FCD420A22C381A60050ECEC /* DownloadChaptersTableViewController.swift */,
 				1FCD421422C5033F0050ECEC /* DownloadsCollectionViewController.swift */,
 				1F8FBB4B22C72D7900B23F8D /* DownloadedNovelTableViewController.swift */,
+				1FEBCBE022E5BB95004F38B0 /* EditWebNovelsCollectionViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -435,6 +445,8 @@
 				1F8FBB5122CB272600B23F8D /* DownloadedNovelSectionHeaderCell.swift */,
 				1F3F105E22D5825900BCD32B /* DownloadedNovelProgressWrapperView.swift */,
 				1F3F106622D5C7DE00BCD32B /* DownloadedNovelProgressTableViewCell.swift */,
+				1FEBCBE222E5BC0F004F38B0 /* EditWebNovelsCollectionViewCell.swift */,
+				1FEBCBE422E5C4B8004F38B0 /* GradientView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -523,6 +535,7 @@
 			files = (
 				1FED6E4122B34C93002F9317 /* LaunchScreen.storyboard in Resources */,
 				1F8FBB4422C7176200B23F8D /* AddToDownloads.storyboard in Resources */,
+				1FEBCBDF22E5B92E004F38B0 /* EditWebNovels.storyboard in Resources */,
 				1FED6E3E22B34C93002F9317 /* Assets.xcassets in Resources */,
 				1F8FBB4622C718C200B23F8D /* ChapterReader.storyboard in Resources */,
 				1FFDDD1922DAD8B3000CAC17 /* GroupsFilter.storyboard in Resources */,
@@ -606,12 +619,15 @@
 				1F52AAEC22B8EAFA00D4FB6C /* NSObject+observe.swift in Sources */,
 				1FCD41FB22C1B7BE0050ECEC /* Optional+losslessStr.swift in Sources */,
 				1FED6EAE22B6FB57002F9317 /* WNCatalogue.swift in Sources */,
+				1FEBCBE322E5BC0F004F38B0 /* EditWebNovelsCollectionViewCell.swift in Sources */,
 				1FCD420122C1C5B70050ECEC /* ChapterViewController.swift in Sources */,
+				1FEBCBE522E5C4B8004F38B0 /* GradientView.swift in Sources */,
 				1F091BF922D8D07600E799D2 /* SpeechVoicesTableViewController.swift in Sources */,
 				1F21978222C5F10900AC435A /* TimeInterval+now.swift in Sources */,
 				1F52AAEE22B901A300D4FB6C /* WNGenre.swift in Sources */,
 				1FCD421722C505750050ECEC /* DownloadsCollectionViewCell.swift in Sources */,
 				1FCD420D22C384860050ECEC /* SelectableChapterTableViewCell.swift in Sources */,
+				1FEBCBE122E5BB95004F38B0 /* EditWebNovelsCollectionViewController.swift in Sources */,
 				1FED6EA522B627A1002F9317 /* NovelUpdates+search.swift in Sources */,
 				1FCD41E722BF76EE0050ECEC /* WNCancellableTask.swift in Sources */,
 				1F3F105F22D5825900BCD32B /* DownloadedNovelProgressWrapperView.swift in Sources */,

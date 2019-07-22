@@ -10,13 +10,17 @@ import UIKit
 import PromiseKit
 
 class DownloadsCollectionViewController: UICollectionViewController {
+    @IBOutlet weak var editButton: UIBarButtonItem!
+    
     var sortingCriterion: CatalogueSortingCriterion = .name
     var catalogues: [WNCatalogue] = []
     var coverImages: [String: UIImage] = [:]
     var webNovels: [String: WebNovel] = [:]
     var headerView: DownloadsSectionHeaderView?
     var reloadTimer: Timer?
-    var loading = true
+    var loading = true {
+        didSet {editButton.isEnabled = !loading}
+    }
     
     private let queue = DispatchQueue(label: "com.jiachenren.WebNovel.downloads.load", qos: .userInitiated, attributes: .concurrent, autoreleaseFrequency: .workItem, target: nil)
     
@@ -89,7 +93,7 @@ class DownloadsCollectionViewController: UICollectionViewController {
                             self.webNovels[url] = wn
                             if let imageUrl = wn.coverImageUrl,
                                 let coverImage = WNCache.fetch(by: imageUrl, object: WNCoverImage.self) {
-                                self.coverImages[url] = UIImage(data: coverImage.imageData)
+                                self.coverImages[url] = coverImage.uiImage
                             }
                         }
                     }
@@ -161,6 +165,11 @@ extension DownloadsCollectionViewController {
             controller.catalogue = cat
             controller.coverImage = coverImages[cat.url]
             controller.webNovel = webNovels[cat.url]
+        } else if let nav = segue.destination as? UINavigationController {
+            if let editController = nav.topViewController as? EditWebNovelsCollectionViewController {
+                editController.collectionType = .downloads
+                editController.webNovelUrls = catalogues.map {$0.url}
+            }
         }
     }
     

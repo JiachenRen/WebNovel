@@ -15,4 +15,7 @@ extension UIImage {
     static let sortDescIcon = #imageLiteral(resourceName: "sort-desc-icon")
     static let circledFilledPause = #imageLiteral(resourceName: "circled-filled-pause")
     static let circledFilledResume = #imageLiteral(resourceName: "circled-filled-play")
+    static let ok = #imageLiteral(resourceName: "ok")
+    static let okFilled = #imageLiteral(resourceName: "ok-filled")
+    static let emptyCircle = #imageLiteral(resourceName: "empty-circle")
 }

@@ -48,9 +48,9 @@ class WNCache {
     }
     
     /// Deletes the object from core data
-    static func delete<T: Serializable>(_ object: T) {
+    static func delete<T: Serializable>(_ url: String, _ object: T.Type) {
         ctx.perform {
-            let request = fetchRequest(object.url, for: T.ManagedObject.self)
+            let request = fetchRequest(url, for: T.ManagedObject.self)
             if let managedObj = try? ctx.fetch(request).first {
                 ctx.delete(managedObj)
             }
