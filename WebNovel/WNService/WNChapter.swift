@@ -100,7 +100,7 @@ class WNChapter: Serializable, CustomStringConvertible {
         return "Chapter \(ch): \(t)"
     }
     
-    func markAs(isRead: Bool, _ cat: WNChaptersCatalogue? = nil) {
+    func markAs(isRead: Bool, _ cat: WNCatalogue? = nil) {
         self.isRead = isRead
         WNCache.save(self)
         let cat = cat ?? retrieveCatalogue()
@@ -109,7 +109,7 @@ class WNChapter: Serializable, CustomStringConvertible {
     }
     
     /// Deletes the downloaded content for this chapter from core data
-    func delete(from cat: WNChaptersCatalogue? = nil) {
+    func delete(from cat: WNCatalogue? = nil) {
         isDownloaded = false
         rawHtml = nil
         article = nil
@@ -123,7 +123,7 @@ class WNChapter: Serializable, CustomStringConvertible {
     }
     
     /// Perfrom updates & synchronization asynchronously
-    func asyncUpdate(_ cat: WNChaptersCatalogue? = nil, _ body: @escaping (WNChapter, WNChaptersCatalogue) -> Void) -> Guarantee<Void> {
+    func asyncUpdate(_ cat: WNCatalogue? = nil, _ body: @escaping (WNChapter, WNCatalogue) -> Void) -> Guarantee<Void> {
         let chapter = self
         return Guarantee { fulfill in
             updateQueue.async {
@@ -137,8 +137,8 @@ class WNChapter: Serializable, CustomStringConvertible {
     }
     
     /// Retrieves the catalogue that this chapter belongs to
-    func retrieveCatalogue() -> WNChaptersCatalogue {
-        return WNCache.fetch(by: webNovelUrl, object: WNChaptersCatalogue.self)!
+    func retrieveCatalogue() -> WNCatalogue {
+        return WNCache.fetch(by: webNovelUrl, object: WNCatalogue.self)!
     }
     
     func retrieveWebNovel() -> WebNovel {

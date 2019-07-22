@@ -1,5 +1,5 @@
 //
-//  WNChaptersCatalogue.swift
+//  WNCatalogue.swift
 //  WebNovel
 //
 //  Created by Jiachen Ren on 6/16/19.
@@ -11,8 +11,8 @@ import PromiseKit
 
 fileprivate let queue = DispatchQueue(label: "com.jiachenren.WebNovel.catalogueOperation", qos: .utility, attributes: .concurrent, autoreleaseFrequency: .workItem, target: nil)
 
-class WNChaptersCatalogue: Serializable {
-    typealias ManagedObject = ChaptersCatalogue
+class WNCatalogue: Serializable {
+    typealias ManagedObject = Catalogue
     
     /// WN translation groups
     struct Group: Codable {
@@ -26,9 +26,16 @@ class WNChaptersCatalogue: Serializable {
         didSet {updateEnabledChapterUrls()}
     }
     
-    let chapterOrder: [String: Int]
+    /// Chapters ordered by release date
+    let orderedChapters: [String: Int]
+    
+    /// Chapter URLs for enabled groups
     var enabledChapterUrls: [String] = []
+    
+    /// Dictionary for downloaded chapters
     var downloadedChaptersDict: [String: Bool] = [:]
+    
+    /// URLs for downloaded chapters
     var downloadedChapterUrls: [String] {
         return enabledChapterUrls.filter {downloadedChaptersDict[$0] == true}
     }
@@ -58,7 +65,7 @@ class WNChaptersCatalogue: Serializable {
     
     init(_ url: String, _ groups: [Group], _ chapterOrder: [String: Int]) {
         self.url = url
-        self.chapterOrder = chapterOrder
+        self.orderedChapters = chapterOrder
         self.groups = groups.reduce(into: [:]) {
             $0[$1.name] = $1
         }
@@ -70,11 +77,11 @@ class WNChaptersCatalogue: Serializable {
         enabledChapterUrls = groups.values.filter {$0.isEnabled}
             .flatMap {$0.chapterUrls}
             .sorted {
-                chapterOrder[$0]! < chapterOrder[$1]!
+                orderedChapters[$0]! < orderedChapters[$1]!
         }
     }
     
-    func async<T>(_ body: @escaping (WNChaptersCatalogue) -> T) -> Guarantee<T> {
+    func async<T>(_ body: @escaping (WNCatalogue) -> T) -> Guarantee<T> {
         return Guarantee { fulfill in
             queue.async {
                 fulfill(body(self))
@@ -114,7 +121,7 @@ class WNChaptersCatalogue: Serializable {
             case .enabled:
                 urls = cat.enabledChapterUrls
             case .all:
-                urls = cat.chapterOrder.sorted {$0.value < $1.value}.map {$0.key}
+                urls = cat.orderedChapters.sorted {$0.value < $1.value}.map {$0.key}
             }
             return urls.compactMap {
                 WNCache.fetch(by: $0, object: WNChapter.self)

@@ -27,9 +27,9 @@ class WebNovelTests: XCTestCase {
             .init(url: "www.jiachenren.com", chapter: "Chapter 2", id: 2),
             .init(url: "www.google.com", chapter: "Chapter 3", id: 3),
         ]
-        let chaptersCatalogue = WNChaptersCatalogue(wnUrl, chapters)
+        let chaptersCatalogue = WNCatalogue(wnUrl, chapters)
         try WNCache.save(chaptersCatalogue)
-        var f: WNChaptersCatalogue = try WNCache.fetchChaptersCatalogue(wnUrl)!
+        var f: WNCatalogue = try WNCache.fetchChaptersCatalogue(wnUrl)!
         print(f)
         XCTAssert(f.chapters.first!.url! == "www.example.com")
         chaptersCatalogue.chapters[1] = WNChapter(url: "www.changed.com", chapter: "Chapter 5", id: 4)

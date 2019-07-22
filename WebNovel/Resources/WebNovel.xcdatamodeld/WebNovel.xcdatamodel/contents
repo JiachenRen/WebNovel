@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14490.99" systemVersion="18E226" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="Chapter" representedClassName="Chapter" syncable="YES" codeGenerationType="class">
-        <attribute name="chapter" optional="YES" attributeType="String" syncable="YES"/>
+    <entity name="Catalogue" representedClassName="Catalogue" syncable="YES" codeGenerationType="class">
         <attribute name="data" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="url" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
-    <entity name="ChaptersCatalogue" representedClassName="ChaptersCatalogue" syncable="YES" codeGenerationType="class">
+    <entity name="Chapter" representedClassName="Chapter" syncable="YES" codeGenerationType="class">
+        <attribute name="chapter" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="data" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="url" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
@@ -19,8 +19,8 @@
     </entity>
     <elements>
         <element name="Chapter" positionX="9" positionY="72" width="128" height="90"/>
-        <element name="ChaptersCatalogue" positionX="-45" positionY="0" width="128" height="75"/>
-        <element name="Novel" positionX="-18" positionY="45" width="128" height="75"/>
+        <element name="Catalogue" positionX="-45" positionY="0" width="128" height="75"/>
         <element name="CoverImage" positionX="-18" positionY="63" width="128" height="75"/>
+        <element name="Novel" positionX="-18" positionY="45" width="128" height="75"/>
     </elements>
 </model>

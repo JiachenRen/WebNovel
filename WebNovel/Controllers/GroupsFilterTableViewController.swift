@@ -10,13 +10,13 @@ import UIKit
 
 class GroupsFilterTableViewController: UITableViewController {
     
-    var catalogue: WNChaptersCatalogue! {
+    var catalogue: WNCatalogue! {
         didSet {
             groups = catalogue.groups.values.sorted {$0.name < $1.name}
         }
     }
     
-    var groups: [WNChaptersCatalogue.Group] = []
+    var groups: [WNCatalogue.Group] = []
 
     // MARK: - Table view data source
 

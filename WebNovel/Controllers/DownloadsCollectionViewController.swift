@@ -11,7 +11,7 @@ import PromiseKit
 
 class DownloadsCollectionViewController: UICollectionViewController {
     var sortingCriterion: CatalogueSortingCriterion = .name
-    var catalogues: [WNChaptersCatalogue] = []
+    var catalogues: [WNCatalogue] = []
     var coverImages: [String: UIImage] = [:]
     var webNovels: [String: WebNovel] = [:]
     var headerView: DownloadsSectionHeaderView?
@@ -77,7 +77,7 @@ class DownloadsCollectionViewController: UICollectionViewController {
                         seal.reject(WNError.instanceDeallocated)
                         return
                     }
-                    var catalogues = WNCache.fetchAll(WNChaptersCatalogue.self)
+                    var catalogues = WNCache.fetchAll(WNCatalogue.self)
                     // Only present catalogues with downloaded chapters, also include ones that are currently being downloaded
                     catalogues = catalogues.filter {
                         $0.numDownloads > 0 || WNDownloadsManager.shared.currentTasks.keys.contains($0.url)

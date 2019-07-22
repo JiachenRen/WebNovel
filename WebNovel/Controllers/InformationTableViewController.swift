@@ -45,7 +45,7 @@ class InformationTableViewController: UITableViewController {
     }
     
     var lastReadChapter: WNChapter? {
-        if let url = WNCache.fetch(by: webNovel.url, object: WNChaptersCatalogue.self)?.lastReadChapter {
+        if let url = WNCache.fetch(by: webNovel.url, object: WNCatalogue.self)?.lastReadChapter {
             return WNCache.fetch(by: url, object: WNChapter.self)
         }
         return nil
@@ -151,7 +151,7 @@ class InformationTableViewController: UITableViewController {
     }
     
     private func findFirstChapter() {
-        mgr.serviceProvider.loadChaptersCatagoue(from: webNovel.url, cachePolicy: .usesCache)
+        mgr.serviceProvider.loadCatalogue(from: webNovel.url, cachePolicy: .usesCache)
             .done(on: .main) { catalogue in
                 if let url = catalogue.firstChapter {
                     self.firstChapter = WNCache.fetch(by: url, object: WNChapter.self)

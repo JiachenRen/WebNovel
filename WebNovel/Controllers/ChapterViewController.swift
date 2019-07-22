@@ -24,7 +24,7 @@ class ChapterViewController: UIViewController {
     @IBOutlet weak var chapterNumberBarItem: UIBarButtonItem!
     
     var chapter: WNChapter!
-    var catalogue: WNChaptersCatalogue?
+    var catalogue: WNCatalogue?
     var sanitization: Sanitization = .readability
     var attributes: Attributes = Attributes()
     var titleAttributes: Attributes {

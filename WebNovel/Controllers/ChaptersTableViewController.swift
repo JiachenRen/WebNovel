@@ -23,7 +23,7 @@ class ChaptersTableViewController: UITableViewController {
     @IBOutlet weak var filterButton: UIBarButtonItem!
     
     var catalogueUrl: String!
-    var catalogue: WNChaptersCatalogue? {
+    var catalogue: WNCatalogue? {
         didSet {filterButton.isEnabled = catalogue != nil}
     }
     var chapters: [String] = [] {
@@ -99,7 +99,7 @@ class ChaptersTableViewController: UITableViewController {
     
     @objc private func loadChapters() {
         isLoadingChapters = true
-        WNServiceManager.shared.serviceProvider.loadChaptersCatagoue(from: catalogueUrl, cachePolicy: .usesCache)
+        WNServiceManager.shared.serviceProvider.loadCatalogue(from: catalogueUrl, cachePolicy: .usesCache)
             .done(on: .main) { catalogue in
                 self.catalogue = catalogue
                 self.chapters = catalogue.enabledChapterUrls

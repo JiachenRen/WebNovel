@@ -31,7 +31,7 @@ class DownloadedNovelTableViewController: UITableViewController {
         target: nil
     )
     
-    var catalogue: WNChaptersCatalogue!
+    var catalogue: WNCatalogue!
     var downloadedChapters: [String] = []
     var webNovel: WebNovel!
     var coverImage: UIImage?
@@ -99,11 +99,8 @@ class DownloadedNovelTableViewController: UITableViewController {
     private func reloadDownloadedChapters() -> Guarantee<Void> {
         loading = true
         return Guarantee { fulfill in
-            queue.async { [weak self] in
-                guard let self = self else {
-                    return
-                }
-                self.catalogue = WNCache.fetch(by: self.catalogue.url, object: WNChaptersCatalogue.self)
+            queue.async {
+                self.catalogue = WNCache.fetch(by: self.catalogue.url, object: WNCatalogue.self)
                 self.downloadedChapters = self.catalogue.downloadedChapterUrls
                 self.loading = false
                 fulfill(())
@@ -121,7 +118,7 @@ class DownloadedNovelTableViewController: UITableViewController {
         numDownloadedLabel.text = "\(downloadedChapters.count) chapters downloaded"
         storageUsedLabel.text = "calculating..."
         catalogue.loadChapters(.downloaded).done { [weak self] in
-            let space = WNChaptersCatalogue.calculateStorageSpaceUsed($0)
+            let space = WNCatalogue.calculateStorageSpaceUsed($0)
             self?.storageUsedLabel.text = "\(space) used"
         }
         titleLabel.text = webNovel.title

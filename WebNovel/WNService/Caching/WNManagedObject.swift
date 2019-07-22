@@ -23,5 +23,5 @@ extension WNManagedObject {
 
 extension Chapter: WNManagedObject {}
 extension Novel: WNManagedObject {}
-extension ChaptersCatalogue: WNManagedObject {}
+extension Catalogue: WNManagedObject {}
 extension CoverImage: WNManagedObject {}

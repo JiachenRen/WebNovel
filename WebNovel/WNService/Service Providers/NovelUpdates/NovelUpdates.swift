@@ -61,9 +61,9 @@ class NovelUpdates: WNServiceProvider {
     
     /// Fetch links of all chapters for the given WN.
     /// - Parameter url: URL for the webNovel or chapters catalogue
-    func loadChaptersCatagoue(from url: String, cachePolicy: WNCache.Policy) -> Promise<WNChaptersCatalogue> {
+    func loadCatalogue(from url: String, cachePolicy: WNCache.Policy) -> Promise<WNCatalogue> {
         if cachePolicy == .usesCache {
-            if let catalogue = WNCache.fetch(by: url, object: WNChaptersCatalogue.self) {
+            if let catalogue = WNCache.fetch(by: url, object: WNCatalogue.self) {
                 return Promise { seal in
                     print("Loaded chapters for \(url) from core data")
                     seal.fulfill(catalogue)
@@ -88,8 +88,8 @@ class NovelUpdates: WNServiceProvider {
                         let groups = try self.parseGroups(html)
                         return (groups, postId)
                 }
-            }.then { (groups, postId) -> Promise<(groups: [WNChaptersCatalogue.Group], postId: String)> in
-                let promises: [Promise<WNChaptersCatalogue.Group>] = groups.map { grp in
+            }.then { (groups, postId) -> Promise<(groups: [WNCatalogue.Group], postId: String)> in
+                let promises: [Promise<WNCatalogue.Group>] = groups.map { grp in
                     let parameters: Parameters = [
                         "action": "nd_getchapters",
                         "mygrpfilter": grp.id,
@@ -102,13 +102,13 @@ class NovelUpdates: WNServiceProvider {
                                 WNCache.save($0)
                                 return $0.url
                             }
-                            return WNChaptersCatalogue.Group(name: grp.name, isEnabled: true, chapterUrls: urls)
+                            return WNCatalogue.Group(name: grp.name, isEnabled: true, chapterUrls: urls)
                     }
                 }
                 return when(fulfilled: promises).map {
                     return (groups: $0, postId: postId)
                 }
-            }.then { (groups, postId) -> Promise<WNChaptersCatalogue> in
+            }.then { (groups, postId) -> Promise<WNCatalogue> in
                 let parameters: Parameters = [
                     "action": "nd_getchapters",
                     "mypostid": postId,
@@ -121,7 +121,7 @@ class NovelUpdates: WNServiceProvider {
                             .reduce(into: [:]) {
                                 $0[$1.element.url] = $1.offset
                         }
-                        return WNChaptersCatalogue(url, groups, chapterOrder)
+                        return WNCatalogue(url, groups, chapterOrder)
                 }
             }.get { catalogue in
                 WNCache.save(catalogue)
