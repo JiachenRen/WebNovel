@@ -83,6 +83,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="fuJ-by-cvv"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="ThP-3j-CrD">
                             <size key="itemSize" width="90" height="180"/>
                             <size key="headerReferenceSize" width="50" height="50"/>
@@ -171,12 +172,13 @@
                                 </button>
                             </subviews>
                             <constraints>
-                                <constraint firstItem="jf6-43-kOF" firstAttribute="leading" secondItem="hyd-5R-y2E" secondAttribute="leadingMargin" constant="16" id="AQb-ds-HEo"/>
+                                <constraint firstItem="jf6-43-kOF" firstAttribute="leading" secondItem="PDj-x5-0Mw" secondAttribute="leading" constant="24" id="AQb-ds-HEo"/>
                                 <constraint firstItem="8PQ-bc-zpE" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="jf6-43-kOF" secondAttribute="trailing" constant="20" id="Pp9-gm-4ya"/>
                                 <constraint firstItem="jf6-43-kOF" firstAttribute="centerY" secondItem="hyd-5R-y2E" secondAttribute="centerY" id="a6t-rd-oni"/>
-                                <constraint firstAttribute="trailingMargin" secondItem="8PQ-bc-zpE" secondAttribute="trailing" constant="16" id="bnN-Fe-lKg"/>
+                                <constraint firstItem="PDj-x5-0Mw" firstAttribute="trailing" secondItem="8PQ-bc-zpE" secondAttribute="trailing" constant="24" id="bnN-Fe-lKg"/>
                                 <constraint firstItem="8PQ-bc-zpE" firstAttribute="centerY" secondItem="hyd-5R-y2E" secondAttribute="centerY" id="dKk-or-xVM"/>
                             </constraints>
+                            <viewLayoutGuide key="safeArea" id="PDj-x5-0Mw"/>
                             <connections>
                                 <outlet property="numNovelsLabel" destination="jf6-43-kOF" id="IuS-9d-E92"/>
                                 <outlet property="sortByButton" destination="8PQ-bc-zpE" id="8vb-4m-EGn"/>
@@ -302,15 +304,15 @@
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
-                                <constraint firstItem="7N5-m8-70Y" firstAttribute="leading" secondItem="HC7-fj-Pqd" secondAttribute="leading" constant="20" id="2bH-3a-uRB"/>
+                                <constraint firstItem="7N5-m8-70Y" firstAttribute="leading" secondItem="iju-Wg-753" secondAttribute="leading" constant="20" id="2bH-3a-uRB"/>
                                 <constraint firstItem="mK6-vo-awd" firstAttribute="leading" secondItem="7N5-m8-70Y" secondAttribute="trailing" constant="16" id="4oG-ao-1E7"/>
                                 <constraint firstItem="n9s-jq-tQq" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="S9N-lX-Bij" secondAttribute="trailing" constant="8" id="IQs-7X-N58"/>
-                                <constraint firstAttribute="trailing" secondItem="fcR-mS-JDt" secondAttribute="trailing" constant="20" id="KFO-8n-tlB"/>
+                                <constraint firstItem="iju-Wg-753" firstAttribute="trailing" secondItem="fcR-mS-JDt" secondAttribute="trailing" constant="20" id="KFO-8n-tlB"/>
                                 <constraint firstItem="fcR-mS-JDt" firstAttribute="top" secondItem="BdV-Tc-8Go" secondAttribute="top" id="MAF-nI-fAd"/>
                                 <constraint firstItem="mK6-vo-awd" firstAttribute="top" secondItem="BdV-Tc-8Go" secondAttribute="bottom" constant="4" id="SZX-uE-gNx"/>
                                 <constraint firstItem="S9N-lX-Bij" firstAttribute="leading" secondItem="7N5-m8-70Y" secondAttribute="trailing" constant="16" id="SzV-XH-08r"/>
                                 <constraint firstItem="S9N-lX-Bij" firstAttribute="top" secondItem="HC7-fj-Pqd" secondAttribute="top" constant="16" id="W5B-EJ-BJf"/>
-                                <constraint firstAttribute="trailing" secondItem="n9s-jq-tQq" secondAttribute="trailing" constant="20" id="c3z-U8-mqM"/>
+                                <constraint firstItem="iju-Wg-753" firstAttribute="trailing" secondItem="n9s-jq-tQq" secondAttribute="trailing" constant="20" id="c3z-U8-mqM"/>
                                 <constraint firstItem="8Wz-PH-Zm9" firstAttribute="leading" secondItem="HC7-fj-Pqd" secondAttribute="leading" id="fO3-jl-VdZ"/>
                                 <constraint firstItem="7N5-m8-70Y" firstAttribute="top" secondItem="HC7-fj-Pqd" secondAttribute="top" constant="16" id="gNB-Ig-sSm"/>
                                 <constraint firstAttribute="trailing" secondItem="8Wz-PH-Zm9" secondAttribute="trailing" id="hSY-eE-Rmk"/>
@@ -324,6 +326,7 @@
                                 <constraint firstItem="fcR-mS-JDt" firstAttribute="bottom" secondItem="mK6-vo-awd" secondAttribute="bottom" id="usO-32-qx5"/>
                                 <constraint firstAttribute="bottom" secondItem="fcR-mS-JDt" secondAttribute="bottom" constant="16" id="whG-bV-MpZ"/>
                             </constraints>
+                            <viewLayoutGuide key="safeArea" id="iju-Wg-753"/>
                         </view>
                         <view key="tableFooterView" contentMode="scaleToFill" id="0DQ-fm-rSl">
                             <rect key="frame" x="0.0" y="368" width="414" height="44"/>
@@ -613,14 +616,9 @@
                             <rect key="frame" x="0.0" y="0.0" width="414" height="87"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Listing - Language / Japanese" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uRV-Kp-0m9">
-                                    <rect key="frame" x="20" y="8" width="228" height="33"/>
-                                    <fontDescription key="fontDescription" type="system" weight="light" pointSize="17"/>
-                                    <nil key="textColor"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="detailDisclosure" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hmh-ES-NB5">
                                     <rect key="frame" x="372" y="13.5" width="22" height="22"/>
+                                    <viewLayoutGuide key="safeArea" id="ec0-Pm-BCv"/>
                                     <color key="tintColor" red="0.29711377620000001" green="0.60802680249999996" blue="0.97651046509999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                     <connections>
                                         <segue destination="IRi-gN-xqa" kind="popoverPresentation" popoverAnchorView="hmh-ES-NB5" id="HUs-PL-9lR">
@@ -658,22 +656,29 @@
                                         <action selector="sortingCriterionButtonTouched:" destination="Cg5-3X-4YY" eventType="touchUpInside" id="3xn-kg-UTF"/>
                                     </connections>
                                 </button>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" insetsLayoutMarginsFromSafeArea="NO" text="Listing - Language / Japanese" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uRV-Kp-0m9">
+                                    <rect key="frame" x="20" y="8" width="228" height="33"/>
+                                    <fontDescription key="fontDescription" type="system" weight="light" pointSize="17"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
-                                <constraint firstAttribute="trailing" secondItem="TQK-4M-Bqg" secondAttribute="trailing" constant="20" id="BKu-ML-qaJ"/>
+                                <constraint firstItem="hmh-ES-NB5" firstAttribute="trailing" secondItem="TQK-4M-Bqg" secondAttribute="trailing" id="6zP-cU-biZ"/>
+                                <constraint firstItem="uRV-Kp-0m9" firstAttribute="leading" secondItem="I59-ux-dRV" secondAttribute="leading" id="EfU-Zu-Tj8"/>
                                 <constraint firstItem="I59-ux-dRV" firstAttribute="top" secondItem="uRV-Kp-0m9" secondAttribute="bottom" constant="8" id="GIc-Fc-eM0"/>
-                                <constraint firstAttribute="trailing" secondItem="hmh-ES-NB5" secondAttribute="trailing" constant="20" id="RtF-lL-kXU"/>
+                                <constraint firstItem="I59-ux-dRV" firstAttribute="leading" secondItem="oNy-fb-Phk" secondAttribute="leading" constant="20" id="LX6-UD-IQF"/>
                                 <constraint firstItem="uRV-Kp-0m9" firstAttribute="top" secondItem="Vaq-eR-NbD" secondAttribute="top" constant="8" id="Sar-0j-mIZ"/>
                                 <constraint firstItem="TQK-4M-Bqg" firstAttribute="centerY" secondItem="I59-ux-dRV" secondAttribute="centerY" id="WBg-4s-BKG"/>
                                 <constraint firstItem="hmh-ES-NB5" firstAttribute="centerY" secondItem="uRV-Kp-0m9" secondAttribute="centerY" id="WDT-T1-pgi"/>
                                 <constraint firstItem="hmh-ES-NB5" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="uRV-Kp-0m9" secondAttribute="trailing" constant="8" id="bb0-Qb-VPd"/>
                                 <constraint firstItem="TQK-4M-Bqg" firstAttribute="leading" secondItem="I59-ux-dRV" secondAttribute="trailing" constant="8" id="iKv-6h-54s"/>
-                                <constraint firstItem="uRV-Kp-0m9" firstAttribute="leading" secondItem="Vaq-eR-NbD" secondAttribute="leading" constant="20" id="nth-9L-xFG"/>
-                                <constraint firstItem="I59-ux-dRV" firstAttribute="leading" secondItem="Vaq-eR-NbD" secondAttribute="leading" constant="20" id="pH6-MO-onv"/>
+                                <constraint firstItem="oNy-fb-Phk" firstAttribute="trailing" secondItem="TQK-4M-Bqg" secondAttribute="trailing" constant="20" id="vuc-7v-Z6B"/>
                                 <constraint firstAttribute="bottom" secondItem="I59-ux-dRV" secondAttribute="bottom" constant="8" id="xzw-q8-Tm9"/>
                                 <constraint firstItem="I59-ux-dRV" firstAttribute="height" secondItem="TQK-4M-Bqg" secondAttribute="height" id="ysU-SW-VCc"/>
                             </constraints>
+                            <viewLayoutGuide key="safeArea" id="oNy-fb-Phk"/>
                         </view>
                         <view key="tableFooterView" contentMode="scaleToFill" id="NpW-i3-3AP">
                             <rect key="frame" x="0.0" y="300" width="414" height="78"/>

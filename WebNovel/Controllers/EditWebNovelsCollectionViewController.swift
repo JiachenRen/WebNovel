@@ -38,6 +38,7 @@ class EditWebNovelsCollectionViewController: UICollectionViewController {
             destructiveActionButton.title = "Unfavorite"
         }
         updateDestructiveButton()
+        collectionView?.contentInsetAdjustmentBehavior = .always
     }
     
     func updateDestructiveButton() {
@@ -140,15 +141,5 @@ class EditWebNovelsCollectionViewController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         updateDestructiveButton()
     }
-    
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using [segue destinationViewController].
-     // Pass the selected object to the new view controller.
-     }
-     */
 
 }

@@ -36,6 +36,8 @@ class DownloadsCollectionViewController: UICollectionViewController {
         
         observe(.downloadTaskStatusUpdated, #selector(downloadTaskUpdated))
         observe(.downloadTaskInitiated, #selector(downloadTaskUpdated))
+        
+        collectionView?.contentInsetAdjustmentBehavior = .always
     }
     
     override func viewDidAppear(_ animated: Bool) {

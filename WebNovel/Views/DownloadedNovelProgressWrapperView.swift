@@ -30,4 +30,9 @@ class DownloadedNovelProgressWrapperView: UIView {
         roundedRect.stroke()
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        setNeedsDisplay()
+    }
+    
 }

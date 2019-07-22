@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -145,21 +146,22 @@
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstItem="CXp-Fe-VKk" firstAttribute="top" secondItem="oSv-eV-yTD" secondAttribute="top" constant="20" id="2Gg-eY-eDv"/>
-                                <constraint firstItem="H3W-um-WSj" firstAttribute="leading" secondItem="oSv-eV-yTD" secondAttribute="leading" constant="20" id="8e0-Wz-ybm"/>
                                 <constraint firstItem="BJj-Jl-XOL" firstAttribute="leading" secondItem="H3W-um-WSj" secondAttribute="trailing" constant="20" id="8g1-NN-3Wy"/>
+                                <constraint firstItem="BWc-26-8Gi" firstAttribute="trailing" secondItem="CXp-Fe-VKk" secondAttribute="trailing" constant="20" id="Bip-Mt-C2J"/>
+                                <constraint firstItem="BWc-26-8Gi" firstAttribute="trailing" secondItem="BJj-Jl-XOL" secondAttribute="trailing" constant="20" id="EWR-tF-SCa"/>
                                 <constraint firstAttribute="bottom" secondItem="xfE-cu-Hlp" secondAttribute="bottom" constant="20" id="Egl-kV-ALi"/>
-                                <constraint firstAttribute="trailing" secondItem="CXp-Fe-VKk" secondAttribute="trailing" constant="20" id="HHG-kY-7Xg"/>
                                 <constraint firstItem="xfE-cu-Hlp" firstAttribute="leading" secondItem="H3W-um-WSj" secondAttribute="trailing" constant="20" id="SsN-2b-KTW"/>
                                 <constraint firstItem="BJj-Jl-XOL" firstAttribute="top" secondItem="CXp-Fe-VKk" secondAttribute="bottom" constant="8" id="TT2-6f-yka"/>
-                                <constraint firstAttribute="trailing" secondItem="xfE-cu-Hlp" secondAttribute="trailing" constant="20" id="a5K-GB-wdR"/>
                                 <constraint firstItem="H3W-um-WSj" firstAttribute="top" secondItem="oSv-eV-yTD" secondAttribute="top" constant="20" id="aSb-kf-Wsi"/>
                                 <constraint firstItem="CXp-Fe-VKk" firstAttribute="leading" secondItem="H3W-um-WSj" secondAttribute="trailing" constant="20" id="boI-FH-QGl"/>
-                                <constraint firstAttribute="trailing" secondItem="BJj-Jl-XOL" secondAttribute="trailing" constant="20" id="c2y-ZI-3D0"/>
+                                <constraint firstItem="H3W-um-WSj" firstAttribute="leading" secondItem="BWc-26-8Gi" secondAttribute="leading" constant="20" id="cM2-M1-jXS"/>
                                 <constraint firstItem="xfE-cu-Hlp" firstAttribute="top" secondItem="BJj-Jl-XOL" secondAttribute="bottom" constant="8" id="fJq-Kk-OXv"/>
+                                <constraint firstItem="BWc-26-8Gi" firstAttribute="trailing" secondItem="xfE-cu-Hlp" secondAttribute="trailing" constant="20" id="fXO-dg-HcD"/>
                                 <constraint firstItem="TgS-uo-8eD" firstAttribute="centerX" secondItem="H3W-um-WSj" secondAttribute="centerX" id="plV-Yp-6od"/>
                                 <constraint firstAttribute="bottom" secondItem="H3W-um-WSj" secondAttribute="bottom" constant="20" id="pxi-SY-4E0"/>
                                 <constraint firstItem="TgS-uo-8eD" firstAttribute="centerY" secondItem="H3W-um-WSj" secondAttribute="centerY" id="sk4-yR-V6h"/>
                             </constraints>
+                            <viewLayoutGuide key="safeArea" id="BWc-26-8Gi"/>
                         </view>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="information.sectionHeader" rowHeight="67" id="p5r-aq-tYg" customClass="SectionHeaderTableViewCell" customModule="WebNovel" customModuleProvider="target">
@@ -544,12 +546,13 @@
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
-                                <constraint firstItem="qMH-kd-rcw" firstAttribute="leading" secondItem="nty-3X-SCo" secondAttribute="leading" constant="20" id="BlB-Ns-aVm"/>
+                                <constraint firstItem="qMH-kd-rcw" firstAttribute="leading" secondItem="KeA-iW-L6m" secondAttribute="leading" constant="20" id="BlB-Ns-aVm"/>
                                 <constraint firstItem="qMH-kd-rcw" firstAttribute="centerY" secondItem="nty-3X-SCo" secondAttribute="centerY" id="FLH-pB-n9B"/>
                                 <constraint firstItem="XEe-Nx-KMJ" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="qMH-kd-rcw" secondAttribute="trailing" constant="20" id="KQc-qy-WLz"/>
-                                <constraint firstAttribute="trailing" secondItem="XEe-Nx-KMJ" secondAttribute="trailing" constant="20" id="WZh-vX-IW7"/>
+                                <constraint firstItem="KeA-iW-L6m" firstAttribute="trailing" secondItem="XEe-Nx-KMJ" secondAttribute="trailing" constant="20" id="WZh-vX-IW7"/>
                                 <constraint firstItem="XEe-Nx-KMJ" firstAttribute="centerY" secondItem="qMH-kd-rcw" secondAttribute="centerY" id="rAy-NH-tU2"/>
                             </constraints>
+                            <viewLayoutGuide key="safeArea" id="KeA-iW-L6m"/>
                         </view>
                         <view key="tableFooterView" contentMode="scaleToFill" id="3bj-DG-nZP">
                             <rect key="frame" x="0.0" y="134" width="414" height="79"/>
@@ -572,6 +575,7 @@
                                 <constraint firstItem="bjR-CI-q4p" firstAttribute="top" secondItem="3bj-DG-nZP" secondAttribute="top" constant="16" id="qkR-C0-3Go"/>
                                 <constraint firstItem="ioa-4y-naj" firstAttribute="centerX" secondItem="3bj-DG-nZP" secondAttribute="centerX" id="sQF-Oe-Nyl"/>
                             </constraints>
+                            <viewLayoutGuide key="safeArea" id="lmj-Lg-Fab"/>
                         </view>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="chapters.chapter" id="PUg-ot-KOM" customClass="ChapterTableViewCell" customModule="WebNovel" customModuleProvider="target">
@@ -594,6 +598,7 @@
                                         <constraint firstItem="PnR-22-tZf" firstAttribute="leading" secondItem="IrO-cK-qoE" secondAttribute="leadingMargin" id="tKv-bz-gwQ"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <viewLayoutGuide key="safeArea" id="CW5-rM-sLX"/>
                                 <connections>
                                     <outlet property="titleLabel" destination="PnR-22-tZf" id="iu1-Ha-vsE"/>
                                 </connections>
