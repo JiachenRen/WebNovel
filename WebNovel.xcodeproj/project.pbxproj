@@ -34,6 +34,8 @@
 		1F8FBB4C22C72D7900B23F8D /* DownloadedNovelTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F8FBB4B22C72D7900B23F8D /* DownloadedNovelTableViewController.swift */; };
 		1F8FBB5022C73E1000B23F8D /* Data+size.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F8FBB4F22C73E1000B23F8D /* Data+size.swift */; };
 		1F8FBB5222CB272600B23F8D /* DownloadedNovelSectionHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F8FBB5122CB272600B23F8D /* DownloadedNovelSectionHeaderCell.swift */; };
+		1F97213822F96020006C7244 /* DocumentPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F97213722F96020006C7244 /* DocumentPickerViewController.swift */; };
+		1F97213B22F960B9006C7244 /* WNDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F97213A22F960B9006C7244 /* WNDocument.swift */; };
 		1F9890A922BCCBAB00A09F3F /* InformationTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F9890A822BCCBAB00A09F3F /* InformationTableViewController.swift */; };
 		1F9890AB22BCDEE800A09F3F /* UIViewController+presentError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F9890AA22BCDEE800A09F3F /* UIViewController+presentError.swift */; };
 		1F9890AD22BCDF5B00A09F3F /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F9890AC22BCDF5B00A09F3F /* UIImage.swift */; };
@@ -151,6 +153,9 @@
 		1F8FBB4B22C72D7900B23F8D /* DownloadedNovelTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadedNovelTableViewController.swift; sourceTree = "<group>"; };
 		1F8FBB4F22C73E1000B23F8D /* Data+size.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+size.swift"; sourceTree = "<group>"; };
 		1F8FBB5122CB272600B23F8D /* DownloadedNovelSectionHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadedNovelSectionHeaderCell.swift; sourceTree = "<group>"; };
+		1F97213722F96020006C7244 /* DocumentPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentPickerViewController.swift; sourceTree = "<group>"; };
+		1F97213A22F960B9006C7244 /* WNDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WNDocument.swift; sourceTree = "<group>"; };
+		1F97213C22F968CD006C7244 /* WebNovel.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WebNovel.entitlements; sourceTree = "<group>"; };
 		1F9890A822BCCBAB00A09F3F /* InformationTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationTableViewController.swift; sourceTree = "<group>"; };
 		1F9890AA22BCDEE800A09F3F /* UIViewController+presentError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+presentError.swift"; sourceTree = "<group>"; };
 		1F9890AC22BCDF5B00A09F3F /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
@@ -258,6 +263,14 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		1F97213922F96077006C7244 /* Epub */ = {
+			isa = PBXGroup;
+			children = (
+				1F97213A22F960B9006C7244 /* WNDocument.swift */,
+			);
+			path = Epub;
+			sourceTree = "<group>";
+		};
 		1FCD41EE22C0E2290050ECEC /* Javascript */ = {
 			isa = PBXGroup;
 			children = (
@@ -299,6 +312,7 @@
 		1FED6E3222B34C92002F9317 /* WebNovel */ = {
 			isa = PBXGroup;
 			children = (
+				1F97213C22F968CD006C7244 /* WebNovel.entitlements */,
 				1F52AAEA22B8E9EA00D4FB6C /* Extensions */,
 				1FED6EBB22B73A40002F9317 /* Views */,
 				1FED6EBA22B73928002F9317 /* Controllers */,
@@ -356,6 +370,7 @@
 		1FED6E7D22B5700A002F9317 /* WNService */ = {
 			isa = PBXGroup;
 			children = (
+				1F97213922F96077006C7244 /* Epub */,
 				1FCD41EF22C0E2400050ECEC /* Parsing */,
 				1FED6EAF22B6FD34002F9317 /* Caching */,
 				1FED6E9422B58ED6002F9317 /* Service Providers */,
@@ -422,6 +437,7 @@
 				1FCD421422C5033F0050ECEC /* DownloadsCollectionViewController.swift */,
 				1F8FBB4B22C72D7900B23F8D /* DownloadedNovelTableViewController.swift */,
 				1FEBCBE022E5BB95004F38B0 /* EditWebNovelsCollectionViewController.swift */,
+				1F97213722F96020006C7244 /* DocumentPickerViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -502,6 +518,11 @@
 				TargetAttributes = {
 					1FED6E2F22B34C92002F9317 = {
 						CreatedOnToolsVersion = 10.2.1;
+						SystemCapabilities = {
+							com.apple.iCloud = {
+								enabled = 1;
+							};
+						};
 					};
 					1FED6E4B22B34E0F002F9317 = {
 						CreatedOnToolsVersion = 10.2.1;
@@ -581,6 +602,7 @@
 				1F9890B522BD00F700A09F3F /* InformationTableViewCellDelegate.swift in Sources */,
 				1FED6EA322B627A1002F9317 /* NovelUpdates+loadDetails.swift in Sources */,
 				1F9890B122BCF1AE00A09F3F /* SectionHeaderTableViewCell.swift in Sources */,
+				1F97213B22F960B9006C7244 /* WNDocument.swift in Sources */,
 				1FED6EB922B72557002F9317 /* WNListingService.swift in Sources */,
 				1F0E2EB122B73E5500CD77A9 /* DiscoverTableViewController.swift in Sources */,
 				1FED6E3C22B34C92002F9317 /* WebNovel.xcdatamodeld in Sources */,
@@ -619,6 +641,7 @@
 				1F52AAEC22B8EAFA00D4FB6C /* NSObject+observe.swift in Sources */,
 				1FCD41FB22C1B7BE0050ECEC /* Optional+losslessStr.swift in Sources */,
 				1FED6EAE22B6FB57002F9317 /* WNCatalogue.swift in Sources */,
+				1F97213822F96020006C7244 /* DocumentPickerViewController.swift in Sources */,
 				1FEBCBE322E5BC0F004F38B0 /* EditWebNovelsCollectionViewCell.swift in Sources */,
 				1FCD420122C1C5B70050ECEC /* ChapterViewController.swift in Sources */,
 				1FEBCBE522E5C4B8004F38B0 /* GradientView.swift in Sources */,
@@ -792,6 +815,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = WebNovel/WebNovel.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = AM89ND2ZY7;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -815,6 +839,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = WebNovel/WebNovel.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = AM89ND2ZY7;
 				FRAMEWORK_SEARCH_PATHS = (

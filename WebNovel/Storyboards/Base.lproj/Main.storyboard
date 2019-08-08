@@ -220,7 +220,14 @@
                                 <segue destination="wGx-BQ-OII" kind="presentation" id="isT-Or-xVa"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="search" id="b8B-9n-HO3"/>
+                        <rightBarButtonItems>
+                            <barButtonItem systemItem="search" id="b8B-9n-HO3"/>
+                            <barButtonItem systemItem="add" id="1xn-RO-Cyw">
+                                <connections>
+                                    <action selector="importButtonTapped:" destination="pkW-Tm-etv" id="6bu-rJ-6fl"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <connections>
                         <outlet property="editButton" destination="Uwl-0m-y22" id="JPq-BM-FBc"/>

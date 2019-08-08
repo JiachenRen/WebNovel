@@ -52,6 +52,11 @@ class DownloadsCollectionViewController: UICollectionViewController {
         }
     }
     
+    @IBAction func importButtonTapped(_ sender: Any) {
+        let picker = DocumentPickerViewController(documentTypes: ["org.idpf.epub-container"], in: .open)
+        present(picker, animated: true)
+    }
+    
     /// Reload available downloads
     private func reload() {
         loadAvailableWebNovels().done(on: .main) {
