@@ -24,10 +24,10 @@ class ChaptersTableViewController: UITableViewController {
     
     var catalogueUrl: String!
     var catalogue: WNCatalogue? {
-        didSet {filterButton.isEnabled = catalogue != nil}
+        didSet { filterButton.isEnabled = catalogue != nil }
     }
     var chapters: [String] = [] {
-        didSet {groupChaptersIntoSections()}
+        didSet { groupChaptersIntoSections() }
     }
     var sections: [[String]] = []
     var desiredSections = 20
@@ -36,7 +36,7 @@ class ChaptersTableViewController: UITableViewController {
     }
     var sortDescending = true
     var isLoadingChapters = false {
-        didSet {loadingView.isHidden = !isLoadingChapters}
+        didSet { loadingView.isHidden = !isLoadingChapters }
     }
     
     override func viewDidLoad() {

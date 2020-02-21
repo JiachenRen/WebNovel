@@ -61,7 +61,7 @@ class TextToSpeechTableViewController: UITableViewController {
     
     private func updateCurrentlyReading() {
         tableView.reloadSections(IndexSet(arrayLiteral: 0), with: .automatic)
-        if let chapter = reader.chapter {
+        if let chapter = reader.chapter?.contentSourceChapter() {
             webNovelTitleLabel.text = chapter.retrieveWebNovel().title
             chapterTitleLabel.text = chapter.properTitle() ?? "#\(chapter.id) - identifier \(chapter.name)"
         }

@@ -19,6 +19,10 @@ class NovelUpdates: WNServiceProvider {
     
     private let queue = DispatchQueue(label: "com.jiachenren.WebNovel.download", qos: .utility, attributes: .concurrent, autoreleaseFrequency: .workItem, target: nil)
     
+    enum Path: String {
+        case translationGroupsListing = "groupslist"
+    }
+    
     init() {
         // Default the listing service to the first available
         listingService = availableListingServices().first
@@ -145,7 +149,6 @@ class NovelUpdates: WNServiceProvider {
                     seal.reject(WNError.urlNotFound)
                     return
                 }
-                
                 WNParser.parse(html, url, mergeInto: chapter)
                     .done(on: self.queue, flags: .barrier) { chapter in
                         chapter.isDownloaded = true

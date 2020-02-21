@@ -27,6 +27,7 @@ enum WNError: Error, Equatable {
     case coverImageUrlNotFound
     case instanceDeallocated
     case loadingFailed
+    case groupListingFailed
     
     var localizedDescription: String {
         switch self {
@@ -66,6 +67,8 @@ enum WNError: Error, Equatable {
             return "The instance has been deallocated"
         case .loadingFailed:
             return "Failed to load content"
+        case .groupListingFailed:
+            return "Failed to retrieve translation group listing"
         }
     }
 }

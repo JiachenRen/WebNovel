@@ -9,6 +9,7 @@
 import Foundation
 import Alamofire
 import PromiseKit
+import SwiftSoup
 import UIKit
 
 /// Initiates a html response request to the given URL with speficied parameters
@@ -32,6 +33,16 @@ func htmlRequestResponse(
                     return
                 }
                 seal.fulfill(htmlStr)
+        }
+    }
+}
+
+func parseHtml(_ html: String) -> Promise<Document> {
+    return Promise { seal in
+        do {
+            seal.fulfill(try SwiftSoup.parse(html))
+        } catch let e {
+            seal.reject(e)
         }
     }
 }

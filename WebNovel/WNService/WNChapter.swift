@@ -27,6 +27,14 @@ class WNChapter: Serializable, CustomStringConvertible {
     /// URL from which the chapter is retrieved
     let url: String
     
+    /// Alternative possible chapter URLs (since in some cases the contents are hidden
+    var altChapters: [WNChapter]
+    
+    /// Content source ID.
+    /// 0 = content extracted from main URL
+    /// i = using ith alternative chapter
+    var contentSourceId: Int
+    
     /// Id of the chapter
     let id: Int
     
@@ -61,9 +69,29 @@ class WNChapter: Serializable, CustomStringConvertible {
     /// Possible articles for that chapter that are obtained by following possible links in the response HTML.
     var alternativeArticles: [Article] = []
     
+    /// List of content sources, with the first one being `self`
+    var contentSources: [WNChapter] {
+        var sources = [self]
+        sources.append(contentsOf: altChapters)
+        return sources
+    }
+    
+    var description: String {
+        return """
+        Web Novel Link: \(webNovelUrl)
+        ID: \(id)
+        Chapter: \(name)
+        Group: \(group)
+        Link: \(url)
+        Article: \(article?.description ?? "N/A")
+        """
+    }
+    
     init(_ webNovelUrl: String, url: String, name: String, id: Int) {
         self.webNovelUrl = webNovelUrl
         self.url = url
+        self.altChapters = []
+        self.contentSourceId = 0
         self.name = name
         self.id = id
     }
@@ -159,14 +187,14 @@ class WNChapter: Serializable, CustomStringConvertible {
         return WNCache.fetch(by: url, object: WNChapter.self)
     }
     
-    var description: String {
-        return """
-        Web Novel Link: \(webNovelUrl)
-        ID: \(id)
-        Chapter: \(name)
-        Group: \(group)
-        Link: \(url)
-        Article: \(article?.description ?? "N/A")
-        """
+    /// The WNChapter that should be presented; i.e. the chapter specified by content source ID.
+    /// - Returns: Source chapter
+    func contentSourceChapter() -> WNChapter {
+        switch contentSourceId {
+        case 0:
+            return self
+        default:
+            return altChapters[contentSourceId - 1]
+        }
     }
 }

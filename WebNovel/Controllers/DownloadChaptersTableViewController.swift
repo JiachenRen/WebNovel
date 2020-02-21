@@ -98,7 +98,7 @@ class DownloadChaptersTableViewController: UITableViewController {
         guard let chapterCell = cell as? SelectableChapterTableViewCell else {
             return cell
         }
-        let chapter = chapters[indexPath.row]
+        let chapter = chapters[indexPath.row].contentSourceChapter()
         chapterCell.chapterLabel.text = chapter.name
         chapterCell.deselectedStateButton.isHidden = selections[indexPath.row]
         chapterCell.selectedStateButton.isHidden = !selections[indexPath.row]

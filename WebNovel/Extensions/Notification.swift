@@ -14,6 +14,7 @@ extension Notification.Name {
     static let reloadChapter = Notification.Name("reload-chapter")
     static let attributesUpdated = Notification.Name("attributes-updated")
     static let fontFamilyUpdated = Notification.Name("font-family-updated")
+    static let contentSourceIdUpdated = Notification.Name("content-source-id-updated")
     static let downloadTaskInitiated = Notification.Name("download-task-initiated")
     static let downloadTaskStatusUpdated = Notification.Name("download-task-status-updated")
     static let downloadTaskCompleted = Notification.Name("download-task-completed")

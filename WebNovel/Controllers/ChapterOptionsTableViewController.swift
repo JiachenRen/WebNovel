@@ -18,14 +18,13 @@ class ChapterOptionsTableViewController: UITableViewController {
     @IBOutlet weak var sanitizedHtmlCell: UITableViewCell!
     @IBOutlet weak var webCell: UITableViewCell!
     
+    @IBOutlet weak var contentSourceNameLabel: UILabel!
+    
     @IBOutlet weak var fontSizeStepper: UIStepper!
-    
     @IBOutlet weak var fontWeightSegmentedControl: UISegmentedControl!
-    
     @IBOutlet weak var fontFamilyLabel: UILabel!
     
     @IBOutlet weak var paragraphSpacingStepper: UIStepper!
-    
     @IBOutlet weak var lineSpacingStepper: UIStepper!
     
     var sanitization: ChapterViewController.Sanitization!
@@ -37,7 +36,9 @@ class ChapterOptionsTableViewController: UITableViewController {
         tableView.backgroundColor = .lightGrayBackground
         updateSanitizationCells()
         updateAttributesUI()
+        updateContentSourceId()
         observe(.fontFamilyUpdated, #selector(updateFontFamily(_:)))
+        observe(.contentSourceIdUpdated, #selector(updateContentSourceId))
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -46,6 +47,11 @@ class ChapterOptionsTableViewController: UITableViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         navigationController?.setNavigationBarHidden(false, animated: false)
+    }
+    
+    @objc func updateContentSourceId() {
+        let id = chapter.contentSourceId
+        contentSourceNameLabel.text = id == 0 ? "Original" : "Alt. \(id)"
     }
     
     @objc func updateFontFamily(_ notif: Notification) {
@@ -146,6 +152,9 @@ class ChapterOptionsTableViewController: UITableViewController {
             fontFamilyController.currentFontFamily = attributes.fontFamily
         } else if let textToSpeechController = segue.destination as? TextToSpeechTableViewController {
             textToSpeechController.chapterToRead = chapter
+        } else if let srcController = segue.destination as? ChapterContentSourceTableViewController {
+            srcController.contentSourceId = chapter.contentSourceId
+            srcController.contentSources = chapter.contentSources
         }
     }
 

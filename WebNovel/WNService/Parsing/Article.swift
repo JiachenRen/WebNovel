@@ -8,7 +8,7 @@
 
 import Foundation
 
-/// Article wraps relevant information extracted by Readability.js
+/// Article wraps relevant information extracted by `Readability.js`
 struct Article: Codable, CustomStringConvertible {
     
     /// Title of the article

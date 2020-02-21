@@ -50,6 +50,7 @@ class ChapterViewController: UIViewController {
         observe(.sanitizationUpdated, #selector(sanitizationUpdated(_:)))
         observe(.reloadChapter, #selector(reloadChapter))
         observe(.attributesUpdated, #selector(attributesUpdated(_:)))
+        observe(.contentSourceIdUpdated, #selector(contentSourceIdUpdated(_:)))
         observe(.requestShowChapter, #selector(processShowChapterRequest(_:)))
     }
     
@@ -99,6 +100,15 @@ class ChapterViewController: UIViewController {
         presentChapter()
     }
     
+    @objc private func contentSourceIdUpdated(_ notif: Notification) {
+        guard let newId = notif.object as? Int else {
+            return
+        }
+        chapter.contentSourceId = newId
+        WNCache.save(chapter)
+        presentChapter()
+    }
+    
     @objc private func reloadChapter() {
         loadChapter(enforceDownload: true)
     }
@@ -136,9 +146,12 @@ class ChapterViewController: UIViewController {
     }
     
     private func presentChapter() {
+        let contentSourceChapter = chapter.contentSourceChapter()
+        let article = contentSourceChapter.article
+        let rawHtml = contentSourceChapter.rawHtml
+        let srcUrl = contentSourceChapter.url
         switch sanitization {
         case .readability:
-            let article = chapter.article
             let attrStr = NSMutableAttributedString()
             if let title = article?.title {
                 attrStr.append(titleAttributes.apply(to: "\n\(title)\n"))
@@ -149,10 +162,10 @@ class ChapterViewController: UIViewController {
             textView.attributedText = attrStr
         case .sanitizedHtml:
             let attrStr = NSMutableAttributedString()
-            if let title = chapter.article?.title {
+            if let title = article?.title {
                 attrStr.append(NSAttributedString(string: "\(title)\n"))
             }
-            if let html = chapter.article?.htmlContent {
+            if let html = article?.htmlContent {
                 let htmlData = NSString(string: html).data(using: String.Encoding.unicode.rawValue)
                 let options = [
                     NSAttributedString.DocumentReadingOptionKey.documentType: NSAttributedString.DocumentType.html
@@ -167,7 +180,7 @@ class ChapterViewController: UIViewController {
             }
             textView.attributedText = attrStr
         case .rawHtml:
-            if let html = chapter.rawHtml, let url = URL(string: chapter.url) {
+            if let html = rawHtml, let url = URL(string: srcUrl) {
                 webView.loadHTMLString(html, baseURL: url)
             }
         }
@@ -175,6 +188,7 @@ class ChapterViewController: UIViewController {
         textView.isHidden = sanitization == .rawHtml
     }
     
+    /// TODO: Implement
     @IBAction func shareButtonTapped(_ sender: Any) {
         
     }
